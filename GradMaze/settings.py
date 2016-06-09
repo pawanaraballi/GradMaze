@@ -124,3 +124,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+
+
+# Login URL Setup
+from django.core.urlresolvers import reverse_lazy
+LOGIN_URL = reverse_lazy('login') # URL To Login Page
+LOGIN_REDIRECT_URL = reverse_lazy('home')  # URL  To Redirect to after login

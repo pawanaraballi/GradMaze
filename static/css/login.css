@@ -14,3 +14,7 @@
     display: table-cell;
     vertical-align: middle;
 }
+
+.errorlist{
+    display: none;
+}

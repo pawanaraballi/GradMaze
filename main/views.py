@@ -1,7 +1,7 @@
 from django.views.generic.base import TemplateView
 
 from django.contrib.auth import authenticate, login, logout
-from .forms import LoginForm
+from .forms import LoginForm, RegisterForm
 from django.views.generic.edit import FormView
 from django.shortcuts import render
 
@@ -10,8 +10,10 @@ from django.shortcuts import render
 class IndexView(TemplateView):
     template_name = 'index.html'
 
-class RegisterView(TemplateView):
+class RegisterView(FormView):
     template_name = 'register.html'
+    form_class = RegisterForm
+    success_url = '/GradMaze/'
 
 class LoginView(FormView):
     template_name = 'login.html'

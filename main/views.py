@@ -10,6 +10,8 @@ from django.shortcuts import render
 class IndexView(TemplateView):
     template_name = 'index.html'
 
+class RegisterView(TemplateView):
+    template_name = 'register.html'
 
 class LoginView(FormView):
     template_name = 'login.html'

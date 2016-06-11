@@ -5,15 +5,30 @@ from .forms import LoginForm, RegisterForm
 from django.views.generic.edit import FormView
 from django.shortcuts import render
 
+from django.contrib.auth.models import User
+
 # Create your views here.
 
 class IndexView(TemplateView):
     template_name = 'index.html'
 
+
 class RegisterView(FormView):
     template_name = 'register.html'
     form_class = RegisterForm
     success_url = '/GradMaze/'
+
+    # Called after forms.RegisterForm.clean()
+    def form_valid(self, form):
+
+        # Create User
+        User.objects.create_user(form.data['user_name'],form.data['email'],form.data['password'])
+
+        # Login User
+        user = authenticate(username=form.data['user_name'], password=form.data['password'])
+        login(self.request, user) # Login User
+        return super(RegisterView, self).form_valid(form)
+
 
 class LoginView(FormView):
     template_name = 'login.html'
@@ -43,3 +58,4 @@ class LogoutView(TemplateView):
     def post(self, request):
         logout(request)
         return render(request,self.template_name)
+

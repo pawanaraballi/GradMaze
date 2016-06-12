@@ -62,3 +62,15 @@ class LogoutView(TemplateView):
 
 class AccountManageView(TemplateView):
     template_name = "account_manage.html"
+
+
+
+
+from django.http import HttpResponse
+from django.views.generic import View
+
+class DeleteAccountView(View):
+    def post(self, request):
+        user = User.objects.get(id=self.request.user.id)
+        user.delete()
+        return HttpResponse('result')

@@ -33,6 +33,7 @@
 
 
 {% block bot_includes %}
+    <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
     <script src="{% static 'js/jquery-ui.min.js' %}" ></script>
     <script src="{% static 'js/manage.js' %}" ></script>
 {% endblock %}

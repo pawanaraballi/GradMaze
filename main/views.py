@@ -5,7 +5,13 @@ from .forms import LoginForm, RegisterForm
 from django.views.generic.edit import FormView
 from django.shortcuts import render
 
+from django.views.generic import View
+
 from django.contrib.auth.models import User
+
+from .models import Application, Student
+
+from .forms import ApplicationForm
 
 # Create your views here.
 
@@ -60,8 +66,26 @@ class LogoutView(TemplateView):
         return render(request,self.template_name)
 
 
-class AccountManageView(TemplateView):
+class AccountManageView(View):
     template_name = "account_manage.html"
+
+    def get(self, request, *args, **kwargs):
+
+        apps_form = ApplicationForm()
+
+        # Applications For Logged In User
+        applications = Application.objects.filter(student__id=request.user.id)
+        return render(request, self.template_name, {'apps': applications,'apps_form': apps_form})
+
+
+
+    def post(self, request, *args, **kwargs):
+
+        apps_form = ApplicationForm(request.POST)
+
+        # Applications For Logged In User
+        applications = Application.objects.filter(student__id=request.user.id)
+        return render(request, self.template_name, {'apps': applications,'apps_form': apps_form})
 
 
 

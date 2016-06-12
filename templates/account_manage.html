@@ -19,6 +19,59 @@
     <h3>Education</h3>
     <h3>Industry Experience</h3>
     <h3>Applications</h3>
+
+    <table class="table" id="app-table">
+        <thead>
+            <th>School Program</th>
+            <th>Date Submitted</th>
+            <th>Data Modified</th>
+            <th>Status</th>
+            <th>Delete</th>
+        </thead>
+
+        {% for application in apps %}
+            <tr>
+                <td>{{application.school_program}}</td>
+                <td>{{application.date_submitted}}</td>
+                <td>{{application.date_updated}}</td>
+                <td>{{application.status}}</td>
+                <td><span class="glyphicon glyphicon-trash"></span></td>
+            </tr>
+        {% endfor %}
+
+        <tr>
+            <td><span class="glyphicon glyphicon-plus" id="add-app"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+    {% if apps_form.errors %}
+        <div class="alert alert-danger" role="alert">
+            <p>Error when attempting to add application!</p>
+        </div>
+    {% endif %}
+
+
+
+    <form method="POST" {% if not apps_form.errors %} style="display:none" {% endif %} id="form-app">
+        {% csrf_token %}
+        {% for field in apps_form %}
+            <div class="row">
+                <div class="col-xs-8"> {{ field.label_tag }} {{ field }}</div>
+                <div class="col-xs-4">{{ field.errors }}</div>
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-default">Add Application</button>
+    </form>
+
+
+
+
+
     <h3>Favorites</h3>
 
 

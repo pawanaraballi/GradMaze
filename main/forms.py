@@ -3,6 +3,8 @@ from django.forms import ValidationError
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
+from .models import SchoolProgram,Application
+
 import re
 
 
@@ -132,6 +134,13 @@ class RegisterForm(forms.Form):
             raise ValidationError("Email and Confirm Email Do Not Match")
 
 
-
-
         return self.cleaned_data
+
+
+
+class ApplicationForm(forms.Form):
+    # Form Fields
+    school_program = forms.ModelChoiceField(queryset=SchoolProgram.objects.all().order_by('school'))
+    date_submitted = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}))
+    date_updated = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}))
+    status = forms.ChoiceField(choices=Application.STATUSCHOICES)

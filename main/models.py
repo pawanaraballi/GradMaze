@@ -57,4 +57,13 @@ class Application(models.Model):
     date_submitted = models.DateField()
     date_updated = models.DateField()
     school_program = models.ForeignKey(SchoolProgram)
-    status = models.CharField(max_length=50)
+
+
+    STATUSCHOICES = (
+        ('Pend', 'Pending'),
+        ('Accpt', 'Accepted'),
+        ('Deny', 'Denied'),
+
+    )
+
+    status = models.CharField(max_length=50, choices=STATUSCHOICES)

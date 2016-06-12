@@ -59,3 +59,6 @@ class LogoutView(TemplateView):
         logout(request)
         return render(request,self.template_name)
 
+
+class AccountManageView(TemplateView):
+    template_name = "account_manage.html"

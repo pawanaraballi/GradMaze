@@ -45,3 +45,15 @@ class RegisterViewTestCase(TestCase):
         response = self.client.post('/GradMaze/accounts/register', follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'register.html')
+
+
+class AccManageViewTestCase(TestCase):
+    def test_load_view(self):
+        """Test GET/POST of Login Page"""
+        response = self.client.get('/GradMaze/accounts/manage', follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'account_manage.html')
+
+        response = self.client.post('/GradMaze/accounts/manage', follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'account_manage.html')

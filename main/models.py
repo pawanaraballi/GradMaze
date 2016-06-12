@@ -60,9 +60,9 @@ class Application(models.Model):
 
 
     STATUSCHOICES = (
-        ('Pend', 'Pending'),
-        ('Accpt', 'Accepted'),
-        ('Deny', 'Denied'),
+        ('Pending', 'Pending'),
+        ('Accepted', 'Accepted'),
+        ('Denied', 'Denied'),
 
     )
 

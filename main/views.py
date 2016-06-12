@@ -5,6 +5,7 @@ from .forms import LoginForm, RegisterForm
 from django.views.generic.edit import FormView
 from django.shortcuts import render
 
+from django.http import HttpResponseRedirect
 from django.views.generic import View
 
 from django.contrib.auth.models import User
@@ -82,6 +83,20 @@ class AccountManageView(View):
     def post(self, request, *args, **kwargs):
 
         apps_form = ApplicationForm(request.POST)
+
+        print(request.POST)
+
+        if apps_form.is_valid():
+            # Add Application to DB
+            student = Student.objects.get(id=request.user.id)
+            new_app = Application.objects.create(student=student,
+                                                 school_program=apps_form.cleaned_data['school_program'],
+                                                 date_submitted=apps_form.cleaned_data['date_submitted'],
+                                                 date_updated=apps_form.cleaned_data['date_updated'],
+                                                 status=apps_form.cleaned_data['status'])
+            new_app.save()
+            return HttpResponseRedirect("/GradMaze/accounts/manage/")
+
 
         # Applications For Logged In User
         applications = Application.objects.filter(student__id=request.user.id)

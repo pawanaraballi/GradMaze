@@ -30,12 +30,12 @@
         </thead>
 
         {% for application in apps %}
-            <tr>
+            <tr id="app-{{application.id}}">
                 <td>{{application.school_program}}</td>
                 <td>{{application.date_submitted}}</td>
                 <td>{{application.date_updated}}</td>
                 <td>{{application.status}}</td>
-                <td><span class="glyphicon glyphicon-trash"></span></td>
+                <td><span class="glyphicon glyphicon-trash remove-app"></span></td>
             </tr>
         {% endfor %}
 

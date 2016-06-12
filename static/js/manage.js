@@ -13,11 +13,11 @@
 $( "#dialog" ).dialog({
     autoOpen: false,
     buttons: [{text: "Cancel","class": 'btn btn-success',click: function() {$( "#dialog" ).dialog( "close" );}},
-        {text: "Delete","class":'btn btn-danger',click: function() { postData(); $( "#dialog" ).dialog( "close" );}}, ]
+        {text: "Delete","class":'btn btn-danger',click: function() { postDeleteAcc(); $( "#dialog" ).dialog( "close" );}}, ]
 });
 
 // Post Delete Account
-function postData(){
+function postDeleteAcc(){
     $.ajax({
       type: "POST",
       url: "/GradMaze/accounts/delete/",
@@ -49,3 +49,10 @@ $( ".datepicker" ).datepicker();
 $( "#add-app" ).click(function() {
   $( "#form-app" ).show();
 });
+
+
+// On Click to show application form
+$('.remove-app').click(function(e) {
+  $(e.target).parent().parent().remove()
+});
+

@@ -1,0 +1,47 @@
+[
+  {
+    "model": "auth.User",
+    "pk": 1,
+    "fields": {
+      "username": "TestUser1",
+      "email": "testuser@test.com",
+      "password": "pbkdf2_sha256$24000$IiU5uLP6nqWM$Z/WRSMMQ/Sw+risaD51sWRuKb7tMBE6KT4DUna6mgkQ="
+    }
+  },
+  {
+    "model": "auth.User",
+    "pk": 2,
+    "fields": {
+      "username": "TestUser2",
+      "email": "testuser2@test.com",
+      "password": "pbkdf2_sha256$24000$IiU5uLP6nqWM$Z/WRSMMQ/Sw+risaD51sWRuKb7tMBE6KT4DUna6mgkQ="
+    }
+  },
+  {
+    "model": "auth.User",
+    "pk": 3,
+    "fields": {
+      "username": "TestUser3",
+      "email": "testuser3@test.com",
+      "password": "pbkdf2_sha256$24000$IiU5uLP6nqWM$Z/WRSMMQ/Sw+risaD51sWRuKb7tMBE6KT4DUna6mgkQ="
+    }
+  },
+  {
+    "model": "auth.User",
+    "pk": 4,
+    "fields": {
+      "username": "TestUser4",
+      "email": "testuser4@test.com",
+      "password": "pbkdf2_sha256$24000$IiU5uLP6nqWM$Z/WRSMMQ/Sw+risaD51sWRuKb7tMBE6KT4DUna6mgkQ="
+    }
+  },
+  {
+    "model": "auth.User",
+    "pk": 5,
+    "fields": {
+      "username": "TestUser5",
+      "email": "testuser5@test.com",
+      "password": "pbkdf2_sha256$24000$IiU5uLP6nqWM$Z/WRSMMQ/Sw+risaD51sWRuKb7tMBE6KT4DUna6mgkQ="
+    }
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "model": "main.program",
+    "pk": 1,
+    "fields": {
+      "name": "Computer Science",
+      "level": "MS"
+    }
+  },
+  {
+    "model": "main.program",
+    "pk": 2,
+    "fields": {
+      "name": "Computer Science",
+      "level": "PhD"
+    }
+  }
+]

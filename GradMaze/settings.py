@@ -131,3 +131,8 @@ STATICFILES_DIRS = (
 from django.core.urlresolvers import reverse_lazy
 LOGIN_URL = reverse_lazy('login') # URL To Login Page
 LOGIN_REDIRECT_URL = reverse_lazy('home')  # URL  To Redirect to after login
+
+
+FIXTURE_DIRS = (
+   os.path.join(BASE_DIR, 'fixtures'),
+)

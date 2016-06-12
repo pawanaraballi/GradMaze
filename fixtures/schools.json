@@ -1,0 +1,18 @@
+[
+  {
+    "model": "main.school",
+    "pk": 1,
+    "fields": {
+      "name": "University of North Carolina at Charlotte",
+      "abbr": "UNCC"
+    }
+  },
+  {
+    "model": "main.school",
+    "pk": 2,
+    "fields": {
+      "name": "University of North Carolina at Chapel Hill",
+      "abbr": "UNC"
+    }
+  }
+]

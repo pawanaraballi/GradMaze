@@ -10,10 +10,10 @@
  * */
 
 // Set up dialog
-$( "#dialog" ).dialog({
+$( "#dialog-acc-delete" ).dialog({
     autoOpen: false,
-    buttons: [{text: "Cancel","class": 'btn btn-success',click: function() {$( "#dialog" ).dialog( "close" );}},
-        {text: "Delete","class":'btn btn-danger',click: function() { postDeleteAcc(); $( "#dialog" ).dialog( "close" );}}, ]
+    buttons: [{text: "Cancel","class": 'btn btn-success',click: function() {$( "#dialog-acc-delete" ).dialog( "close" );}},
+        {text: "Delete","class":'btn btn-danger',click: function() { postDeleteAcc(); $( "#dialog-acc-delete" ).dialog( "close" );}}, ]
 });
 
 // Post Delete Account
@@ -23,14 +23,14 @@ function postDeleteAcc(){
       url: "/GradMaze/accounts/delete/",
       data:{csrfmiddlewaretoken: window.CSRF_TOKEN},
       success: function(resultData){
-          alert("Save Complete");
+
       }
 });
 }
 
 // On Click for Dialog
 $( "#opener" ).click(function() {
-  $( "#dialog" ).dialog( "open" );
+  $( "#dialog-acc-delete" ).dialog( "open" );
 });
 
 
@@ -53,6 +53,36 @@ $( "#add-app" ).click(function() {
 
 // On Click to show application form
 $('.remove-app').click(function(e) {
-  $(e.target).parent().parent().remove()
+    $( "#dialog-app-delete").data('row_id',$(e.target).parent().parent()[0].id)
+    $( "#dialog-app-delete" ).dialog( "open" );
 });
 
+// Post Delete Application
+function postDeleteApplication(row_id){
+    $.ajax({
+          type: "POST",
+          url: "/GradMaze/accounts/apps/delete/",
+          data:{csrfmiddlewaretoken: window.CSRF_TOKEN,
+                "row_id":row_id},
+          success: function(resultData){
+
+          }
+    });
+}
+
+$( "#dialog-app-delete" ).dialog({
+    autoOpen: false,
+    buttons: [
+        {text: "Cancel",
+        "class": 'btn btn-success',
+        click: function() {
+            $( "#dialog-app-delete" ).dialog( "close" );
+        }},
+        {text: "Delete",
+         "class":'btn btn-danger',
+         click: function(e) {
+             postDeleteApplication($( "#dialog-app-delete").data('row_id'));
+             $( "#dialog-app-delete" ).dialog( "close" );
+             $('#'+$( "#dialog-app-delete").data('row_id')).remove();}
+        }]
+});

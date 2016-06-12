@@ -84,7 +84,6 @@ class AccountManageView(View):
 
         apps_form = ApplicationForm(request.POST)
 
-        print(request.POST)
 
         if apps_form.is_valid():
             # Add Application to DB
@@ -112,4 +111,12 @@ class DeleteAccountView(View):
     def post(self, request):
         user = User.objects.get(id=self.request.user.id)
         user.delete()
+        return HttpResponse('result')
+
+
+class DeleteApplicationView(View):
+    def post(self, request):
+        application_pk = request.POST.get('row_id')[4:]
+        application = Application.objects.get(id=application_pk)
+        application.delete()
         return HttpResponse('result')

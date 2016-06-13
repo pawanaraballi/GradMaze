@@ -283,15 +283,20 @@ class RegisterFormTestCase(TestCase):
 
 class ApplicationFormTestCase(TestCase):
     def setUp(self):
-        user = User.objects.create_user('foo', password='bar')
-        self.student = Student.objects.create(user=user)
         program = Program.objects.create(name='Computer Science', level='MS')
         school = School.objects.create(name="Test School 1", abbr="TS1")
-        self.school_program = SchoolProgram.objects.create(school=school,program=program)
-        self.application = Application.objects.create(student=self.student,date_submitted='2016-06-29',date_updated='2016-06-29',school_program=self.school_program,status='Pending')
+        school_program = SchoolProgram.objects.create(school=school,program=program)
+
 
     def test_succesful_add_application(self):
-        pass
+        """Test Succesful Application Add"""
+        form = ApplicationForm({'school_program':1,
+                             'status':'Pending',
+                             'date_submitted':'2016-06-29',
+                             'date_updated':'2016-06-29',}
+                            )
+
+        self.assertTrue(form.is_valid())
 
     def test_empty_date_updated(self):
         """Test Unsuccesful Application Add - Empty Date Updated"""

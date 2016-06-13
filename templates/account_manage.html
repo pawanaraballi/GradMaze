@@ -58,6 +58,29 @@
 
 
 
+    {% if curr_prog_form.errors %}
+        <div class="alert alert-danger" role="alert">
+            <p>Error when attempting to add current program!</p>
+        </div>
+    {% endif %}
+
+
+
+    <form method="POST" {% if not curr_prog_form.errors %} style="display:none" {% endif %} id="form-cprog">
+        {% csrf_token %}
+        {% for field in curr_prog_form %}
+            <div class="row">
+                <div class="col-xs-8"> {{ field.label_tag }} {{ field }}</div>
+                <div class="col-xs-4">{{ field.errors }}</div>
+            </div>
+        {% endfor %}
+
+        <button type="submit" name="cprog" class="btn btn-default">Add Current Program</button>
+    </form>
+
+
+
+
 
 
     <h4>Previous Program</h4>
@@ -93,6 +116,27 @@
     </table>
 
 
+    {% if prev_prog_form.errors %}
+        <div class="alert alert-danger" role="alert">
+            <p>Error when attempting to add previous program!</p>
+        </div>
+    {% endif %}
+
+
+
+    <form method="POST" {% if not prev_prog_form.errors %} style="display:none" {% endif %} id="form-pprog">
+        {% csrf_token %}
+        {% for field in prev_prog_form %}
+            <div class="row">
+                <div class="col-xs-8"> {{ field.label_tag }} {{ field }}</div>
+                <div class="col-xs-4">{{ field.errors }}</div>
+            </div>
+        {% endfor %}
+
+        <button type="submit" name="pprog" class="btn btn-default">Add Previous Program</button>
+    </form>
+
+
 
 
     <h4>Test Scores</h4>
@@ -126,6 +170,28 @@
 
 
 
+    {% if gre_form.errors %}
+        <div class="alert alert-danger" role="alert">
+            <p>Error when attempting to add gre score!</p>
+        </div>
+    {% endif %}
+
+
+
+    <form method="POST" {% if not gre_form.errors %} style="display:none" {% endif %} id="form-gre">
+        {% csrf_token %}
+        {% for field in gre_form %}
+            <div class="row">
+                <div class="col-xs-8"> {{ field.label_tag }} {{ field }}</div>
+                <div class="col-xs-4">{{ field.errors }}</div>
+            </div>
+        {% endfor %}
+
+        <button type="submit" name="gre" class="btn btn-default">Add GRE Score</button>
+    </form>
+
+
+
     <h5>TOEFL</h5>
     <table class="table" id="app-table">
         <thead>
@@ -155,6 +221,28 @@
             {% endif %}
         </tbody>
     </table>
+
+
+
+    {% if toefl_form.errors %}
+        <div class="alert alert-danger" role="alert">
+            <p>Error when attempting to add toefl score!</p>
+        </div>
+    {% endif %}
+
+
+
+    <form method="POST" {% if not toefl_form.errors %} style="display:none" {% endif %} id="form-toefl">
+        {% csrf_token %}
+        {% for field in toefl_form %}
+            <div class="row">
+                <div class="col-xs-8"> {{ field.label_tag }} {{ field }}</div>
+                <div class="col-xs-4">{{ field.errors }}</div>
+            </div>
+        {% endfor %}
+
+        <button type="submit" name="toefl" class="btn btn-default">Add TOEFL Score</button>
+    </form>
 
 
 
@@ -219,7 +307,7 @@
             </div>
         {% endfor %}
 
-        <button type="submit" class="btn btn-default">Add Application</button>
+        <button type="submit" name="app" class="btn btn-default">Add Application</button>
     </form>
 
 

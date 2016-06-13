@@ -42,9 +42,11 @@ $( "#opener" ).click(function() {
  * */
 
 // Add jQuery UI Datepicker to datefields
-$( ".datepicker" ).datepicker();
+//$( ".datepicker" ).datepicker();
 
-
+$( ".datepicker").click(function(e){
+    $(e.target).datepicker()
+})
 // On Click to show application form
 $( "#add-app" ).click(function() {
   $( "#form-app" ).show();
@@ -189,3 +191,19 @@ function postDeleteCurrProg(){
           }
     });
 }
+
+$( "#add-cprog" ).click(function() {
+  $( "#form-cprog" ).show();
+});
+
+$( "#add-pprog" ).click(function() {
+  $( "#form-pprog" ).show();
+});
+
+$( "#add-gre" ).click(function() {
+  $( "#form-gre" ).show();
+});
+
+$( "#add-toefl" ).click(function() {
+  $( "#form-toefl" ).show();
+});

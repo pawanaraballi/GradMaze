@@ -358,3 +358,19 @@ class ApplicationFormTestCase(TestCase):
             [u'Enter a valid date.']
         )
 
+
+class CurrentProgramFormTestCase(TestCase):
+    def setUp(self):
+        pass
+
+    def test_invalid_gpa(self):
+        """Test Unsuccesful Previous Program Add - Invalid GPA Format"""
+        pass
+
+class PreviousProgramFormTestCase(TestCase):
+    def setUp(self):
+        pass
+
+    def test_invalid_gpa(self):
+        """Test Unsuccesful Previous Program Add - Invalid GPA Format"""
+        pass

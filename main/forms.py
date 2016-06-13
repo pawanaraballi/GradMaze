@@ -145,3 +145,35 @@ class ApplicationForm(forms.Form):
     date_submitted = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}))
     date_updated = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}))
     status = forms.ChoiceField(choices=Application.STATUSCHOICES)
+
+class CurrentProgramForm(forms.Form):
+    # Form Fields
+    curr_school_program = forms.ModelChoiceField(queryset=SchoolProgram.objects.all().order_by('school'),label='School Program')
+    curr_gpa = forms.FloatField(label='GPA')
+    curr_credit_hours = forms.IntegerField(label='Credit Hours')
+    curr_start_date = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}),label='Start Date')
+    curr_end_date = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}),label='End Date')
+    # TODO GPA Validator
+
+
+class PreviousProgramForm(forms.Form):
+    # Form Fields
+    prev_school_program = forms.ModelChoiceField(queryset=SchoolProgram.objects.all().order_by('school'),label='School Program')
+    prev_gpa = forms.FloatField(label='GPA')
+    prev_credit_hours = forms.IntegerField(label='Credit Hours')
+    prev_start_date = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}),label='Start Date')
+    prev_end_date = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}),label='End Date')
+    # TODO GPA Validator
+
+
+class GREScoreForm(forms.Form):
+    verb = forms.IntegerField(label='Verbal')
+    quant = forms.IntegerField(label='Quantitative')
+    write = forms.IntegerField(label='Writing')
+
+
+class TOEFLScoreForm(forms.Form):
+    reading = forms.IntegerField(label='Reading')
+    listening = forms.IntegerField(label='Listening')
+    writing = forms.IntegerField(label='Writing')
+    speaking = forms.IntegerField(label='Speaking')

@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 
-
 class School(models.Model):
     name = models.CharField(max_length=50)
     abbr = models.CharField(max_length=5, null=True)
@@ -36,13 +35,11 @@ class SchoolProgram(models.Model):
         return str(self.school) + " - " + str(self.program)
 
     def __unicode__(self):
-        return str(self.school) + " - "+ str(self.program)
-
+        return str(self.school) + " - " + str(self.program)
 
 
 class Student(models.Model):
     user = models.ForeignKey(User)
-
 
     def __str__(self):
         return str(self.user.email)
@@ -51,13 +48,11 @@ class Student(models.Model):
         return str(self.user.email)
 
 
-
 class Application(models.Model):
     student = models.ForeignKey(Student)
     date_submitted = models.DateField()
     date_updated = models.DateField()
     school_program = models.ForeignKey(SchoolProgram)
-
 
     STATUSCHOICES = (
         ('Pending', 'Pending'),
@@ -65,5 +60,4 @@ class Application(models.Model):
         ('Denied', 'Denied'),
 
     )
-
     status = models.CharField(max_length=50, choices=STATUSCHOICES)

@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, ApplicationForm
+from models import *
 
 class LoginFormTestCase(TestCase):
     def setUp(self):
@@ -253,7 +254,7 @@ class RegisterFormTestCase(TestCase):
             ["Email Already In Use"]
         )
 
-    def test_email_match(self):
+    def test_email_not_match(self):
         """Test Unsuccesful Registration - Email Does Not Match Confirm Email"""
         form = RegisterForm({'user_name':'foouser1',
                              'password':'barbarbar!1',
@@ -278,3 +279,77 @@ class RegisterFormTestCase(TestCase):
                             )
 
         self.assertTrue(form.is_valid())
+
+
+class ApplicationFormTestCase(TestCase):
+    def setUp(self):
+        user = User.objects.create_user('foo', password='bar')
+        self.student = Student.objects.create(user=user)
+        program = Program.objects.create(name='Computer Science', level='MS')
+        school = School.objects.create(name="Test School 1", abbr="TS1")
+        self.school_program = SchoolProgram.objects.create(school=school,program=program)
+        self.application = Application.objects.create(student=self.student,date_submitted='2016-06-29',date_updated='2016-06-29',school_program=self.school_program,status='Pending')
+
+    def test_succesful_add_application(self):
+        pass
+
+    def test_empty_date_updated(self):
+        """Test Unsuccesful Application Add - Empty Date Updated"""
+        form = ApplicationForm({'school_program':1,
+                             'status':'Pending',
+                             'date_submitted':'2016-06-29',
+                             'date_updated':'',}
+                            )
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('date_updated'),
+            [u'This field is required.']
+        )
+
+    def test_empty_date_submitted(self):
+        """Test Unsuccesful Application Add - Empty Date Submitted"""
+        form = ApplicationForm({'school_program':1,
+                             'status':'Pending',
+                             'date_submitted':'',
+                             'date_updated':'2016-06-29',}
+                            )
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('date_submitted'),
+            [u'This field is required.']
+        )
+
+    def test_empty_school_program(self):
+        """Test Unsuccesful Application Add - Empty School Program"""
+        form = ApplicationForm({'school_program':None,
+                             'status':'Pending',
+                             'date_submitted':'2016-06-29',
+                             'date_updated':'2016-06-29',}
+                            )
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('school_program'),
+            [u'This field is required.']
+        )
+
+    def test_invalid_date_format(self):
+        """Test Unsuccesful Application Add - Invalid Date Format"""
+        form = ApplicationForm({'school_program':1,
+                             'status':'Pending',
+                             'date_submitted':'2016/06/29',
+                             'date_updated':'2016/06/29',}
+                            )
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('date_submitted'),
+            [u'Enter a valid date.']
+        )
+        self.assertEqual(
+            form.errors.get('date_updated'),
+            [u'Enter a valid date.']
+        )
+

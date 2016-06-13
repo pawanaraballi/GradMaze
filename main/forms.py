@@ -52,6 +52,7 @@ class RegisterForm(forms.Form):
         ################
         # Empty Fields #
         ################
+        # TODO Remove all these, the fields built in clean() does this
 
         # Empty Username
         if not self.cleaned_data.get('user_name', False):

@@ -86,3 +86,26 @@ $( "#dialog-app-delete" ).dialog({
              $('#'+$( "#dialog-app-delete").data('row_id')).remove();}
         }]
 });
+
+
+
+$(".modify-app").change(function(e){
+    row_id = $(e.target).parent().parent()[0].id
+    status = e.target.value
+    postModifyApplication(row_id,status)
+})
+
+
+// Post Delete Application
+function postModifyApplication(row_id,status){
+    $.ajax({
+          type: "POST",
+          url: "/GradMaze/accounts/apps/modify/",
+          data:{csrfmiddlewaretoken: window.CSRF_TOKEN,
+                "row_id":row_id,
+                "status":status},
+          success: function(resultData){
+
+          }
+    });
+}

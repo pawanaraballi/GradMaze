@@ -24,7 +24,7 @@
         <thead>
             <th>School Program</th>
             <th>Date Submitted</th>
-            <th>Data Modified</th>
+            <th>Date Modified</th>
             <th>Status</th>
             <th>Delete</th>
         </thead>
@@ -34,7 +34,13 @@
                 <td>{{application.school_program}}</td>
                 <td>{{application.date_submitted}}</td>
                 <td>{{application.date_updated}}</td>
-                <td>{{application.status}}</td>
+                <td>
+                    <select class="modify-app">
+                        <option {% if application.status == "Pending" %}selected="selected"{% endif %}>Pending</option>
+                        <option {% if application.status == "Accepted" %}selected="selected"{% endif %}>Accepted</option>
+                        <option {% if application.status == "Denied" %}selected="selected"{% endif %}>Denied</option>
+                    </select>
+                </td>
                 <td><span class="glyphicon glyphicon-trash remove-app"></span></td>
             </tr>
         {% endfor %}

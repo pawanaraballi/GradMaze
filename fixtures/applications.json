@@ -7,7 +7,7 @@
 			"date_submitted" : "2016-05-12", 
 			"date_updated" : "2016-05-12", 
 			"school_program" : 1,
-			"status" : "pending"
+			"status" : "Pending"
 
 		}
 	},
@@ -19,7 +19,7 @@
 			"date_submitted" : "2016-05-12", 
 			"date_updated" : "2016-05-12", 
 			"school_program" : 2,
-			"status" : "pending"
+			"status" : "Pending"
 
 		}
 	}

@@ -120,3 +120,14 @@ class DeleteApplicationView(View):
         application = Application.objects.get(id=application_pk)
         application.delete()
         return HttpResponse('result')
+
+import datetime
+
+class ModifyApplicationView(View):
+    def post(self, request):
+        application_pk = request.POST.get('row_id')[4:]
+        status = request.POST.get('status')
+        application = Application.objects.filter(id=application_pk)
+        application.update(status=status,date_updated=datetime.datetime.today())
+       # application.delete()
+        return HttpResponse('result')

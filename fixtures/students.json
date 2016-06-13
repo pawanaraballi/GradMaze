@@ -3,35 +3,60 @@
     "model": "main.student",
     "pk": 1,
     "fields": {
-      "user": 1
+      "user": 1,
+      "current_program": 5,
+      "gpa": 3.8,
+      "credit_hours": 120,
+      "start_date": "2016-05-05",
+      "end_date":"2016-05-05"
     }
   },
   {
     "model": "main.student",
     "pk": 2,
     "fields": {
-      "user": 2
+      "user": 2,
+      "current_program": 5,
+      "gpa": 3.8,
+      "credit_hours": 120,
+      "start_date": "2016-05-05",
+      "end_date":"2016-05-05"
     }
   },
   {
     "model": "main.student",
     "pk": 3,
     "fields": {
-      "user": 3
+      "user": 3,
+      "current_program": 6,
+      "gpa": 3.8,
+      "credit_hours": 120,
+      "start_date": "2016-05-05",
+      "end_date":"2016-05-05"
     }
   },
   {
     "model": "main.student",
     "pk": 4,
     "fields": {
-      "user": 4
+      "user": 4,
+      "current_program": 5,
+      "gpa": 3.8,
+      "credit_hours": 120,
+      "start_date": "2016-05-05",
+      "end_date":"2016-05-05"
     }
   },
   {
     "model": "main.student",
     "pk": 5,
     "fields": {
-      "user": 5
+      "user": 5,
+      "current_program": 6,
+      "gpa": 3.8,
+      "credit_hours": 120,
+      "start_date": "2016-05-05",
+      "end_date":"2016-05-05"
     }
   }
 ]

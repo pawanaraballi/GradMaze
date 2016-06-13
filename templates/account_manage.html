@@ -12,14 +12,150 @@
 
 {% block content %}
     <h1 class="page-header">Account Management</h1>
+
+
+
+
     <h3>General Settings</h3>
     <ul>
         <li><a href="#" id="opener">Delete Account</a></li>
     </ul>
-    <h3>Education</h3>
-    <h3>Industry Experience</h3>
-    <h3>Applications</h3>
 
+
+
+    <h3>Education</h3>
+    <h4>Current Program</h4>
+    <table class="table" id="app-table">
+        <thead>
+            <th>School Program</th>
+            <th>GPA</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Credit Hours</th>
+            <th>Delete</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ student.current_program}}</td>
+                <td>{{ student.gpa}}</td>
+                <td>{{ student.start_date}}</td>
+                <td>{{ student.end_date}}</td>
+                <td>{{ student.credit_hours}}</td>
+                <td><span class="glyphicon glyphicon-trash remove-gre"></span></td>
+            </tr>
+            {% if not student.current_program %}
+                 <tr>
+                    <td><span class="glyphicon glyphicon-plus" id="add-app"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+
+
+
+
+    <h4>Previous Programs</h4>
+    <table class="table" id="app-table">
+        <thead>
+            <th>Program</th>
+            <th>School</th>
+            <th>GPA</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Credit Hours</th>
+            <th>Delete</th>
+        </thead>
+        <tbody>
+             <tr>
+                <td><span class="glyphicon glyphicon-plus" id="add-app"></span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4>Test Scores</h4>
+
+    <h5>GRE</h5>
+    <table class="table" id="app-table">
+        <thead>
+            <th>Verbal</th>
+            <th>Quant</th>
+            <th>Writing</th>
+            <th>Delete</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ gre.0.verb }}</td>
+                <td>{{ gre.0.quant }}</td>
+                <td>{{ gre.0.write }}</td>
+                <td><span class="glyphicon glyphicon-trash remove-gre"></span></td>
+            </tr>
+            {% if not gre %}
+                <tr>
+                    <td><span class="glyphicon glyphicon-plus" id="add-gre"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+
+
+    <h5>TOEFL</h5>
+    <table class="table" id="app-table">
+        <thead>
+            <th>Reading</th>
+            <th>Listening</th>
+            <th>Speaking</th>
+            <th>Writing</th>
+            <th>Delete</th>
+        </thead>
+        <tbody>
+            {% if toefl %}
+                <tr>
+                    <td>{{ toefl.0.reading }}</td>
+                    <td>{{ toefl.0.listening }}</td>
+                    <td>{{ toefl.0.speaking }}</td>
+                    <td>{{ toefl.0.writing }}</td>
+                    <td><span class="glyphicon glyphicon-trash remove-gre"></span></td>
+                </tr>
+            {% endif %}
+
+
+            {% if not toefl %}
+                <tr>
+                    <td><span class="glyphicon glyphicon-plus" id="add-gre"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+
+
+    <h3>Industry Experience</h3>
+
+
+
+
+
+
+
+
+    <h3>Applications</h3>
     <table class="table" id="app-table">
         <thead>
             <th>School Program</th>
@@ -100,4 +236,4 @@
     <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
     <script src="{% static 'js/jquery-ui.min.js' %}" ></script>
     <script src="{% static 'js/manage.js' %}" ></script>
-{% endblock %}
+{% endblock %}}

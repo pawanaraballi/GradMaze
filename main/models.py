@@ -38,8 +38,15 @@ class SchoolProgram(models.Model):
         return str(self.school) + " - " + str(self.program)
 
 
+import datetime
+
 class Student(models.Model):
     user = models.ForeignKey(User)
+    current_program = models.ForeignKey(SchoolProgram, null=True)
+    gpa = models.FloatField(default=4.0)
+    credit_hours = models.IntegerField(default=120)
+    start_date = models.DateField(default="2016-05-05")
+    end_date = models.DateField(default="2016-05-05")
 
     def __str__(self):
         return str(self.user.email)
@@ -61,3 +68,19 @@ class Application(models.Model):
 
     )
     status = models.CharField(max_length=50, choices=STATUSCHOICES)
+
+
+from django.core.validators import MaxValueValidator, MinValueValidator
+
+class GREScore(models.Model):
+    student = models.ForeignKey(Student)
+    verb = models.IntegerField(validators=[MinValueValidator(130), MaxValueValidator(170)])
+    quant = models.IntegerField(validators=[MinValueValidator(130), MaxValueValidator(170)])
+    write = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(6)])
+
+class TOEFLScore(models.Model):
+    student = models.ForeignKey(Student)
+    reading = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(30)])
+    listening = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(30)])
+    speaking = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(30)])
+    writing = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(30)])

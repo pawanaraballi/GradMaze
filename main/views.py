@@ -10,7 +10,7 @@ from django.views.generic import View
 
 from django.contrib.auth.models import User
 
-from .models import Application, Student
+from .models import *
 
 from .forms import ApplicationForm
 
@@ -76,7 +76,14 @@ class AccountManageView(View):
 
         # Applications For Logged In User
         applications = Application.objects.filter(student__id=request.user.id)
-        return render(request, self.template_name, {'apps': applications,'apps_form': apps_form})
+
+        #GREScores
+        gre = GREScore.objects.filter(student__id=request.user.id)
+        #TOEFLScores
+        toefl = TOEFLScore.objects.filter(student__id=request.user.id)
+        #Current Program
+        student = Student.objects.get(id=request.user.id)
+        return render(request, self.template_name, {'apps': applications,'apps_form': apps_form,'gre':gre,'toelf':toefl,'student':student})
 
 
 
@@ -99,7 +106,10 @@ class AccountManageView(View):
 
         # Applications For Logged In User
         applications = Application.objects.filter(student__id=request.user.id)
-        return render(request, self.template_name, {'apps': applications,'apps_form': apps_form})
+        gre = GREScore.objects.filter(student__id=request.user.id)
+        toefl = TOEFLScore.objects.filter(student__id=request.user.id)
+
+        return render(request, self.template_name, {'apps': applications,'apps_form': apps_form,'gre':gre,'toelf':toefl})
 
 
 

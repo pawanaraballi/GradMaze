@@ -14,5 +14,21 @@
       "name": "Computer Science",
       "level": "PhD"
     }
+  },
+  {
+    "model": "main.program",
+    "pk": 3,
+    "fields": {
+      "name": "Computer Science",
+      "level": "BS"
+    }
+  },
+  {
+    "model": "main.program",
+    "pk": 4,
+    "fields": {
+      "name": "Computer Science",
+      "level": "BA"
+    }
   }
 ]

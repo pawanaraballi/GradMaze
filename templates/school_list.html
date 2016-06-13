@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>School List</title>
+{% endblock %}
+
+{% block content %}
+
+    <ul>
+        {% for school in object_list %}
+            <li><p>{{ school.name }} <br> {{ school.abbr }}</p></li>
+        {% empty %}
+            <li>No Schools Yet.</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

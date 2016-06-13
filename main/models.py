@@ -19,6 +19,7 @@ class School(models.Model):
 class Program(models.Model):
     name = models.CharField(max_length=50)
     level = models.CharField(max_length=50)  # Masters/PhD/PSM
+    school_level = models.CharField(max_length=50) # Graduate vs Undergraduate
 
     def __str__(self):
         return str(self.level) + " " + str(self.name)
@@ -42,11 +43,16 @@ import datetime
 
 class Student(models.Model):
     user = models.ForeignKey(User)
-    current_program = models.ForeignKey(SchoolProgram, null=True)
-    gpa = models.FloatField(default=4.0)
-    credit_hours = models.IntegerField(default=120)
-    start_date = models.DateField(default="2016-05-05")
-    end_date = models.DateField(default="2016-05-05")
+    current_program = models.ForeignKey(SchoolProgram, null=True,related_name="current_program")
+    current_gpa = models.FloatField(default=4.0,null=True)
+    current_credit_hours = models.IntegerField(default=120,null=True)
+    current_start_date = models.DateField(default="2016-05-05",null=True)
+    current_end_date = models.DateField(default="2016-05-05",null=True)
+    prev_program = models.ForeignKey(SchoolProgram, null=True,related_name="prev_program")
+    prev_gpa = models.FloatField(default=4.0,null=True)
+    prev_credit_hours = models.IntegerField(default=120,null=True)
+    prev_start_date = models.DateField(default="2016-05-05",null=True)
+    prev_end_date = models.DateField(default="2016-05-05",null=True)
 
     def __str__(self):
         return str(self.user.email)

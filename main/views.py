@@ -83,7 +83,7 @@ class AccountManageView(View):
         toefl = TOEFLScore.objects.filter(student__id=request.user.id)
         #Current Program
         student = Student.objects.get(id=request.user.id)
-        return render(request, self.template_name, {'apps': applications,'apps_form': apps_form,'gre':gre,'toelf':toefl,'student':student})
+        return render(request, self.template_name, {'apps': applications,'apps_form': apps_form,'gre':gre,'toefl':toefl,'student':student})
 
 
 
@@ -109,7 +109,7 @@ class AccountManageView(View):
         gre = GREScore.objects.filter(student__id=request.user.id)
         toefl = TOEFLScore.objects.filter(student__id=request.user.id)
 
-        return render(request, self.template_name, {'apps': applications,'apps_form': apps_form,'gre':gre,'toelf':toefl})
+        return render(request, self.template_name, {'apps': applications,'apps_form': apps_form,'gre':gre,'toefl':toefl})
 
 
 
@@ -139,5 +139,28 @@ class ModifyApplicationView(View):
         status = request.POST.get('status')
         application = Application.objects.filter(id=application_pk)
         application.update(status=status,date_updated=datetime.datetime.today())
-       # application.delete()
+        return HttpResponse('result')
+
+class DeleteGREScoreView(View):
+    def post(self, request):
+        gre = GREScore.objects.filter(student__id=request.user.id)
+        gre.delete()
+        return HttpResponse('result')
+
+class DeleteTOEFLScoreView(View):
+    def post(self, request):
+        toefl = TOEFLScore.objects.filter(student__id=request.user.id)
+        toefl.delete()
+        return HttpResponse('result')
+
+class DeletePrevProgramView(View):
+    def post(self, request):
+        student = Student.objects.filter(id=request.user.id)
+        student.update(prev_program=None,prev_gpa=None,prev_credit_hours=None,prev_start_date=None,prev_end_date=None)
+        return HttpResponse('result')
+
+class DeleteCurrProgramView(View):
+    def post(self, request):
+        student = Student.objects.filter(id=request.user.id)
+        student.update(current_program=None,current_gpa=None,current_credit_hours=None,current_start_date=None,current_end_date=None)
         return HttpResponse('result')

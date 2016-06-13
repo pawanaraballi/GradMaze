@@ -96,7 +96,7 @@ $(".modify-app").change(function(e){
 })
 
 
-// Post Delete Application
+// Post Modify Application
 function postModifyApplication(row_id,status){
     $.ajax({
           type: "POST",
@@ -106,6 +106,86 @@ function postModifyApplication(row_id,status){
                 "status":status},
           success: function(resultData){
 
+          }
+    });
+}
+
+
+/**
+ *
+ * Education Records
+ *
+ * */
+
+$("#delete-gre").click(function(e){
+    postDeleteGREScore()
+})
+
+
+// Post Delete GREScore
+function postDeleteGREScore(){
+    $.ajax({
+          type: "POST",
+          url: "/GradMaze/accounts/grescore/delete/",
+          data:{csrfmiddlewaretoken: window.CSRF_TOKEN},
+          success: function(resultData){
+                window.location.href = 'http://127.0.0.1:8000/GradMaze/accounts/manage/';
+          }
+    });
+}
+
+
+
+$("#delete-toefl").click(function(e){
+    postDeleteTOEFLScore()
+})
+
+
+// Post Delete GREScore
+function postDeleteTOEFLScore(){
+    $.ajax({
+          type: "POST",
+          url: "/GradMaze/accounts/toeflscore/delete/",
+          data:{csrfmiddlewaretoken: window.CSRF_TOKEN},
+          success: function(resultData){
+                window.location.href = 'http://127.0.0.1:8000/GradMaze/accounts/manage/';
+          }
+    });
+}
+
+
+$("#delete-pprog").click(function(e){
+    postDeletePrevProg()
+})
+
+
+// Post Delete GREScore
+function postDeletePrevProg(){
+    $.ajax({
+          type: "POST",
+          url: "/GradMaze/accounts/prevprogram/delete/",
+          data:{csrfmiddlewaretoken: window.CSRF_TOKEN},
+          success: function(resultData){
+                window.location.href = 'http://127.0.0.1:8000/GradMaze/accounts/manage/';
+          }
+    });
+}
+
+
+$("#delete-cprog").click(function(e){
+    console.log("test")
+    postDeleteCurrProg()
+})
+
+
+// Post Delete GREScore
+function postDeleteCurrProg(){
+    $.ajax({
+          type: "POST",
+          url: "/GradMaze/accounts/currprogram/delete/",
+          data:{csrfmiddlewaretoken: window.CSRF_TOKEN},
+          success: function(resultData){
+                window.location.href = 'http://127.0.0.1:8000/GradMaze/accounts/manage/';
           }
     });
 }

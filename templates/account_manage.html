@@ -35,17 +35,18 @@
             <th>Delete</th>
         </thead>
         <tbody>
-            <tr>
-                <td>{{ student.current_program}}</td>
-                <td>{{ student.gpa}}</td>
-                <td>{{ student.start_date}}</td>
-                <td>{{ student.end_date}}</td>
-                <td>{{ student.credit_hours}}</td>
-                <td><span class="glyphicon glyphicon-trash remove-gre"></span></td>
-            </tr>
-            {% if not student.current_program %}
+            {% if student.current_program %}
+                <tr>
+                    <td>{{ student.current_program}}</td>
+                    <td>{{ student.current_gpa}}</td>
+                    <td>{{ student.current_start_date}}</td>
+                    <td>{{ student.current_end_date}}</td>
+                    <td>{{ student.current_credit_hours}}</td>
+                    <td><span class="glyphicon glyphicon-trash" id="delete-cprog"></span></td>
+                </tr>
+            {% else %}
                  <tr>
-                    <td><span class="glyphicon glyphicon-plus" id="add-app"></span></td>
+                    <td><span class="glyphicon glyphicon-plus" id="add-cprog"></span></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -59,11 +60,10 @@
 
 
 
-    <h4>Previous Programs</h4>
+    <h4>Previous Program</h4>
     <table class="table" id="app-table">
         <thead>
-            <th>Program</th>
-            <th>School</th>
+            <th>School Program</th>
             <th>GPA</th>
             <th>Start Date</th>
             <th>End Date</th>
@@ -71,15 +71,29 @@
             <th>Delete</th>
         </thead>
         <tbody>
-             <tr>
-                <td><span class="glyphicon glyphicon-plus" id="add-app"></span></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
+            {% if student.prev_program %}
+                <tr>
+                    <td>{{ student.prev_program}}</td>
+                    <td>{{ student.prev_gpa}}</td>
+                    <td>{{ student.prev_start_date}}</td>
+                    <td>{{ student.prev_end_date}}</td>
+                    <td>{{ student.prev_credit_hours}}</td>
+                    <td><span class="glyphicon glyphicon-trash" id="delete-pprog"></span></td>
+                </tr>
+            {% else %}
+                 <tr>
+                    <td><span class="glyphicon glyphicon-plus" id="add-pprog"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endif %}
         </tbody>
     </table>
+
+
+
 
     <h4>Test Scores</h4>
 
@@ -92,13 +106,14 @@
             <th>Delete</th>
         </thead>
         <tbody>
-            <tr>
-                <td>{{ gre.0.verb }}</td>
-                <td>{{ gre.0.quant }}</td>
-                <td>{{ gre.0.write }}</td>
-                <td><span class="glyphicon glyphicon-trash remove-gre"></span></td>
-            </tr>
-            {% if not gre %}
+            {% if gre %}
+                <tr>
+                    <td>{{ gre.0.verb }}</td>
+                    <td>{{ gre.0.quant }}</td>
+                    <td>{{ gre.0.write }}</td>
+                    <td><span class="glyphicon glyphicon-trash" id="delete-gre"></span></td>
+                </tr>
+            {% else %}
                 <tr>
                     <td><span class="glyphicon glyphicon-plus" id="add-gre"></span></td>
                     <td></td>
@@ -127,14 +142,11 @@
                     <td>{{ toefl.0.listening }}</td>
                     <td>{{ toefl.0.speaking }}</td>
                     <td>{{ toefl.0.writing }}</td>
-                    <td><span class="glyphicon glyphicon-trash remove-gre"></span></td>
+                    <td><span class="glyphicon glyphicon-trash" id="delete-toefl"></span></td>
                 </tr>
-            {% endif %}
-
-
-            {% if not toefl %}
+            {% else %}
                 <tr>
-                    <td><span class="glyphicon glyphicon-plus" id="add-gre"></span></td>
+                    <td><span class="glyphicon glyphicon-plus" id="add-toefl"></span></td>
                     <td></td>
                     <td></td>
                     <td></td>

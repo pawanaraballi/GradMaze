@@ -243,10 +243,6 @@ $("#delete-pprog").click(function(e){
 })
 
 
-
-
-
-
 // Post Delete Current Program
 function postDeleteCurrProg(){
     $.ajax({

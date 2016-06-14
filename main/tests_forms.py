@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from .forms import LoginForm, RegisterForm, ApplicationForm
+from .forms import *
 from models import *
 
 class LoginFormTestCase(TestCase):
@@ -360,17 +360,160 @@ class ApplicationFormTestCase(TestCase):
 
 
 class CurrentProgramFormTestCase(TestCase):
-    def setUp(self):
-        pass
-
     def test_invalid_gpa(self):
-        """Test Unsuccesful Previous Program Add - Invalid GPA Format"""
-        pass
+        """Test Unsuccesful Current Program Add - Invalid GPA Format"""
+        form = CurrentProgramForm({'curr_school_program':1,
+                             'curr_gpa':-1,
+                             'curr_credit_hours':1,
+                             'curr_start_date':'2016-05-05',
+                             'curr_end_date':'2016-05-05'}
+                            )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('curr_gpa'),
+            [u'GPA Must Be 0 or Above']
+        )
+
+        form = CurrentProgramForm({'curr_school_program':1,
+                             'curr_gpa':5.8,
+                             'curr_credit_hours':1,
+                             'curr_start_date':'2016-05-05',
+                             'curr_end_date':'2016-05-05'}
+                            )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('curr_gpa'),
+            [u'GPA Must Be 4 or Below']
+        )
+
+
+    def test_invalid_credit_hours(self):
+        """Test Unsuccesful Current Program Add - Negative Credit Hours"""
+        form = CurrentProgramForm({'curr_school_program':1,
+                             'curr_gpa':3.8,
+                             'curr_credit_hours':-1,
+                             'curr_start_date':'2016-05-05',
+                             'curr_end_date':'2016-05-05'}
+                            )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('curr_credit_hours'),
+            [u'Credit Hours Must Be Positive']
+        )
 
 class PreviousProgramFormTestCase(TestCase):
+    def test_invalid_gpa(self):
+        """Test Unsuccesful Previous Program Add - Invalid GPA Format"""
+        form = PreviousProgramForm({'prev_school_program':1,
+                             'prev_gpa':-1,
+                             'prev_credit_hours':1,
+                             'prev_start_date':'2016-05-05',
+                             'prev_end_date':'2016-05-05'}
+                            )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('prev_gpa'),
+            [u'GPA Must Be 0 or Above']
+        )
+
+        form = PreviousProgramForm({'curr_school_program':1,
+                             'prev_gpa':5.8,
+                             'prev_credit_hours':1,
+                             'prev_start_date':'2016-05-05',
+                             'prev_end_date':'2016-05-05'}
+                            )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('prev_gpa'),
+            [u'GPA Must Be 4 or Below']
+        )
+
+    def test_invalid_credit_hours(self):
+        """Test Unsuccesful Previous Program Add - Negative Credit Hours"""
+        form = PreviousProgramForm({'prev_school_program':1,
+                             'prev_gpa':3.8,
+                             'prev_credit_hours':-1,
+                             'prev_start_date':'2016-05-05',
+                             'prev_end_date':'2016-05-05'}
+                            )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('prev_credit_hours'),
+            [u'Credit Hours Must Be Positive']
+        )
+
+
+class GREScoreFormTestCase(TestCase):
+
+    def test_invalid_score_0(self):
+        """Test Unsuccesful GRE Score Add - Invalid Quant/Verb Score"""
+        form = GREScoreForm({'verb':-1,
+                             'quant':1,
+                             'write':1,}
+                            )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('verb'),
+            [u'Score Must Be 0 or Above']
+        )
+
+        form = GREScoreForm({'verb':180,
+                             'quant':1,
+                             'write':1,}
+                            )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('verb'),
+            [u'Score Must Be 170 or Below']
+        )
+
+    def test_invalid_score_1(self):
+        """Test Unsuccesful GRE Score Add - Invalid Writing Score"""
+        form = GREScoreForm({'verb':1,
+                             'quant':1,
+                             'write':-1,}
+                            )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('write'),
+            [u'Score Must Be 0 or Above']
+        )
+
+        form = GREScoreForm({'verb':1,
+                             'quant':1,
+                             'write':9,}
+                            )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('write'),
+            [u'Score Must Be 6 or Below']
+        )
+
+class TOEFLScoreFormTestCase(TestCase):
     def setUp(self):
         pass
 
-    def test_invalid_gpa(self):
-        """Test Unsuccesful Previous Program Add - Invalid GPA Format"""
-        pass
+    def test_invalid_score(self):
+        """Test Unsuccesful TOEFL Score Add - Invalid Score"""
+        form = TOEFLScoreForm({'writing':-1,
+                             'listening':1,
+                             'speaking':1,
+                             'reading':1}
+                            )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('writing'),
+            [u'Score Must Be 0 or Above']
+        )
+
+
+        form = TOEFLScoreForm({'writing':40,
+                             'listening':1,
+                             'speaking':1,
+                             'reading':1}
+                            )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('writing'),
+            [u'Score Must Be 30 or Below']
+        )

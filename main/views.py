@@ -291,3 +291,38 @@ class DeleteIndustExprView(View):
         expr = IndustryExperience.objects.get(id=expr_pk)
         expr.delete()
         return HttpResponse('result')
+
+from django.views.generic.list import ListView
+class SchoolListView(ListView):
+    model = School
+    template_name = 'school_list.html'
+
+
+class ProgramListView(ListView):
+    model = Program
+    template_name = 'program_list.html'
+
+
+class SchoolProgramListView(ListView):
+    model = SchoolProgram
+    template_name = 'school_program_list.html'
+
+
+class DetailSchoolListView(ListView):
+    model = School
+    template_name = 'detail_school_list.html'
+
+
+class DetailProgramListView(ListView):
+    model = Program
+    template_name = 'detail_program_list.html'
+
+from django.views.generic import DetailView
+class DetailSchoolFromSP(DetailView):
+    model = School
+    template_name = 'school_ancher_list.html'
+
+
+class DetailProgramFromSP(DetailView):
+    model = Program
+    template_name = 'program_ancher_list.html'

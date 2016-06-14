@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Program List</title>
+{% endblock %}
+
+{% block content %}
+
+
+  <div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Program</th>
+        <th>Level</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for program in object_list %}
+      <tr>
+        <td><a href="{{program.id}}">{{ program.name }}</a></td>
+        <td>{{ program.level }}</td>
+      </tr>
+      {% empty %}
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+
+{% endblock %}

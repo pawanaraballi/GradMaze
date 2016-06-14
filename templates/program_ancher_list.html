@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Program List</title>
+{% endblock %}
+
+{% block content %}
+
+
+  <div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Program</th>
+        <th>Level</th>
+        <th>GRE Verbal</th>
+        <th>GRE Aptitude</th>
+        <th>GRE Writing</th>
+        <th>TOEFL</th>
+        <th>GPA</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ program.name }}</td>
+        <td>{{ program.level }}</td>
+        <td>{{ program.greverbal }}</td>
+        <td>{{ program.greapti }}</td>
+        <td>{{ program.grewriting }}</td>
+        <td>{{ program.toefl }}</td>
+        <td>{{ program.gpa }}</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+{% endblock %}

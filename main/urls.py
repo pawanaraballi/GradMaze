@@ -17,4 +17,11 @@ urlpatterns = [
     url(r'^accounts/prevprogram/delete/$', views.DeletePrevProgramView.as_view(), name='delete-pprog'),
     url(r'^accounts/currprogram/delete/$', views.DeleteCurrProgramView.as_view(), name='delete-cprog'),
     url(r'^accounts/experience/delete/$', views.DeleteIndustExprView.as_view(), name='delete-indust'),
+    url(r'^schools/$', views.SchoolListView.as_view(), name='school-list'),
+    url(r'^programs/$', views.ProgramListView.as_view(), name='program-list'),
+    url(r'^schoolprogram/$', views.SchoolProgramListView.as_view(), name='school-program-list'),
+    url(r'^programs/(?P<pk>\d+)$', views.DetailProgramFromSP.as_view(), name='program-ancher-list'),
+    url(r'^schools/(?P<pk>\d+)$', views.DetailSchoolFromSP.as_view(), name='school-ancher-list'),
+    url(r'^detailschool/$', views.DetailSchoolListView.as_view(), name='detail-school-list'),
+    url(r'^detailprogram/$', views.DetailProgramListView.as_view(), name='detail-program-list'),
 ]

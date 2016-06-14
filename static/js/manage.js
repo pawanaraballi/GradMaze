@@ -275,3 +275,51 @@ $( "#dialog-cprog-delete" ).dialog({
 $("#delete-cprog").click(function(e){
     $( "#dialog-cprog-delete" ).dialog( "open" );
 })
+
+
+
+/**
+ *
+ * Industry Experience
+ *
+ * */
+
+$( "#add-indust" ).click(function() {
+  $( "#form-indust" ).show();
+});
+
+// Post Delete Industry Experience
+function postDeleteIndust(row_id){
+    $.ajax({
+          type: "POST",
+          url: "/GradMaze/accounts/experience/delete/",
+          data:{csrfmiddlewaretoken: window.CSRF_TOKEN,
+                "row_id":row_id,},
+          success: function(resultData){
+                window.location.href = 'http://127.0.0.1:8000/GradMaze/accounts/manage/';
+          }
+    });
+}
+
+$( "#dialog-indust-delete" ).dialog({
+    autoOpen: false,
+    buttons: [
+        {text: "Cancel",
+        "class": 'btn btn-success',
+        click: function() {
+            $( "#dialog-cprog-delete" ).dialog( "close" );
+        }},
+        {text: "Delete",
+         "class":'btn btn-danger',
+         click: function(e) {
+             postDeleteIndust($( "#dialog-indust-delete").data('row_id'))
+             $( "#dialog-app-delete" ).dialog( "close" );
+         }
+        }]
+});
+
+
+$("#delete-indust").click(function(e){
+    $( "#dialog-indust-delete").data('row_id',$(e.target).parent().parent()[0].id)
+    $( "#dialog-indust-delete" ).dialog( "open" );
+})

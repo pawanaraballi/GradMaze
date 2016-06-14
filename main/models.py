@@ -90,3 +90,11 @@ class TOEFLScore(models.Model):
     listening = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(30)])
     speaking = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(30)])
     writing = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(30)])
+
+
+class IndustryExperience(models.Model):
+    student = models.ForeignKey(Student)
+    company = models.CharField(max_length=50)
+    position = models.CharField(max_length=50)
+    start_date = models.DateField(default="2016-05-05",null=True)
+    end_date = models.DateField(default="2016-05-05",null=True)

@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'^accounts/toeflscore/delete/$', views.DeleteTOEFLScoreView.as_view(), name='delete-toefl'),
     url(r'^accounts/prevprogram/delete/$', views.DeletePrevProgramView.as_view(), name='delete-pprog'),
     url(r'^accounts/currprogram/delete/$', views.DeleteCurrProgramView.as_view(), name='delete-cprog'),
+    url(r'^accounts/experience/delete/$', views.DeleteIndustExprView.as_view(), name='delete-indust'),
 ]

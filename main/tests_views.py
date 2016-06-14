@@ -231,6 +231,24 @@ class DeleteCurrProgramViewTestCase(TestCase):
         request = c.get('/GradMaze/accounts/currprogram/delete/', follow=True)
         self.assertEqual(request.status_code, 405)
 
+class DeleteIndustExprViewTestCase(TestCase):
+    def setUp(self):
+        user = User.objects.create_user('foo', password='bar')
+        self.student = Student.objects.create(user=user)
+        self.expr = IndustryExperience.objects.create(student=self.student,company="l",position="g",start_date="2016-05-05",end_date="2016-05-05")
+
+    def test_post_delete_indust(self):
+        """Test POST of Delete Current Program"""
+        c = Client()
+        c.login(username='foo', password='bar')
+        request = c.post('/GradMaze/accounts/experience/delete/',{'row_id': 'indust-'+str(self.expr.id)} ,follow=True)
+        self.assertNotEqual(self.expr,IndustryExperience.objects.filter(id=self.expr.id))
+
+    def test_get_delete_pprog(self):
+        """Test GET of Delete Current Program"""
+        c = Client()
+        request = c.get('/GradMaze/accounts/experience/delete/', follow=True)
+        self.assertEqual(request.status_code, 405)
 
 
 

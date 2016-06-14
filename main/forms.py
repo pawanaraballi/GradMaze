@@ -241,3 +241,10 @@ class TOEFLScoreForm(forms.Form):
             raise ValidationError({'speaking': ["Score Must Be 30 or Below",]})
         if(speaking < 0):
             raise ValidationError({'speaking': ["Score Must Be 0 or Above",]})
+
+
+class IndustryExperienceForm(forms.Form):
+    company = forms.CharField(label='Company')
+    position = forms.CharField(label='Position')
+    start_date = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}),label='Start Date')
+    end_date = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}),label='End Date')

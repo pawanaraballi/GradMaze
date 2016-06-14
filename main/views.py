@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 
 from .models import *
 
-from .forms import ApplicationForm, CurrentProgramForm, PreviousProgramForm, GREScoreForm, TOEFLScoreForm
+from .forms import *
 
 # Create your views here.
 
@@ -77,6 +77,7 @@ class AccountManageView(View):
         prev_prog_form = PreviousProgramForm()
         gre_form = GREScoreForm()
         toefl_form = TOEFLScoreForm()
+        indust_form = IndustryExperienceForm()
 
         # Applications For Logged In User
         applications = Application.objects.filter(student__id=request.user.id)
@@ -88,6 +89,8 @@ class AccountManageView(View):
         #Current Program
         student = Student.objects.get(id=request.user.id)
 
+        indust = IndustryExperience.objects.filter(student__id=request.user.id)
+
 
         params = {'apps': applications,
                   'apps_form': apps_form,
@@ -97,7 +100,9 @@ class AccountManageView(View):
                   'curr_prog_form': curr_prog_form,
                   'prev_prog_form':prev_prog_form,
                   'gre_form':gre_form,
-                  'toefl_form':toefl_form,}
+                  'toefl_form':toefl_form,
+                  'indust_form':indust_form,
+                  'indust':indust}
         return render(request, self.template_name,params )
 
 
@@ -187,12 +192,29 @@ class AccountManageView(View):
             toefl_form = TOEFLScoreForm()
 
 
+        if('indust' in request.POST):
+            indust_form = IndustryExperienceForm(request.POST)
+            if indust_form.is_valid():
+                student = Student.objects.get(id=request.user.id)
+                expr = IndustryExperience.objects.create(student=student,
+                                                  company=indust_form.cleaned_data['company'],
+                                                  position=indust_form.cleaned_data['position'],
+                                                  start_date=indust_form.cleaned_data['start_date'],
+                                                  end_date=indust_form.cleaned_data['end_date'])
+                expr.save()
+                return HttpResponseRedirect("/GradMaze/accounts/manage/")
+        else:
+            indust_form = IndustryExperienceForm()
+
+
 
         # Applications For Logged In User
         applications = Application.objects.filter(student__id=request.user.id)
         gre = GREScore.objects.filter(student__id=request.user.id)
         toefl = TOEFLScore.objects.filter(student__id=request.user.id)
         student = Student.objects.get(id=request.user.id)
+        indust = IndustryExperience.objects.filter(student__id=request.user.id)
+
 
         params = {'apps': applications,
                   'apps_form': apps_form,
@@ -202,7 +224,9 @@ class AccountManageView(View):
                   'curr_prog_form': curr_prog_form,
                   'prev_prog_form':prev_prog_form,
                   'gre_form':gre_form,
-                  'toefl_form':toefl_form,}
+                  'toefl_form':toefl_form,
+                  'indust_form':indust_form,
+                  'indust':indust}
 
         return render(request, self.template_name, params)
 
@@ -258,4 +282,12 @@ class DeleteCurrProgramView(View):
     def post(self, request):
         student = Student.objects.filter(id=request.user.id)
         student.update(current_program=None,current_gpa=None,current_credit_hours=None,current_start_date=None,current_end_date=None)
+        return HttpResponse('result')
+
+class DeleteIndustExprView(View):
+    def post(self, request):
+        expr_pk = request.POST.get('row_id')[7:]
+        print(expr_pk)
+        expr = IndustryExperience.objects.get(id=expr_pk)
+        expr.delete()
         return HttpResponse('result')

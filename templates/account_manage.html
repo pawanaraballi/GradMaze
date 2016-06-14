@@ -245,8 +245,57 @@
     </form>
 
 
-
     <h3>Industry Experience</h3>
+    <table class="table" id="indust-table">
+        <thead>
+            <th>Company</th>
+            <th>Position</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Delete</th>
+        </thead>
+        <tbody>
+            {% for experience in indust %}
+                <tr id="indust-{{experience.id}}">
+                    <td>{{experience.company}}</td>
+                    <td>{{experience.position}}</td>
+                    <td>{{experience.start_date}}</td>
+                    <td>{{experience.end_date}}</td>
+                    <td><span class="glyphicon glyphicon-trash"id=" delete-indust"></span></td>
+                </tr>
+            {% endfor %}
+
+            <tr>
+                <td><span class="glyphicon glyphicon-plus" id="add-indust"></span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+    {% if  indust_form.errors %}
+        <div class="alert alert-danger" role="alert">
+            <p>Error when attempting to add industry experience!</p>
+        </div>
+    {% endif %}
+
+
+
+    <form method="POST" {% if not indust_form.errors %} style="display:none" {% endif %} id="form-indust">
+        {% csrf_token %}
+        {% for field in indust_form %}
+            <div class="row">
+                <div class="col-xs-8"> {{ field.label_tag }} {{ field }}</div>
+                <div class="col-xs-4">{{ field.errors }}</div>
+            </div>
+        {% endfor %}
+
+        <button type="submit" name="indust" class="btn btn-default">Add Inndustry Experience</button>
+    </form>
 
 
 
@@ -343,6 +392,11 @@
     </div>
 
     <div id="dialog-pprog-delete" title="Are you sure?">
+        Are you sure you want to delete your previous program?
+
+    </div>
+
+    <div id="dialog-indust-delete" title="Are you sure?">
         Are you sure you want to delete your previous program?
 
     </div>

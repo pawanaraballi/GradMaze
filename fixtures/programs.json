@@ -5,7 +5,12 @@
     "fields": {
       "name": "Computer Science",
       "level": "MS",
-      "school_level":"Graduate"
+      "school_level":"Graduate",
+      "greverbal" : "155",
+      "greapti" : "155",
+      "grewriting" : "3.5",
+      "toefl" : "102",
+      "gpa" : "4"
     }
   },
   {
@@ -14,7 +19,12 @@
     "fields": {
       "name": "Computer Science",
       "level": "PhD",
-      "school_level":"Graduate"
+      "school_level":"Graduate",
+      "greverbal" : "155",
+      "greapti" : "155",
+      "grewriting" : "3.5",
+      "toefl" : "102",
+      "gpa" : "4"
     }
   },
   {

@@ -8,6 +8,11 @@ from django.contrib.auth.models import User
 class School(models.Model):
     name = models.CharField(max_length=50)
     abbr = models.CharField(max_length=5, null=True)
+    greverbal = models.CharField(max_length=5, null=True)
+    greapti = models.CharField(max_length=5, null=True)
+    grewriting = models.CharField(max_length=5, null=True)
+    toefl = models.CharField(max_length=5, null=True)
+    gpa = models.CharField(max_length=5, null=True)
 
     def __str__(self):
         return str(self.name)
@@ -20,6 +25,11 @@ class Program(models.Model):
     name = models.CharField(max_length=50)
     level = models.CharField(max_length=50)  # Masters/PhD/PSM
     school_level = models.CharField(max_length=50) # Graduate vs Undergraduate
+    greverbal = models.CharField(max_length=5, null=True)
+    greapti = models.CharField(max_length=5, null=True)
+    grewriting = models.CharField(max_length=5, null=True)
+    toefl = models.CharField(max_length=5, null=True)
+    gpa = models.CharField(max_length=5, null=True)
 
     def __str__(self):
         return str(self.level) + " " + str(self.name)

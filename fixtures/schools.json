@@ -4,7 +4,12 @@
     "pk": 1,
     "fields": {
       "name": "University of North Carolina at Charlotte",
-      "abbr": "UNCC"
+      "abbr": "UNCC",
+      "greverbal" : "165",
+      "greapti" : "165",
+      "grewriting" : "3",
+      "toefl" : "112",
+      "gpa" : "3.5"
     }
   },
   {
@@ -12,7 +17,12 @@
     "pk": 2,
     "fields": {
       "name": "University of North Carolina at Chapel Hill",
-      "abbr": "UNC"
+      "abbr": "UNC",
+      "greverbal" : "155",
+      "greapti" : "155",
+      "grewriting" : "3.5",
+      "toefl" : "102",
+      "gpa" : "4"
     }
   }
 ]

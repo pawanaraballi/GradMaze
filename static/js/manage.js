@@ -42,9 +42,11 @@ $( "#opener" ).click(function() {
  * */
 
 // Add jQuery UI Datepicker to datefields
-$( ".datepicker" ).datepicker();
+//$( ".datepicker" ).datepicker();
 
-
+$( ".datepicker").click(function(e){
+    $(e.target).datepicker()
+})
 // On Click to show application form
 $( "#add-app" ).click(function() {
   $( "#form-app" ).show();
@@ -96,7 +98,7 @@ $(".modify-app").change(function(e){
 })
 
 
-// Post Delete Application
+// Post Modify Application
 function postModifyApplication(row_id,status){
     $.ajax({
           type: "POST",
@@ -109,3 +111,167 @@ function postModifyApplication(row_id,status){
           }
     });
 }
+
+
+/**
+ *
+ * Education Records
+ *
+ * */
+
+
+// Plus Button onClicks
+
+$( "#add-cprog" ).click(function() {
+  $( "#form-cprog" ).show();
+});
+
+$( "#add-pprog" ).click(function() {
+  $( "#form-pprog" ).show();
+});
+
+$( "#add-gre" ).click(function() {
+  $( "#form-gre" ).show();
+});
+
+$( "#add-toefl" ).click(function() {
+  $( "#form-toefl" ).show();
+});
+
+
+// Form Controls and Dialogs
+
+// Post Delete GREScore
+function postDeleteGREScore(){
+    $.ajax({
+          type: "POST",
+          url: "/GradMaze/accounts/grescore/delete/",
+          data:{csrfmiddlewaretoken: window.CSRF_TOKEN},
+          success: function(resultData){
+                window.location.href = 'http://127.0.0.1:8000/GradMaze/accounts/manage/';
+          }
+    });
+}
+
+$( "#dialog-gre-delete" ).dialog({
+    autoOpen: false,
+    buttons: [
+        {text: "Cancel",
+        "class": 'btn btn-success',
+        click: function() {
+            $( "#dialog-gre-delete" ).dialog( "close" );
+        }},
+        {text: "Delete",
+         "class":'btn btn-danger',
+         click: function(e) {
+             postDeleteGREScore()
+         }
+        }]
+});
+
+$("#delete-gre").click(function(e){
+    $( "#dialog-gre-delete" ).dialog( "open" );
+
+})
+
+
+// Post Delete TOEFLScore
+function postDeleteTOEFLScore(){
+    $.ajax({
+          type: "POST",
+          url: "/GradMaze/accounts/toeflscore/delete/",
+          data:{csrfmiddlewaretoken: window.CSRF_TOKEN},
+          success: function(resultData){
+                window.location.href = 'http://127.0.0.1:8000/GradMaze/accounts/manage/';
+          }
+    });
+}
+
+$( "#dialog-toefl-delete" ).dialog({
+    autoOpen: false,
+    buttons: [
+        {text: "Cancel",
+        "class": 'btn btn-success',
+        click: function() {
+            $( "#dialog-toefl-delete" ).dialog( "close" );
+        }},
+        {text: "Delete",
+         "class":'btn btn-danger',
+         click: function(e) {
+             postDeleteTOEFLScore()
+         }
+        }]
+});
+
+$("#delete-toefl").click(function(e){
+    $( "#dialog-toefl-delete" ).dialog( "open" );
+
+})
+
+
+// Post Delete Previous Program
+function postDeletePrevProg(){
+    $.ajax({
+          type: "POST",
+          url: "/GradMaze/accounts/prevprogram/delete/",
+          data:{csrfmiddlewaretoken: window.CSRF_TOKEN},
+          success: function(resultData){
+                window.location.href = 'http://127.0.0.1:8000/GradMaze/accounts/manage/';
+          }
+    });
+}
+
+$( "#dialog-pprog-delete" ).dialog({
+    autoOpen: false,
+    buttons: [
+        {text: "Cancel",
+        "class": 'btn btn-success',
+        click: function() {
+            $( "#dialog-pprog-delete" ).dialog( "close" );
+        }},
+        {text: "Delete",
+         "class":'btn btn-danger',
+         click: function(e) {
+             postDeletePrevProg()
+         }
+        }]
+});
+
+
+$("#delete-pprog").click(function(e){
+    $( "#dialog-pprog-delete" ).dialog( "open" );
+})
+
+
+// Post Delete Current Program
+function postDeleteCurrProg(){
+    $.ajax({
+          type: "POST",
+          url: "/GradMaze/accounts/currprogram/delete/",
+          data:{csrfmiddlewaretoken: window.CSRF_TOKEN},
+          success: function(resultData){
+                window.location.href = 'http://127.0.0.1:8000/GradMaze/accounts/manage/';
+          }
+    });
+}
+
+$( "#dialog-cprog-delete" ).dialog({
+    autoOpen: false,
+    buttons: [
+        {text: "Cancel",
+        "class": 'btn btn-success',
+        click: function() {
+            $( "#dialog-cprog-delete" ).dialog( "close" );
+        }},
+        {text: "Delete",
+         "class":'btn btn-danger',
+         click: function(e) {
+             postDeleteCurrProg()
+         }
+        }]
+});
+
+
+$("#delete-cprog").click(function(e){
+    $( "#dialog-cprog-delete" ).dialog( "open" );
+})

@@ -12,14 +12,250 @@
 
 {% block content %}
     <h1 class="page-header">Account Management</h1>
+
+
+
+
     <h3>General Settings</h3>
     <ul>
         <li><a href="#" id="opener">Delete Account</a></li>
     </ul>
-    <h3>Education</h3>
-    <h3>Industry Experience</h3>
-    <h3>Applications</h3>
 
+
+
+    <h3>Education</h3>
+    <h4>Current Program</h4>
+    <table class="table" id="app-table">
+        <thead>
+            <th>School Program</th>
+            <th>GPA</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Credit Hours</th>
+            <th>Delete</th>
+        </thead>
+        <tbody>
+            {% if student.current_program %}
+                <tr>
+                    <td>{{ student.current_program}}</td>
+                    <td>{{ student.current_gpa}}</td>
+                    <td>{{ student.current_start_date}}</td>
+                    <td>{{ student.current_end_date}}</td>
+                    <td>{{ student.current_credit_hours}}</td>
+                    <td><span class="glyphicon glyphicon-trash" id="delete-cprog"></span></td>
+                </tr>
+            {% else %}
+                 <tr>
+                    <td><span class="glyphicon glyphicon-plus" id="add-cprog"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+
+
+    {% if curr_prog_form.errors %}
+        <div class="alert alert-danger" role="alert">
+            <p>Error when attempting to add current program!</p>
+        </div>
+    {% endif %}
+
+
+
+    <form method="POST" {% if not curr_prog_form.errors %} style="display:none" {% endif %} id="form-cprog">
+        {% csrf_token %}
+        {% for field in curr_prog_form %}
+            <div class="row">
+                <div class="col-xs-8"> {{ field.label_tag }} {{ field }}</div>
+                <div class="col-xs-4">{{ field.errors }}</div>
+            </div>
+        {% endfor %}
+
+        <button type="submit" name="cprog" class="btn btn-default">Add Current Program</button>
+    </form>
+
+
+
+
+
+
+    <h4>Previous Program</h4>
+    <table class="table" id="app-table">
+        <thead>
+            <th>School Program</th>
+            <th>GPA</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Credit Hours</th>
+            <th>Delete</th>
+        </thead>
+        <tbody>
+            {% if student.prev_program %}
+                <tr>
+                    <td>{{ student.prev_program}}</td>
+                    <td>{{ student.prev_gpa}}</td>
+                    <td>{{ student.prev_start_date}}</td>
+                    <td>{{ student.prev_end_date}}</td>
+                    <td>{{ student.prev_credit_hours}}</td>
+                    <td><span class="glyphicon glyphicon-trash" id="delete-pprog"></span></td>
+                </tr>
+            {% else %}
+                 <tr>
+                    <td><span class="glyphicon glyphicon-plus" id="add-pprog"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+
+    {% if prev_prog_form.errors %}
+        <div class="alert alert-danger" role="alert">
+            <p>Error when attempting to add previous program!</p>
+        </div>
+    {% endif %}
+
+
+
+    <form method="POST" {% if not prev_prog_form.errors %} style="display:none" {% endif %} id="form-pprog">
+        {% csrf_token %}
+        {% for field in prev_prog_form %}
+            <div class="row">
+                <div class="col-xs-8"> {{ field.label_tag }} {{ field }}</div>
+                <div class="col-xs-4">{{ field.errors }}</div>
+            </div>
+        {% endfor %}
+
+        <button type="submit" name="pprog" class="btn btn-default">Add Previous Program</button>
+    </form>
+
+
+
+
+    <h4>Test Scores</h4>
+
+    <h5>GRE</h5>
+    <table class="table" id="app-table">
+        <thead>
+            <th>Verbal</th>
+            <th>Quant</th>
+            <th>Writing</th>
+            <th>Delete</th>
+        </thead>
+        <tbody>
+            {% if gre %}
+                <tr>
+                    <td>{{ gre.0.verb }}</td>
+                    <td>{{ gre.0.quant }}</td>
+                    <td>{{ gre.0.write }}</td>
+                    <td><span class="glyphicon glyphicon-trash" id="delete-gre"></span></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td><span class="glyphicon glyphicon-plus" id="add-gre"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+
+
+    {% if gre_form.errors %}
+        <div class="alert alert-danger" role="alert">
+            <p>Error when attempting to add gre score!</p>
+        </div>
+    {% endif %}
+
+
+
+    <form method="POST" {% if not gre_form.errors %} style="display:none" {% endif %} id="form-gre">
+        {% csrf_token %}
+        {% for field in gre_form %}
+            <div class="row">
+                <div class="col-xs-8"> {{ field.label_tag }} {{ field }}</div>
+                <div class="col-xs-4">{{ field.errors }}</div>
+            </div>
+        {% endfor %}
+
+        <button type="submit" name="gre" class="btn btn-default">Add GRE Score</button>
+    </form>
+
+
+
+    <h5>TOEFL</h5>
+    <table class="table" id="app-table">
+        <thead>
+            <th>Reading</th>
+            <th>Listening</th>
+            <th>Speaking</th>
+            <th>Writing</th>
+            <th>Delete</th>
+        </thead>
+        <tbody>
+            {% if toefl %}
+                <tr>
+                    <td>{{ toefl.0.reading }}</td>
+                    <td>{{ toefl.0.listening }}</td>
+                    <td>{{ toefl.0.speaking }}</td>
+                    <td>{{ toefl.0.writing }}</td>
+                    <td><span class="glyphicon glyphicon-trash" id="delete-toefl"></span></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td><span class="glyphicon glyphicon-plus" id="add-toefl"></span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+
+
+    {% if toefl_form.errors %}
+        <div class="alert alert-danger" role="alert">
+            <p>Error when attempting to add toefl score!</p>
+        </div>
+    {% endif %}
+
+
+
+    <form method="POST" {% if not toefl_form.errors %} style="display:none" {% endif %} id="form-toefl">
+        {% csrf_token %}
+        {% for field in toefl_form %}
+            <div class="row">
+                <div class="col-xs-8"> {{ field.label_tag }} {{ field }}</div>
+                <div class="col-xs-4">{{ field.errors }}</div>
+            </div>
+        {% endfor %}
+
+        <button type="submit" name="toefl" class="btn btn-default">Add TOEFL Score</button>
+    </form>
+
+
+
+    <h3>Industry Experience</h3>
+
+
+
+
+
+
+
+
+    <h3>Applications</h3>
     <table class="table" id="app-table">
         <thead>
             <th>School Program</th>
@@ -71,7 +307,7 @@
             </div>
         {% endfor %}
 
-        <button type="submit" class="btn btn-default">Add Application</button>
+        <button type="submit" name="app" class="btn btn-default">Add Application</button>
     </form>
 
 
@@ -81,13 +317,33 @@
     <h3>Favorites</h3>
 
 
-    <div id="dialog-acc-delete" title="Dialog Title">
+    <div id="dialog-acc-delete" title="Are you sure?">
         Are you sure you want to delete your account?
 
     </div>
 
-    <div id="dialog-app-delete" title="Dialog Title">
+    <div id="dialog-app-delete" title="Are you sure?">
         Are you sure you want to delete this application?
+
+    </div>
+
+    <div id="dialog-gre-delete" title="Are you sure?">
+        Are you sure you want to delete this gre score?
+
+    </div>
+
+    <div id="dialog-toefl-delete" title="Are you sure?">
+        Are you sure you want to delete this toefl score?
+
+    </div>
+
+    <div id="dialog-cprog-delete" title="Are you sure?">
+        Are you sure you want to delete your current program?
+
+    </div>
+
+    <div id="dialog-pprog-delete" title="Are you sure?">
+        Are you sure you want to delete your previous program?
 
     </div>
 
@@ -100,4 +356,4 @@
     <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
     <script src="{% static 'js/jquery-ui.min.js' %}" ></script>
     <script src="{% static 'js/manage.js' %}" ></script>
-{% endblock %}
+{% endblock %}}

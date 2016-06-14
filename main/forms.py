@@ -145,3 +145,99 @@ class ApplicationForm(forms.Form):
     date_submitted = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}))
     date_updated = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}))
     status = forms.ChoiceField(choices=Application.STATUSCHOICES)
+
+
+class CurrentProgramForm(forms.Form):
+    # Form Fields
+    curr_school_program = forms.ModelChoiceField(queryset=SchoolProgram.objects.all().order_by('school'),label='School Program')
+    curr_gpa = forms.FloatField(label='GPA')
+    curr_credit_hours = forms.IntegerField(label='Credit Hours')
+    curr_start_date = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}),label='Start Date')
+    curr_end_date = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}),label='End Date')
+
+    def clean(self):
+        gpa = self.cleaned_data.get('curr_gpa', False)
+        if(gpa > 4.0):
+            raise ValidationError({'curr_gpa': ["GPA Must Be 4 or Below",]})
+        if(gpa < 0.0):
+            raise ValidationError({'curr_gpa': ["GPA Must Be 0 or Above",]})
+
+        credit_hours = self.cleaned_data.get('curr_credit_hours', False)
+        if(credit_hours < 0.0):
+            raise ValidationError({'curr_credit_hours': ["Credit Hours Must Be Positive",]})
+
+
+class PreviousProgramForm(forms.Form):
+    # Form Fields
+    prev_school_program = forms.ModelChoiceField(queryset=SchoolProgram.objects.all().order_by('school'),label='School Program')
+    prev_gpa = forms.FloatField(label='GPA')
+    prev_credit_hours = forms.IntegerField(label='Credit Hours')
+    prev_start_date = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}),label='Start Date')
+    prev_end_date = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}),label='End Date')
+
+    def clean(self):
+        gpa = self.cleaned_data.get('prev_gpa', False)
+        if(gpa > 4.0):
+            raise ValidationError({'prev_gpa': ["GPA Must Be 4 or Below",]})
+        if(gpa < 0.0):
+            raise ValidationError({'prev_gpa': ["GPA Must Be 0 or Above",]})
+
+        credit_hours = self.cleaned_data.get('prev_credit_hours', False)
+        if(credit_hours < 0.0):
+            raise ValidationError({'prev_credit_hours': ["Credit Hours Must Be Positive",]})
+
+
+class GREScoreForm(forms.Form):
+    verb = forms.IntegerField(label='Verbal')
+    quant = forms.IntegerField(label='Quantitative')
+    write = forms.IntegerField(label='Writing')
+
+    def clean(self):
+        verbal = self.cleaned_data.get('verb', False)
+        if(verbal > 170):
+            raise ValidationError({'verb': ["Score Must Be 170 or Below",]})
+        if(verbal < 0):
+            raise ValidationError({'verb': ["Score Must Be 0 or Above",]})
+
+        quant = self.cleaned_data.get('quant', False)
+        if(quant > 170):
+            raise ValidationError({'quant': ["Score Must Be 170 or Below",]})
+        if(quant < 0):
+            raise ValidationError({'quant': ["Score Must Be 0 or Above",]})
+
+        write = self.cleaned_data.get('write', False)
+        if(write > 6):
+            raise ValidationError({'write': ["Score Must Be 6 or Below",]})
+        if(write < 0):
+            raise ValidationError({'write': ["Score Must Be 0 or Above",]})
+
+class TOEFLScoreForm(forms.Form):
+    reading = forms.IntegerField(label='Reading')
+    listening = forms.IntegerField(label='Listening')
+    writing = forms.IntegerField(label='Writing')
+    speaking = forms.IntegerField(label='Speaking')
+
+    def clean(self):
+        reading = self.cleaned_data.get('reading', False)
+        if(reading > 30):
+            raise ValidationError({'reading': ["Score Must Be 30 or Below",]})
+        if(reading < 0):
+            raise ValidationError({'reading': ["Score Must Be 0 or Above",]})
+
+        listening = self.cleaned_data.get('listening', False)
+        if(listening > 30):
+            raise ValidationError({'listening': ["Score Must Be 30 or Below",]})
+        if(listening < 0):
+            raise ValidationError({'listening': ["Score Must Be 0 or Above",]})
+
+        writing = self.cleaned_data.get('writing', False)
+        if(writing > 30):
+            raise ValidationError({'writing': ["Score Must Be 30 or Below",]})
+        if(writing < 0):
+            raise ValidationError({'writing': ["Score Must Be 0 or Above",]})
+
+        speaking = self.cleaned_data.get('speaking', False)
+        if(speaking > 30):
+            raise ValidationError({'speaking': ["Score Must Be 30 or Below",]})
+        if(speaking < 0):
+            raise ValidationError({'speaking': ["Score Must Be 0 or Above",]})

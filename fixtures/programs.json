@@ -4,7 +4,8 @@
     "pk": 1,
     "fields": {
       "name": "Computer Science",
-      "level": "MS"
+      "level": "MS",
+      "school_level":"Graduate"
     }
   },
   {
@@ -12,7 +13,26 @@
     "pk": 2,
     "fields": {
       "name": "Computer Science",
-      "level": "PhD"
+      "level": "PhD",
+      "school_level":"Graduate"
+    }
+  },
+  {
+    "model": "main.program",
+    "pk": 3,
+    "fields": {
+      "name": "Computer Science",
+      "level": "BS",
+      "school_level":"Undergraduate"
+    }
+  },
+  {
+    "model": "main.program",
+    "pk": 4,
+    "fields": {
+      "name": "Computer Science",
+      "level": "BA",
+      "school_level":"Undergraduate"
     }
   }
 ]

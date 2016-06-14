@@ -30,5 +30,21 @@
       "school": 2,
       "program": 2
     }
+  },
+  {
+    "model": "main.schoolprogram",
+    "pk": 5,
+    "fields": {
+      "school": 2,
+      "program": 3
+    }
+  },
+  {
+    "model": "main.schoolprogram",
+    "pk": 6,
+    "fields": {
+      "school": 2,
+      "program": 4
+    }
   }
 ]

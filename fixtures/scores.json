@@ -1,0 +1,24 @@
+[
+	{
+		"model":"main.GREScore",
+		"pk": 1,
+		"fields":{
+			"student" : 1,
+			"verb" : 160, 
+			"quant" : 160, 
+			"write" : 1
+		}
+	},
+	{
+		"model":"main.TOEFLScore",
+		"pk": 1,
+		"fields":{
+			"student" : 1,
+			"reading" : 1,
+			"listening" : 1,
+			"writing" : 1,
+            "speaking": 1
+		}
+	}
+	
+]

@@ -11,5 +11,9 @@ urlpatterns = [
     url(r'^accounts/manage/$', views.AccountManageView.as_view(), name='manage'),
     url(r'^accounts/delete/$', views.DeleteAccountView.as_view(), name='delete'),
     url(r'^accounts/apps/delete/$', views.DeleteApplicationView.as_view(), name='delete-app'),
-    url(r'^accounts/apps/modify/$', views.ModifyApplicationView.as_view(), name='modify-app')
+    url(r'^accounts/apps/modify/$', views.ModifyApplicationView.as_view(), name='modify-app'),
+    url(r'^accounts/grescore/delete/$', views.DeleteGREScoreView.as_view(), name='delete-gre'),
+    url(r'^accounts/toeflscore/delete/$', views.DeleteTOEFLScoreView.as_view(), name='delete-toefl'),
+    url(r'^accounts/prevprogram/delete/$', views.DeletePrevProgramView.as_view(), name='delete-pprog'),
+    url(r'^accounts/currprogram/delete/$', views.DeleteCurrProgramView.as_view(), name='delete-cprog'),
 ]

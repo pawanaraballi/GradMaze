@@ -10,9 +10,9 @@ from django.views.generic import View
 
 from django.contrib.auth.models import User
 
-from .models import Application, Student
+from .models import *
 
-from .forms import ApplicationForm
+from .forms import ApplicationForm, CurrentProgramForm, PreviousProgramForm, GREScoreForm, TOEFLScoreForm
 
 # Create your views here.
 
@@ -73,33 +73,138 @@ class AccountManageView(View):
     def get(self, request, *args, **kwargs):
 
         apps_form = ApplicationForm()
+        curr_prog_form = CurrentProgramForm()
+        prev_prog_form = PreviousProgramForm()
+        gre_form = GREScoreForm()
+        toefl_form = TOEFLScoreForm()
 
         # Applications For Logged In User
         applications = Application.objects.filter(student__id=request.user.id)
-        return render(request, self.template_name, {'apps': applications,'apps_form': apps_form})
+
+        #GREScores
+        gre = GREScore.objects.filter(student__id=request.user.id)
+        #TOEFLScores
+        toefl = TOEFLScore.objects.filter(student__id=request.user.id)
+        #Current Program
+        student = Student.objects.get(id=request.user.id)
+
+
+        params = {'apps': applications,
+                  'apps_form': apps_form,
+                  'gre':gre,
+                  'toefl':toefl,
+                  'student':student,
+                  'curr_prog_form': curr_prog_form,
+                  'prev_prog_form':prev_prog_form,
+                  'gre_form':gre_form,
+                  'toefl_form':toefl_form,}
+        return render(request, self.template_name,params )
 
 
 
     def post(self, request, *args, **kwargs):
 
-        apps_form = ApplicationForm(request.POST)
 
 
-        if apps_form.is_valid():
-            # Add Application to DB
-            student = Student.objects.get(id=request.user.id)
-            new_app = Application.objects.create(student=student,
-                                                 school_program=apps_form.cleaned_data['school_program'],
-                                                 date_submitted=apps_form.cleaned_data['date_submitted'],
-                                                 date_updated=apps_form.cleaned_data['date_updated'],
-                                                 status=apps_form.cleaned_data['status'])
-            new_app.save()
-            return HttpResponseRedirect("/GradMaze/accounts/manage/")
+        #########################################
+        # Catching Which Form Button Is Pressed #
+        #########################################
+
+        # Application Form Button Pressed
+        if('app' in request.POST):
+            apps_form = ApplicationForm(request.POST)
+            if apps_form.is_valid():
+                # Add Application to DB
+                student = Student.objects.get(id=request.user.id)
+                new_app = Application.objects.create(student=student,
+                                                     school_program=apps_form.cleaned_data['school_program'],
+                                                     date_submitted=apps_form.cleaned_data['date_submitted'],
+                                                     date_updated=apps_form.cleaned_data['date_updated'],
+                                                     status=apps_form.cleaned_data['status'])
+                new_app.save()
+                return HttpResponseRedirect("/GradMaze/accounts/manage/")
+        else:
+            apps_form = ApplicationForm()
+
+        # Current Program Form Button Pressed
+        if('cprog' in request.POST):
+            curr_prog_form = CurrentProgramForm(request.POST)
+            if curr_prog_form.is_valid():
+                student = Student.objects.filter(id=request.user.id)
+                student.update(current_program=curr_prog_form.cleaned_data['curr_school_program'],
+                               current_gpa=curr_prog_form.cleaned_data['curr_gpa'],
+                               current_credit_hours=curr_prog_form.cleaned_data['curr_credit_hours'],
+                               current_start_date=curr_prog_form.cleaned_data['curr_start_date'],
+                               current_end_date =curr_prog_form.cleaned_data['curr_end_date'])
+                return HttpResponseRedirect("/GradMaze/accounts/manage/")
+        else:
+            curr_prog_form = CurrentProgramForm()
+
+
+        # Previous Program Form Button Pressed
+        if('pprog' in request.POST):
+            prev_prog_form = PreviousProgramForm(request.POST)
+            if prev_prog_form.is_valid():
+                student = Student.objects.filter(id=request.user.id)
+                student.update(prev_program=prev_prog_form.cleaned_data['prev_school_program'],
+                               prev_gpa=prev_prog_form.cleaned_data['prev_gpa'],
+                               prev_credit_hours=prev_prog_form.cleaned_data['prev_credit_hours'],
+                               prev_start_date=prev_prog_form.cleaned_data['prev_start_date'],
+                               prev_end_date =prev_prog_form.cleaned_data['prev_end_date'])
+                return HttpResponseRedirect("/GradMaze/accounts/manage/")
+        else:
+            prev_prog_form = PreviousProgramForm()
+
+
+        # GRE Form Button Pressed
+        if('gre' in request.POST):
+            gre_form = GREScoreForm(request.POST)
+            if gre_form.is_valid():
+                student = Student.objects.get(id=request.user.id)
+                gre = GREScore.objects.create(student=student,
+                                                  verb=gre_form.cleaned_data['verb'],
+                                                  quant=gre_form.cleaned_data['quant'],
+                                                  write=gre_form.cleaned_data['write'])
+                gre.save()
+        else:
+            gre_form = GREScoreForm()
+
+
+
+        # TOEFL Form Button Pressed
+        if('toefl' in request.POST):
+            toefl_form = TOEFLScoreForm(request.POST)
+            if toefl_form.is_valid():
+                student = Student.objects.get(id=request.user.id)
+                toefl = TOEFLScore.objects.create(student=student,
+                                                  reading=toefl_form.cleaned_data['reading'],
+                                                  listening=toefl_form.cleaned_data['listening'],
+                                                  writing=toefl_form.cleaned_data['writing'],
+                                                  speaking=toefl_form.cleaned_data['speaking'])
+                toefl.save()
+                return HttpResponseRedirect("/GradMaze/accounts/manage/")
+        else:
+            toefl_form = TOEFLScoreForm()
+
 
 
         # Applications For Logged In User
         applications = Application.objects.filter(student__id=request.user.id)
-        return render(request, self.template_name, {'apps': applications,'apps_form': apps_form})
+        gre = GREScore.objects.filter(student__id=request.user.id)
+        toefl = TOEFLScore.objects.filter(student__id=request.user.id)
+        student = Student.objects.get(id=request.user.id)
+
+        params = {'apps': applications,
+                  'apps_form': apps_form,
+                  'gre':gre,
+                  'toefl':toefl,
+                  'student':student,
+                  'curr_prog_form': curr_prog_form,
+                  'prev_prog_form':prev_prog_form,
+                  'gre_form':gre_form,
+                  'toefl_form':toefl_form,}
+
+        return render(request, self.template_name, params)
 
 
 
@@ -129,5 +234,28 @@ class ModifyApplicationView(View):
         status = request.POST.get('status')
         application = Application.objects.filter(id=application_pk)
         application.update(status=status,date_updated=datetime.datetime.today())
-       # application.delete()
+        return HttpResponse('result')
+
+class DeleteGREScoreView(View):
+    def post(self, request):
+        gre = GREScore.objects.filter(student__id=request.user.id)
+        gre.delete()
+        return HttpResponse('result')
+
+class DeleteTOEFLScoreView(View):
+    def post(self, request):
+        toefl = TOEFLScore.objects.filter(student__id=request.user.id)
+        toefl.delete()
+        return HttpResponse('result')
+
+class DeletePrevProgramView(View):
+    def post(self, request):
+        student = Student.objects.filter(id=request.user.id)
+        student.update(prev_program=None,prev_gpa=None,prev_credit_hours=None,prev_start_date=None,prev_end_date=None)
+        return HttpResponse('result')
+
+class DeleteCurrProgramView(View):
+    def post(self, request):
+        student = Student.objects.filter(id=request.user.id)
+        student.update(current_program=None,current_gpa=None,current_credit_hours=None,current_start_date=None,current_end_date=None)
         return HttpResponse('result')

@@ -10,6 +10,10 @@ from django.views.generic import View
 
 from django.contrib.auth.models import User
 
+
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import *
 
 from .forms import *
@@ -334,3 +338,35 @@ class DetailProgramFromSP(DetailView):
 class DetailSchoolProgramFromSP(DetailView):
     model = SchoolProgram
     template_name = 'school_program_ancher_list.html'
+
+class SearchResultView(View):
+    template_name = 'search_results.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(SearchResultView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+
+        results = []
+
+        if(request.POST.get('field') == 'School'):
+            from django.db.models import Q
+            results = School.objects.filter(Q(name__icontains=request.POST.get('query_string'))|Q(abbr__icontains=request.POST.get('query_string')))
+
+
+        if(request.POST.get('field') == 'Program'):
+            from django.db.models import Q
+            results = Program.objects.filter(Q(name__icontains=request.POST.get('query_string'))|Q(level__icontains=request.POST.get('query_string')))
+
+        if(request.POST.get('field') == 'School Program'):
+            from django.db.models import Q
+            results = SchoolProgram.objects.filter(Q(school__name__icontains=request.POST.get('query_string'))|Q(school__abbr__icontains=request.POST.get('query_string'))|
+                                                   Q(program__name__icontains=request.POST.get('query_string'))|Q(program__level__icontains=request.POST.get('query_string')))
+
+
+        params = {'results':results,
+                  'field':request.POST.get('field'),
+                  'query_string':request.POST.get('query_string')}
+
+        return render(request, self.template_name,params )

@@ -248,3 +248,6 @@ class IndustryExperienceForm(forms.Form):
     position = forms.CharField(label='Position')
     start_date = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}),label='Start Date')
     end_date = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}),label='End Date')
+
+
+

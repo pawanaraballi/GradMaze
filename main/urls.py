@@ -26,6 +26,12 @@ urlpatterns = [
     url(r'^schools/(?P<pk>\d+)$', views.DetailSchoolFromSP.as_view(), name='school-ancher-list'),
     url(r'^schoolprogram/(?P<pk>\d+)$', views.DetailSchoolProgramFromSP.as_view(), name='school-ancher-list'),
 
+
+
+    url(r'^search/$', views.SearchResultView.as_view(), name='search-results'),
+
+
+
     url(r'^detailschool/$', views.DetailSchoolListView.as_view(), name='detail-school-list'),
     url(r'^detailprogram/$', views.DetailProgramListView.as_view(), name='detail-program-list'),
 ]

@@ -17,7 +17,7 @@
     <tbody>
       {% for schoolprogram in object_list %}
       <tr>
-        <td>{{ schoolprogram.school }}</a></td>
+        <td><a href="{{schoolprogram.id}}">{{ schoolprogram.school }}</a></td>
         <td>{{ schoolprogram.program }}</td>
       </tr>
       {% empty %}

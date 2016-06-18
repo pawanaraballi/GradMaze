@@ -19,7 +19,7 @@ from .forms import *
 class IndexView(TemplateView):
     template_name = 'index.html'
 
-
+#
 class RegisterView(FormView):
     template_name = 'register.html'
     form_class = RegisterForm
@@ -29,7 +29,10 @@ class RegisterView(FormView):
     def form_valid(self, form):
 
         # Create User
-        User.objects.create_user(form.data['user_name'],form.data['email'],form.data['password'])
+        new_user = User.objects.create_user(form.data['user_name'],form.data['email'],form.data['password'])
+        Student.objects.create(user=new_user)
+
+        #TODO Create Student object for user
 
         # Login User
         user = authenticate(username=form.data['user_name'], password=form.data['password'])
@@ -80,16 +83,17 @@ class AccountManageView(View):
         indust_form = IndustryExperienceForm()
 
         # Applications For Logged In User
-        applications = Application.objects.filter(student__id=request.user.id)
+        applications = Application.objects.filter(student__user_id=request.user.id)
 
         #GREScores
-        gre = GREScore.objects.filter(student__id=request.user.id)
+        gre = GREScore.objects.filter(student__user_id=request.user.id)
         #TOEFLScores
-        toefl = TOEFLScore.objects.filter(student__id=request.user.id)
+        toefl = TOEFLScore.objects.filter(student__user_id=request.user.id)
         #Current Program
-        student = Student.objects.get(id=request.user.id)
+        id = request.user.id
+        student = Student.objects.get(user_id=request.user.id)
 
-        indust = IndustryExperience.objects.filter(student__id=request.user.id)
+        indust = IndustryExperience.objects.filter(student__user_id=request.user.id)
 
 
         params = {'apps': applications,
@@ -326,3 +330,7 @@ class DetailSchoolFromSP(DetailView):
 class DetailProgramFromSP(DetailView):
     model = Program
     template_name = 'program_ancher_list.html'
+
+class DetailSchoolProgramFromSP(DetailView):
+    model = SchoolProgram
+    template_name = 'school_program_ancher_list.html'

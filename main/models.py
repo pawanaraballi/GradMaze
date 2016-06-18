@@ -41,6 +41,11 @@ class Program(models.Model):
 class SchoolProgram(models.Model):
     school = models.ForeignKey(School)
     program = models.ForeignKey(Program)
+    greverbal = models.CharField(max_length=5, null=True)
+    greapti = models.CharField(max_length=5, null=True)
+    grewriting = models.CharField(max_length=5, null=True)
+    toefl = models.CharField(max_length=5, null=True)
+    gpa = models.CharField(max_length=5, null=True)
 
     def __str__(self):
         return str(self.school) + " - " + str(self.program)

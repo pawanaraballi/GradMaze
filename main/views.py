@@ -34,7 +34,7 @@ class RegisterView(FormView):
 
         # Create User
         new_user = User.objects.create_user(form.data['user_name'],form.data['email'],form.data['password'])
-        Student.objects.create(user=new_user)
+        Student.objects.create(user=new_user,subscribed=False)
 
         #TODO Create Student object for user
 
@@ -370,3 +370,24 @@ class SearchResultView(View):
                   'query_string':request.POST.get('query_string')}
 
         return render(request, self.template_name,params )
+
+
+
+class CancelSubView(View):
+
+    def post(self, request, *args, **kwargs):
+
+        student = Student.objects.filter(user__id=request.user.id)
+        student.update(subscribed=False)
+
+        return HttpResponse('result')
+
+
+class SubscribeView(View):
+
+    def post(self, request, *args, **kwargs):
+
+        student = Student.objects.filter(user__id=request.user.id)
+        student.update(subscribed=True)
+
+        return HttpResponse('result')

@@ -19,7 +19,17 @@
     <h3>General Settings</h3>
     <ul>
         <li><a href="#" id="opener">Delete Account</a></li>
+        {% if student.subscribed %}<li><a href="#">Edit Payment Method</a></li>{% endif %}
+        {% if student.subscribed %}<li><a href="#">Edit Billing Address</a></li>{% endif %}
+        {% if student.subscribed %}<li><a href="#" id="cancel-sub">Cancel Subscription</a></li>{% endif %}
+
+
+
+        {% if not student.subscribed %}<li><a href="#" id="subscribe">Subscribe To Premium</a></li>{% endif %}
     </ul>
+
+
+
 
 
 
@@ -398,6 +408,11 @@
 
     <div id="dialog-indust-delete" title="Are you sure?">
         Are you sure you want to delete your previous program?
+
+    </div>
+
+    <div id="dialog-cancel-sub" title="Are you sure?">
+        Are you sure you want to cancel your subscription?
 
     </div>
 

@@ -323,3 +323,77 @@ $("#delete-indust").click(function(e){
     $( "#dialog-indust-delete").data('row_id',$(e.target).parent().parent()[0].id)
     $( "#dialog-indust-delete" ).dialog( "open" );
 })
+
+
+
+
+/**
+ *
+ *
+ * Add/Cancel Subscription
+ *
+ */
+
+function postCancelSub(){
+
+    $.ajax({
+          type: "POST",
+          url: "http://127.0.0.1:8000/GradMaze/accounts/subscription/cancel/",
+          data:{csrfmiddlewaretoken: window.CSRF_TOKEN,},
+          success: function(resultData){
+                window.location.href = 'http://127.0.0.1:8000/GradMaze/accounts/manage/';
+          }
+    });
+
+
+}
+
+
+$( "#dialog-cancel-sub" ).dialog({
+    autoOpen: false,
+    buttons: [
+        {text: "Continue Subscription",
+        "class": 'btn btn-success',
+        click: function() {
+            $( "#dialog-cancel-sub" ).dialog( "close" );
+        }},
+        {text: "Cancel Subscription",
+         "class":'btn btn-danger',
+         click: function(e) {
+             postCancelSub()
+             $( "#dialog-cancel-sub" ).dialog( "close" );
+         }
+        }]
+});
+
+
+$("#cancel-sub").click(function(e){
+    $( "#dialog-cancel-sub" ).dialog( "open" );
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$('#subscribe').click(function(){
+
+    $.ajax({
+          type: "POST",
+          url: "http://127.0.0.1:8000/GradMaze/accounts/subscription/subscribe/",
+          data:{csrfmiddlewaretoken: window.CSRF_TOKEN,},
+          success: function(resultData){
+                window.location.href = 'http://127.0.0.1:8000/GradMaze/accounts/manage/';
+          }
+    });
+
+
+})

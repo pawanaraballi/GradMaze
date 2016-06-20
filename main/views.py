@@ -343,6 +343,30 @@ class UserListView(ListView):
     model = Student
     template_name = 'students_list.html'
 
+class DetailStudentListView(ListView):
+    template_name = 'details_student_list.html'
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(DetailStudentListView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        try:
+            application_details = Application.objects.all()
+            student_details=Student.objects.all()
+        except Application.DoesNotExist:
+            application_details=[]
+            student_details=[]
+
+
+        params = {
+            'application_details':application_details,
+            'student_details': student_details
+        }
+
+        return render(request,self.template_name,params)
+
+
+
 class SearchResultView(View):
     template_name = 'search_results.html'
 

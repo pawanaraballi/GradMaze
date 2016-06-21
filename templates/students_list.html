@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Students List</title>
+{% endblock %}
+
+{% block content %}
+
+  <div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Current Program</th>
+        <th>Current GPA</th>
+        <th>Current Credit Hours</th>
+        <th>Current Start Date</th>
+        <th>Current End Date</th>
+        <th>Previous Program</th>
+        <th>Previous GPA</th>
+        <th>Previous Credit Hours</th>
+        <th>Previous Start Date</th>
+        <th>Previous End Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for school in object_list %}
+      <tr>
+        <td>{{ school.user }}</td>
+        <td>{{ school.current_program }}</td>
+        <td>{{ school.current_gpa }}</td>
+        <td>{{ school.current_credit_hours }}</td>
+        <td>{{ school.current_start_date }}</td>
+        <td>{{ school.current_end_date }}</td>
+        <td>{{ school.prev_program }}</td>
+        <td>{{ school.prev_gpa }}</td>
+        <td>{{ school.prev_credit_hours }}</td>
+        <td>{{ school.prev_start_date }}</td>
+        <td>{{ school.prev_end_date }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+
+{% endblock %}

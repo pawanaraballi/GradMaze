@@ -423,6 +423,10 @@ class DetailSchoolProgramFromSP(DetailView):
     model = SchoolProgram
     template_name = 'school_program_ancher_list.html'
 
+class UserListView(ListView):
+    model = Student
+    template_name = 'students_list.html'
+
 class SearchResultView(View):
     template_name = 'search_results.html'
 

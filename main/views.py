@@ -345,22 +345,21 @@ class UserListView(ListView):
 
 class DetailStudentListView(ListView):
     template_name = 'details_student_list.html'
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super(DetailStudentListView, self).dispatch(request, *args, **kwargs)
+
+
 
     def get(self, request, *args, **kwargs):
         try:
-            application_details = Application.objects.all()
-            student_details=Student.objects.all()
+            application_details = Application.objects.filter(student__user_id=self.kwargs['pk'])
+            student=Student.objects.get(user_id=self.kwargs['pk'])
         except Application.DoesNotExist:
             application_details=[]
-            student_details=[]
+            student=[]
 
 
         params = {
             'application_details':application_details,
-            'student_details': student_details
+            'student': student
         }
 
         return render(request,self.template_name,params)

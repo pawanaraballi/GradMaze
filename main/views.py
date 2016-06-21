@@ -427,6 +427,29 @@ class UserListView(ListView):
     model = Student
     template_name = 'students_list.html'
 
+class DetailStudentListView(ListView):
+    template_name = 'details_student_list.html'
+
+
+
+    def get(self, request, *args, **kwargs):
+        try:
+            application_details = Application.objects.filter(student__user_id=self.kwargs['pk'])
+            student=Student.objects.get(user_id=self.kwargs['pk'])
+        except Application.DoesNotExist:
+            application_details=[]
+            student=[]
+
+
+        params = {
+            'application_details':application_details,
+            'student': student
+        }
+
+        return render(request,self.template_name,params)
+
+
+
 class SearchResultView(View):
     template_name = 'search_results.html'
 

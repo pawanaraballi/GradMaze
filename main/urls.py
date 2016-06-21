@@ -38,4 +38,5 @@ urlpatterns = [
     url(r'^detailschool/$', views.DetailSchoolListView.as_view(), name='detail-school-list'),
     url(r'^detailprogram/$', views.DetailProgramListView.as_view(), name='detail-program-list'),
     url(r'^users/$', views.UserListView.as_view(), name='user-list'),
+    url(r'^users/(?P<pk>\d+)$', views.DetailStudentListView.as_view(), name='detail-student'),
 ]

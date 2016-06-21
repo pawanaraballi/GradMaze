@@ -3,7 +3,7 @@ from django.forms import ValidationError
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
-from .models import SchoolProgram,Application
+from .models import SchoolProgram,Application,CreditCard
 
 import re
 
@@ -248,6 +248,34 @@ class IndustryExperienceForm(forms.Form):
     position = forms.CharField(label='Position')
     start_date = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}),label='Start Date')
     end_date = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}),label='End Date')
+
+
+
+
+class CreditCardForm(forms.Form):
+    card_type = forms.ChoiceField(label='Card Type',choices=CreditCard.CARDTYPES)
+    first_name = forms.CharField(label='First Name')
+    last_name = forms.CharField(label='Last Name')
+
+    number = forms.IntegerField(label='Number')
+    secuirty = forms.IntegerField(label='Security Code')
+
+
+    YEARCHOICES = ('2016','2017','2018','2019','2020','2021')
+    expr_year = forms.DateField(widget=forms.SelectDateWidget(years=YEARCHOICES))
+
+    line1 = forms.CharField(label='Address Line 1')
+    line2 = forms.CharField(label='Address Line 2')
+    state = forms.CharField(label='State')
+    city = forms.CharField(label='City')
+    zip = forms.CharField(label='ZIP Code')
+    phone_number = forms.CharField(label='Phone Number')
+
+
+
+
+
+
 
 
 

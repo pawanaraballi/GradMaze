@@ -386,14 +386,32 @@ $("#cancel-sub").click(function(e){
 
 $('#subscribe').click(function(){
 
-    $.ajax({
+   $( "#form-ccinfo" ).show();
+
+
+})
+
+
+/* $.ajax({
           type: "POST",
           url: "http://127.0.0.1:8000/GradMaze/accounts/subscription/subscribe/",
           data:{csrfmiddlewaretoken: window.CSRF_TOKEN,},
           success: function(resultData){
                 window.location.href = 'http://127.0.0.1:8000/GradMaze/accounts/manage/';
           }
-    });
+    });*/
 
 
+
+
+/*
+*
+* Payment INfo
+*
+*
+*
+ */
+
+$("#edit-pay").click(function(){
+    $( "#form-ccinfo" ).show();
 })

@@ -19,8 +19,7 @@
     <h3>General Settings</h3>
     <ul>
         <li><a href="#" id="opener">Delete Account</a></li>
-        {% if student.subscribed %}<li><a href="#">Edit Payment Method</a></li>{% endif %}
-        {% if student.subscribed %}<li><a href="#">Edit Billing Address</a></li>{% endif %}
+        {% if student.subscribed %}<li><a id="edit-pay">Edit Payment Method</a></li>{% endif %}
         {% if student.subscribed %}<li><a href="#" id="cancel-sub">Cancel Subscription</a></li>{% endif %}
 
 
@@ -28,6 +27,28 @@
         {% if not student.subscribed %}<li><a href="#" id="subscribe">Subscribe To Premium</a></li>{% endif %}
     </ul>
 
+
+
+
+
+    <form method="POST" {% if not credit_card_form.errors %} style="display:none" {% endif %}  id="form-ccinfo">
+        {% csrf_token %}
+        <h4>Credit Card Information</h4>
+        {% for field in credit_card_form %}
+
+            {% if forloop.counter == 7 %}
+                <h4>Billing Address</h4>
+            {% endif %}
+
+            <div class="row">
+                <div class="col-xs-8"> {{ field.label_tag }} {{ field }}</div>
+                <div class="col-xs-4">{{ field.errors }}</div>
+            </div>
+
+        {% endfor %}
+
+        <button type="submit" name="ccinfo" class="btn btn-default">Add Credit Card</button>
+    </form>
 
 
 

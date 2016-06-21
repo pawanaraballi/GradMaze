@@ -114,3 +114,31 @@ class IndustryExperience(models.Model):
     position = models.CharField(max_length=50)
     start_date = models.DateField(default="2016-05-05",null=True)
     end_date = models.DateField(default="2016-05-05",null=True)
+
+
+
+class CreditCard(models.Model):
+    user = models.ForeignKey(User)
+    number = models.IntegerField()
+    security_code = models.IntegerField()
+    expiration = models.DateField(default="2016-05-05",null=True)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    addr_line1 = models.TextField()
+    addr_line2 = models.TextField()
+    city = models.TextField()
+    state = models.TextField()
+    zip = models.IntegerField()
+    phone_number = models.IntegerField()
+    country = models.TextField()
+
+
+    CARDTYPES = (
+        ('Visa', 'Visa'),
+        ('MasterCard', 'MasterCard'),
+        ('Amex', 'Amex'),
+        ('Discover','Discover'),
+    )
+
+    card_type = models.CharField(max_length=50, choices=CARDTYPES)
+

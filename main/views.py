@@ -86,6 +86,10 @@ class AccountManageView(View):
         toefl_form = TOEFLScoreForm()
         indust_form = IndustryExperienceForm()
 
+
+
+
+
         # Applications For Logged In User
         applications = Application.objects.filter(student__user_id=request.user.id)
 
@@ -99,6 +103,23 @@ class AccountManageView(View):
 
         indust = IndustryExperience.objects.filter(student__user_id=request.user.id)
 
+        credit_card = CreditCard.objects.filter(user_id=request.user.id)
+        if not credit_card:
+            credit_card_form = CreditCardForm()
+        else:
+            credit_card = CreditCard.objects.get(user_id=request.user.id)
+            credit_card_form =CreditCardForm(initial={'city':credit_card.city,
+                                                      'card_type':credit_card.card_type,
+                                                      'first_name':credit_card.first_name,
+                                                      'last_name':credit_card.last_name,
+                                                      'number':credit_card.number,
+                                                      'secuirty':credit_card.security_code,
+                                                      'expr_year':credit_card.expiration,
+                                                      'line1':credit_card.addr_line1,
+                                                      'line2':credit_card.addr_line2,
+                                                      'state':credit_card.state,
+                                                      'zip':credit_card.zip,
+                                                      'phone_number':credit_card.phone_number,})
 
         params = {'apps': applications,
                   'apps_form': apps_form,
@@ -110,7 +131,8 @@ class AccountManageView(View):
                   'gre_form':gre_form,
                   'toefl_form':toefl_form,
                   'indust_form':indust_form,
-                  'indust':indust}
+                  'indust':indust,
+                  'credit_card_form':credit_card_form,}
         return render(request, self.template_name,params )
 
 
@@ -128,7 +150,7 @@ class AccountManageView(View):
             apps_form = ApplicationForm(request.POST)
             if apps_form.is_valid():
                 # Add Application to DB
-                student = Student.objects.get(id=request.user.id)
+                student = Student.objects.get(user_id=request.user.id)
                 new_app = Application.objects.create(student=student,
                                                      school_program=apps_form.cleaned_data['school_program'],
                                                      date_submitted=apps_form.cleaned_data['date_submitted'],
@@ -143,7 +165,7 @@ class AccountManageView(View):
         if('cprog' in request.POST):
             curr_prog_form = CurrentProgramForm(request.POST)
             if curr_prog_form.is_valid():
-                student = Student.objects.filter(id=request.user.id)
+                student = Student.objects.filter(user_id=request.user.id)
                 student.update(current_program=curr_prog_form.cleaned_data['curr_school_program'],
                                current_gpa=curr_prog_form.cleaned_data['curr_gpa'],
                                current_credit_hours=curr_prog_form.cleaned_data['curr_credit_hours'],
@@ -158,7 +180,7 @@ class AccountManageView(View):
         if('pprog' in request.POST):
             prev_prog_form = PreviousProgramForm(request.POST)
             if prev_prog_form.is_valid():
-                student = Student.objects.filter(id=request.user.id)
+                student = Student.objects.filter(user_id=request.user.id)
                 student.update(prev_program=prev_prog_form.cleaned_data['prev_school_program'],
                                prev_gpa=prev_prog_form.cleaned_data['prev_gpa'],
                                prev_credit_hours=prev_prog_form.cleaned_data['prev_credit_hours'],
@@ -173,7 +195,7 @@ class AccountManageView(View):
         if('gre' in request.POST):
             gre_form = GREScoreForm(request.POST)
             if gre_form.is_valid():
-                student = Student.objects.get(id=request.user.id)
+                student = Student.objects.get(user_id=request.user.id)
                 gre = GREScore.objects.create(student=student,
                                                   verb=gre_form.cleaned_data['verb'],
                                                   quant=gre_form.cleaned_data['quant'],
@@ -188,7 +210,7 @@ class AccountManageView(View):
         if('toefl' in request.POST):
             toefl_form = TOEFLScoreForm(request.POST)
             if toefl_form.is_valid():
-                student = Student.objects.get(id=request.user.id)
+                student = Student.objects.get(user_id=request.user.id)
                 toefl = TOEFLScore.objects.create(student=student,
                                                   reading=toefl_form.cleaned_data['reading'],
                                                   listening=toefl_form.cleaned_data['listening'],
@@ -203,7 +225,7 @@ class AccountManageView(View):
         if('indust' in request.POST):
             indust_form = IndustryExperienceForm(request.POST)
             if indust_form.is_valid():
-                student = Student.objects.get(id=request.user.id)
+                student = Student.objects.get(user_id=request.user.id)
                 expr = IndustryExperience.objects.create(student=student,
                                                   company=indust_form.cleaned_data['company'],
                                                   position=indust_form.cleaned_data['position'],
@@ -216,11 +238,72 @@ class AccountManageView(View):
 
 
 
+        # Credit Card Form Button Pressed
+        if('ccinfo' in request.POST):
+            credit_card_form =CreditCardForm(request.POST)
+            if credit_card_form.is_valid():
+
+                credit_card = CreditCard.objects.filter(user_id=request.user.id)
+
+                if not credit_card:
+
+                    credit_card = CreditCard.objects.create(user_id=request.user.id,
+                                                            card_type = credit_card_form.cleaned_data['card_type'],
+                                                            first_name = credit_card_form.cleaned_data['first_name'] ,
+                                                            last_name = credit_card_form.cleaned_data['last_name'],
+                                                            number = credit_card_form.cleaned_data['number'],
+                                                            security_code = credit_card_form.cleaned_data['secuirty'],
+                                                            expiration = credit_card_form.cleaned_data['expr_year'],
+                                                            addr_line1 = credit_card_form.cleaned_data['line1'],
+                                                            addr_line2 = credit_card_form.cleaned_data['line2'],
+                                                            state = credit_card_form.cleaned_data['state'],
+                                                            city = credit_card_form.cleaned_data['city'],
+                                                            zip = credit_card_form.cleaned_data['zip'],
+                                                            phone_number=credit_card_form.cleaned_data['phone_number'])
+                    credit_card.save()
+
+                    student = Student.objects.filter(user__id=request.user.id)
+                    student.update(subscribed=True)
+                else:
+                    credit_card.update(card_type = credit_card_form.cleaned_data['card_type'],
+                                                            first_name = credit_card_form.cleaned_data['first_name'] ,
+                                                            last_name = credit_card_form.cleaned_data['last_name'],
+                                                            number = credit_card_form.cleaned_data['number'],
+                                                            security_code = credit_card_form.cleaned_data['secuirty'],
+                                                            expiration = credit_card_form.cleaned_data['expr_year'],
+                                                            addr_line1 = credit_card_form.cleaned_data['line1'],
+                                                            addr_line2 = credit_card_form.cleaned_data['line2'],
+                                                            state = credit_card_form.cleaned_data['state'],
+                                                            city = credit_card_form.cleaned_data['city'],
+                                                            zip = credit_card_form.cleaned_data['zip'],
+                                                            phone_number=credit_card_form.cleaned_data['phone_number'])
+
+                return HttpResponseRedirect("/GradMaze/accounts/manage/")
+        else:
+            credit_card = CreditCard.objects.get(user_id=request.user.id)
+            if not credit_card:
+                credit_card_form = CreditCardForm()
+            else:
+                credit_card_form =CreditCardForm(initial={'city':credit_card.city,
+                                                          'card_type':credit_card.card_type,
+                                                          'first_name':credit_card.first_name,
+                                                          'last_name':credit_card.last_name,
+                                                          'number':credit_card.number,
+                                                          'secuirty':credit_card.security_code,
+                                                          'expr_year':credit_card.expiration,
+                                                          'line1':credit_card.addr_line1,
+                                                          'line2':credit_card.addr_line2,
+                                                          'state':credit_card.state,
+                                                          'zip':credit_card.zip,
+                                                          'phone_number':credit_card.phone_number,})
+
+
+
         # Applications For Logged In User
-        applications = Application.objects.filter(student__id=request.user.id)
-        gre = GREScore.objects.filter(student__id=request.user.id)
-        toefl = TOEFLScore.objects.filter(student__id=request.user.id)
-        student = Student.objects.get(id=request.user.id)
+        applications = Application.objects.filter(student__user_id=request.user.id)
+        gre = GREScore.objects.filter(student__user_id=request.user.id)
+        toefl = TOEFLScore.objects.filter(student__user_id=request.user.id)
+        student = Student.objects.get(user_id=request.user.id)
         indust = IndustryExperience.objects.filter(student__id=request.user.id)
 
 
@@ -234,7 +317,8 @@ class AccountManageView(View):
                   'gre_form':gre_form,
                   'toefl_form':toefl_form,
                   'indust_form':indust_form,
-                  'indust':indust}
+                  'indust':indust,
+                  'credit_card_form':credit_card_form,}
 
         return render(request, self.template_name, params)
 
@@ -380,14 +464,7 @@ class CancelSubView(View):
         student = Student.objects.filter(user__id=request.user.id)
         student.update(subscribed=False)
 
-        return HttpResponse('result')
-
-
-class SubscribeView(View):
-
-    def post(self, request, *args, **kwargs):
-
-        student = Student.objects.filter(user__id=request.user.id)
-        student.update(subscribed=True)
+        CreditCard.objects.get(user_id=request.user.id).delete()
 
         return HttpResponse('result')
+

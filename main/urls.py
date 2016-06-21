@@ -18,7 +18,6 @@ urlpatterns = [
     url(r'^accounts/currprogram/delete/$', views.DeleteCurrProgramView.as_view(), name='delete-cprog'),
     url(r'^accounts/experience/delete/$', views.DeleteIndustExprView.as_view(), name='delete-indust'),
     url(r'^accounts/subscription/cancel/$', views.CancelSubView.as_view(), name='cancel-sub'),
-    url(r'^accounts/subscription/subscribe/$', views.SubscribeView.as_view(), name='subscibe'),
 
     url(r'^schools/$', views.SchoolListView.as_view(), name='school-list'),
     url(r'^programs/$', views.ProgramListView.as_view(), name='program-list'),

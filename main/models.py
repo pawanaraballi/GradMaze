@@ -68,7 +68,7 @@ class Student(models.Model):
     prev_credit_hours = models.IntegerField(default=120,null=True)
     prev_start_date = models.DateField(default="2016-05-05",null=True)
     prev_end_date = models.DateField(default="2016-05-05",null=True)
-    subscribed = models.BooleanField(null=False)
+    subscribed = models.NullBooleanField(null=True)
 
     def __str__(self):
         return str(self.user.email)

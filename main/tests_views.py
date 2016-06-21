@@ -252,3 +252,15 @@ class DeleteIndustExprViewTestCase(TestCase):
 
 
 
+class SearchResultViewTestCase(TestCase):
+    def test_load_view(self):
+        """Test GET/POST of Search Result Page"""
+        response = self.client.get('/GradMaze/search/', follow=True)
+        self.assertEqual(response.status_code, 405)
+
+
+        response = self.client.post('/GradMaze/search/', follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'search_results.html')
+
+

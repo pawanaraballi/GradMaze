@@ -517,3 +517,132 @@ class TOEFLScoreFormTestCase(TestCase):
             form.errors.get('writing'),
             [u'Score Must Be 30 or Below']
         )
+
+
+class CreditCardFormTestCase(TestCase):
+    def setUp(self):
+        pass
+
+    def test_invalid_cc_number(self):
+        """Test Unsuccesful Credit Card Add - Invalid CC Number"""
+        form = CreditCardForm({'city':'gastonia',
+                               'card_type':'Visa',
+                               'first_name':'First',
+                               'last_name':'Last',
+                               'number':'999',
+                               'secuirty':'999',
+                               'expr_year':'2016-05-05',
+                               'line1':'555 New Hall Lane',
+                               'line2':'',
+                               'state':'NC',
+                               'zip':'28052',
+                               'phone_number':'7046576578',}
+                              )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('number'),
+            [u'Credit Card Number Too Short']
+        )
+
+
+        form = CreditCardForm({'city':'gastonia',
+                               'card_type':'Visa',
+                               'first_name':'First',
+                               'last_name':'Last',
+                               'number':'9999999999999999999999',
+                               'secuirty':'999',
+                               'expr_year':'2016-05-05',
+                               'line1':'555 New Hall Lane',
+                               'line2':'',
+                               'state':'NC',
+                               'zip':'28052',
+                               'phone_number':'7046576578',}
+                              )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('number'),
+            [u'Credit Card Number Too Long']
+        )
+
+
+    def test_invalid_security_number(self):
+        """Test Unsuccesful Credit Card Add - Invalid CC Number"""
+        form = CreditCardForm({'city':'gastonia',
+                               'card_type':'Visa',
+                               'first_name':'First',
+                               'last_name':'Last',
+                               'number':'9999999999999',
+                               'secuirty':'9900009',
+                               'expr_year':'2016-05-05',
+                               'line1':'555 New Hall Lane',
+                               'line2':'',
+                               'state':'NC',
+                               'zip':'28052',
+                               'phone_number':'7046576578',}
+                              )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('secuirty'),
+            [u'Security Number Too Long']
+        )
+
+
+        form = CreditCardForm({'city':'gastonia',
+                               'card_type':'Visa',
+                               'first_name':'First',
+                               'last_name':'Last',
+                               'number':'9999999999999',
+                               'secuirty':'99',
+                               'expr_year':'2016-05-05',
+                               'line1':'555 New Hall Lane',
+                               'line2':'',
+                               'state':'NC',
+                               'zip':'28052',
+                               'phone_number':'7046576578',}
+                              )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('secuirty'),
+            [u'Security Number Too Short']
+        )
+
+    def test_invalid_phone_number(self):
+        """Test Unsuccesful Credit Card Add - Invalid CC Number"""
+        form = CreditCardForm({'city':'gastonia',
+                               'card_type':'Visa',
+                               'first_name':'First',
+                               'last_name':'Last',
+                               'number':'9999999999999',
+                               'secuirty':'990',
+                               'expr_year':'2016-05-05',
+                               'line1':'555 New Hall Lane',
+                               'line2':'',
+                               'state':'NC',
+                               'zip':'28052',
+                               'phone_number':'70465755555666666578',}
+                              )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('phone_number'),
+            [u'Invalid Phone Number']
+        )
+
+
+        form = CreditCardForm({'city':'gastonia',
+                               'card_type':'Visa',
+                               'first_name':'First',
+                               'last_name':'Last',
+                               'number':'9999999999999',
+                               'secuirty':'999',
+                               'expr_year':'2016-05-05',
+                               'line1':'555 New Hall Lane',
+                               'line2':'',
+                               'state':'NC',
+                               'zip':'28052',
+                               'phone_number':'70578',}
+                              )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors.get('phone_number'),
+            [u'Invalid Phone Number']
+        )

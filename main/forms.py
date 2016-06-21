@@ -268,8 +268,29 @@ class CreditCardForm(forms.Form):
     line2 = forms.CharField(label='Address Line 2')
     state = forms.CharField(label='State')
     city = forms.CharField(label='City')
-    zip = forms.CharField(label='ZIP Code')
-    phone_number = forms.CharField(label='Phone Number')
+    zip = forms.IntegerField(label='ZIP Code')
+    phone_number = forms.IntegerField(label='Phone Number')
+
+    def clean(self):
+
+        number = self.cleaned_data.get('number', False)
+        if(len(str(number)) > 19):
+            raise ValidationError({'number': ["Credit Card Number Too Long",]})
+        if(len(str(number)) < 13):
+            raise ValidationError({'number': ["Credit Card Number Too Short",]})
+
+        secuirty = self.cleaned_data.get('secuirty', False)
+        if(len(str(secuirty)) > 4):
+            raise ValidationError({'secuirty': ["Security Number Too Long",]})
+        if(len(str(secuirty)) < 3):
+            raise ValidationError({'secuirty': ["Security Number Too Short",]})
+
+
+        phone_number = self.cleaned_data.get('phone_number', False)
+        if(len(str(phone_number)) > 15):
+            raise ValidationError({'phone_number': ["Invalid Phone Number",]})
+        if(len(str(phone_number)) < 10):
+            raise ValidationError({'phone_number': ["Invalid Phone Number",]})
 
 
 

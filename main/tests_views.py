@@ -251,7 +251,7 @@ class DeleteIndustExprViewTestCase(TestCase):
         self.assertEqual(request.status_code, 405)
 
 
-
+# TODO Clean Up Test
 class SearchResultViewTestCase(TestCase):
     def test_load_view(self):
         """Test GET/POST of Search Result Page"""

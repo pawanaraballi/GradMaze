@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>School List</title>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>School</th>
+            <th>Abbr</th>
+            <th>GPA</th>
+            <th>GRE Quant</th>
+            <th>GRE Verbal</th>
+            <th>GRE Writing</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for school in schools %}
+        <tr>
+            <td><a href="{{school.id}}">{{ school.name }}</a></td>
+            <td>{{ school.abbr }}</td>
+            <td>{{school.gpa}}</td>
+            <td>{{school.greapti}}</td>
+            <td>{{school.greverbal}}</td>
+            <td>{{school.grewriting}}</td>
+        </tr>
+        {% empty %}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

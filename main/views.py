@@ -495,3 +495,28 @@ class CancelSubView(View):
 
         return HttpResponse('result')
 
+
+
+class FilteredProgramListView(View):
+    template_name = 'filtered_school_list.html'
+
+    def get(self, request, *args, **kwargs):
+
+        student = Student.objects.get(user_id=request.user.id)
+        gre_score = GREScore.objects.get(student__user_id=request.user.id)
+
+
+        schools = School.objects.all()
+
+        school_results = []
+        for school in schools:
+            if (student.current_gpa > school.gpa) and (gre_score.verb > school.greverbal) and (gre_score.quant > school.greapti)and (gre_score.write > school.grewriting):
+                school_results.append(school.id)
+
+
+        school_results = School.objects.filter(id__in=school_results)
+
+
+        params = {'schools':school_results}
+
+        return render(request, self.template_name, params)

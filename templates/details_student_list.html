@@ -47,6 +47,7 @@
         </div>
 
 
+    {% if  gre_scores%}
     <h3>GRE Scores</h3>
     <div class="table-responsive">
           <table class="table">
@@ -66,9 +67,10 @@
             </tbody>
           </table>
     </div>
+    {% endif %}
 
+    {% if toelf_scores %}
     <h3>TOEFL Scores</h3>
-    {{ toelf_scores }}
     <div class="table-responsive">
           <table class="table">
             <thead>
@@ -89,8 +91,10 @@
             </tbody>
           </table>
     </div>
+    {% endif %}
 
 
+    {% if  application_details%}
     <h3>Applications</h3>
 
 
@@ -119,6 +123,7 @@
             </tbody>
           </table>
         </div>
+    {% endif %}
 
 
 {% endblock %}

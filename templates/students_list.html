@@ -7,9 +7,9 @@
 {% block content %}
 
 
-    {{student.subscribed }}
+
     {% if student.subscribed   %}
-        <a href="#">Find Similar Students</a>
+        <a href="{%url "similar-students"%}">Find Similar Students</a>
     {% endif %}
 
   <div class="table-responsive">

@@ -453,14 +453,27 @@ class DetailStudentListView(ListView):
     def get(self, request, *args, **kwargs):
         try:
             application_details = Application.objects.filter(student__user_id=self.kwargs['pk'])
-            student=Student.objects.get(user_id=self.kwargs['pk'])
-            gre_scores=GREScore.objects.get(student__user_id=self.kwargs['pk'])
-            toelf_scores=TOEFLScore.objects.get(student__user_id=self.kwargs['pk'])
         except Application.DoesNotExist:
             application_details=[]
+
+        try:
+            student=Student.objects.get(user_id=self.kwargs['pk'])
+        except Student.DoesNotExist:
             student=[]
+
+        try:
+            gre_scores=GREScore.objects.get(student__user_id=self.kwargs['pk'])
+        except GREScore.DoesNotExist:
             gre_scores=[]
+
+        try:
+            toelf_scores=TOEFLScore.objects.get(student__user_id=self.kwargs['pk'])
+        except TOEFLScore.DoesNotExist:
             toelf_scores=[]
+
+
+
+
 
 
         params = {

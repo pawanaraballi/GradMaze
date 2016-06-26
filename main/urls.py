@@ -31,6 +31,8 @@ urlpatterns = [
 
     url(r'^search/$', views.SearchResultView.as_view(), name='search-results'),
 
+    url(r'^users/similar/$', views.SimilarStudentsView.as_view(), name='similar-students'),
+
 
 
 

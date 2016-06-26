@@ -7,6 +7,7 @@ import numpy as np
 class CosineSimilarityTestCase(TestCase):
 
     def test_cossim(self):
+        """ Test Cosine Similarity Function """
         metrics = SimilarityMetrics()
         test1 = metrics.cosine_similarity(np.asarray([1,1]),np.asarray([-1,1]))
         np.testing.assert_almost_equal(test1,0.0)

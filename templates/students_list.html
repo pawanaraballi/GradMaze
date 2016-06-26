@@ -6,6 +6,12 @@
 
 {% block content %}
 
+
+    {{student.subscribed }}
+    {% if student.subscribed   %}
+        <a href="#">Find Similar Students</a>
+    {% endif %}
+
   <div class="table-responsive">
   <table class="table">
     <thead>

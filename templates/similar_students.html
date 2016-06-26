@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Similar Students</title>
+{% endblock %}
+
+{% block content %}
+
+    <h2>Similar Students</h2>
+
+    <div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Current Program</th>
+        <th>Current GPA</th>
+        <th>Current Credit Hours</th>
+        <th>Current Start Date</th>
+        <th>Current End Date</th>
+        <th>Previous Program</th>
+        <th>Previous GPA</th>
+        <th>Previous Credit Hours</th>
+        <th>Previous Start Date</th>
+        <th>Previous End Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for student in similar_students %}
+      <tr>
+        <td><a href="../{{student.user.id}}">{{ student.user }}</a></td>
+        <td>{{ student.current_program }}</td>
+        <td>{{ student.current_gpa }}</td>
+        <td>{{ student.current_credit_hours }}</td>
+        <td>{{ student.current_start_date }}</td>
+        <td>{{ student.current_end_date }}</td>
+        <td>{{ student.prev_program }}</td>
+        <td>{{ student.prev_gpa }}</td>
+        <td>{{ student.prev_credit_hours }}</td>
+        <td>{{ student.prev_start_date }}</td>
+        <td>{{ student.prev_end_date }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+
+{% endblock %}

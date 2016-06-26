@@ -22,7 +22,7 @@
     "fields": {
       "user": 2,
       "current_program": 5,
-      "current_gpa": 3.8,
+      "current_gpa": 4.0,
       "current_credit_hours": 120,
       "current_start_date": "2016-05-05",
       "current_end_date":"2016-05-05"
@@ -34,7 +34,7 @@
     "fields": {
       "user": 3,
       "current_program": 6,
-      "current_gpa": 3.8,
+      "current_gpa": 2.8,
       "current_credit_hours": 120,
       "current_start_date": "2016-05-05",
       "current_end_date":"2016-05-05",
@@ -51,7 +51,7 @@
     "fields": {
       "user": 4,
       "current_program": 5,
-      "current_gpa": 3.8,
+      "current_gpa": 2.0,
       "current_credit_hours": 120,
       "current_start_date": "2016-05-05",
       "current_end_date":"2016-05-05"

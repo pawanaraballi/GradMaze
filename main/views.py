@@ -14,9 +14,13 @@ from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
+import numpy as np
+
 from .models import *
 
 from .forms import *
+
+from utilities import SimilarityMetrics
 
 # Create your views here.
 
@@ -426,6 +430,20 @@ class DetailSchoolProgramFromSP(DetailView):
 class UserListView(ListView):
     model = Student
     template_name = 'students_list.html'
+    extra_context = {}
+
+    def get_context_data(self, **kwargs):
+        context = super(UserListView, self).get_context_data(**kwargs)
+        self.extra_context["student"]=Student.objects.get(user_id=self.request.user.id)
+
+        context.update(self.extra_context)
+        return context
+
+
+
+
+
+
 
 class DetailStudentListView(ListView):
     template_name = 'details_student_list.html'
@@ -436,14 +454,20 @@ class DetailStudentListView(ListView):
         try:
             application_details = Application.objects.filter(student__user_id=self.kwargs['pk'])
             student=Student.objects.get(user_id=self.kwargs['pk'])
+            gre_scores=GREScore.objects.get(student__user_id=self.kwargs['pk'])
+            toelf_scores=TOEFLScore.objects.get(student__user_id=self.kwargs['pk'])
         except Application.DoesNotExist:
             application_details=[]
             student=[]
+            gre_scores=[]
+            toelf_scores=[]
 
 
         params = {
             'application_details':application_details,
-            'student': student
+            'student': student,
+            'toelf_scores': toelf_scores,
+            'gre_scores': gre_scores
         }
 
         return render(request,self.template_name,params)
@@ -495,3 +519,43 @@ class CancelSubView(View):
 
         return HttpResponse('result')
 
+
+
+class SimilarStudentsView(View):
+    template_name = 'similar_students.html'
+
+    def get(self, request, *args, **kwargs):
+        metrics = SimilarityMetrics()
+        similar_thres = .75
+
+        target_student = Student.objects.get(user_id=request.user.id)
+        target_gre = GREScore.objects.get(student__user_id=request.user.id)
+        all_students = Student.objects.all()
+
+        fake_mean = np.asarray([3.0,150,150,3])
+
+        target_vect = np.asarray([target_student.current_gpa,target_gre.verb,target_gre.quant,target_gre.write])-fake_mean
+        print(target_vect)
+
+
+
+        scores = []
+        for student in all_students:
+            gre = GREScore.objects.get(student__user_id=student.user_id)
+
+            vect = np.asarray([student.current_gpa,gre.verb,gre.quant,gre.write])-fake_mean
+            print(vect)
+
+            scores.append(np.abs(metrics.cosine_similarity(vect,target_vect)))
+
+
+        print(scores)
+
+        similar_students = []
+        for i, score in enumerate(scores):
+            if score >= similar_thres:
+                similar_students.append(all_students[i])
+
+        params = {"similar_students":similar_students}
+
+        return render(request, self.template_name,params )

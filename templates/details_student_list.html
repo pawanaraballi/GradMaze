@@ -8,6 +8,7 @@
 
 
 
+    <h3>Student Details</h3>
         <div class="table-responsive">
           <table class="table">
             <thead>
@@ -45,7 +46,52 @@
           </table>
         </div>
 
-    Application Status of Students
+
+    <h3>GRE Scores</h3>
+    <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Quantitative</th>
+                <th>Verbal</th>
+                <th>Writing</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ gre_scores.quant }}</td>
+                <td>{{ gre_scores.verb}}</td>
+                <td>{{ gre_scores.write}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+
+    <h3>TOEFL Scores</h3>
+    {{ toelf_scores }}
+    <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Reading</th>
+                <th>Listening</th>
+                <th>Speaking</th>
+                  <th>Writing</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ toelf_scores.reading }}</td>
+                <td>{{ toelf_scores.listening}}</td>
+                <td>{{ toelf_scores.speaking}}</td>
+                <td>{{ toelf_scores.writing}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+
+
+    <h3>Applications</h3>
 
 
         <div class="table-responsive">

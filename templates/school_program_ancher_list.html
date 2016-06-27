@@ -7,31 +7,39 @@
 {% block content %}
 
 
-  <div class="table-responsive">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Program</th>
-        <th>School</th>
-        <th>GRE Verbal</th>
-        <th>GRE Aptitude</th>
-        <th>GRE Writing</th>
-        <th>TOEFL</th>
-        <th>GPA</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{{ schoolprogram.program }}</td>
-        <td>{{ schoolprogram.school }}</td>
-        <td>{{ schoolprogram.greverbal }}</td>
-        <td>{{ schoolprogram.greapti }}</td>
-        <td>{{ schoolprogram.grewriting }}</td>
-        <td>{{ schoolprogram.toefl }}</td>
-        <td>{{ schoolprogram.gpa }}</td>
-      </tr>
-    </tbody>
-  </table>
-  </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Program</th>
+                <th>School</th>
+                <th>GPA</th>
+                <th>GRE Verbal</th>
+                <th>GRE Aptitude</th>
+                <th>GRE Writing</th>
+                <th>TOEFL Reading</th>
+                <th>TOEFL Listening</th>
+                <th>TOEFL Speaking</th>
+                <th>TOEFL Writing</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ schoolprogram.program }}</td>
+                <td>{{ schoolprogram.school }}</td>
+                <td>{{ schoolprogram.gpa }}</td>
+                <td>{{ schoolprogram.greverbal }}</td>
+                <td>{{ schoolprogram.greapti }}</td>
+                <td>{{ schoolprogram.grewriting }}</td>
+                <td>{{ schoolprogram.toeflreading}}</td>
+                <td>{{ schoolprogram.toefllistening}}</td>
+                <td>{{ schoolprogram.toeflspeaking}}</td>
+                <td>{{ schoolprogram.toeflwriting}}</td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
 {% endblock %}

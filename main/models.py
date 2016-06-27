@@ -50,7 +50,10 @@ class SchoolProgram(models.Model):
     greverbal = models.IntegerField(null=True)
     greapti = models.IntegerField(null=True)
     grewriting = models.IntegerField(null=True)
-    toefl = models.IntegerField(null=True)
+    toeflreading = models.IntegerField(null=True)
+    toefllistening = models.IntegerField(null=True)
+    toeflspeaking = models.IntegerField(null=True)
+    toeflwriting = models.IntegerField(null=True)
     gpa = models.FloatField( null=True)
 
     def __str__(self):

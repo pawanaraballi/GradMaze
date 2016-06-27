@@ -595,14 +595,70 @@ class FilteredSchoolListView(View):
                 if (student.current_gpa > school.gpa):
                     schools_results.append(school.id)
 
-        print(schools_results)
-        print(gre_required)
-        print(toefl_required)
+
 
         schools_results = School.objects.filter(id__in=schools_results)
-        print(schools_results)
+
 
         params = {'schools':schools_results,
+                  'gre_required':gre_required,
+                  'toefl_required':toefl_required}
+
+        return render(request, self.template_name, params)
+
+
+
+class FilteredSchoolProgramListView(View):
+    template_name = 'filtered_school_program_list.html'
+
+    def get(self, request, *args, **kwargs):
+
+        student = Student.objects.get(user_id=request.user.id)
+
+        gre_required = False
+        toefl_required = False
+
+        try:
+            gre_score = GREScore.objects.get(student__user_id=request.user.id)
+            gre_required = True
+        except GREScore.DoesNotExist:
+            gre_score = []
+
+        try:
+            toefl_score = TOEFLScore.objects.get(student__user_id=request.user.id)
+            toefl_required = True
+        except TOEFLScore.DoesNotExist:
+            toefl_score = []
+
+
+        schools = SchoolProgram.objects.all()
+        schools_results = []
+
+        if gre_required and toefl_required:
+            for school in schools:
+                print(school)
+                if (student.current_gpa > school.gpa) and (gre_score.verb > school.greverbal) and (gre_score.quant > school.greapti)and (gre_score.write > school.grewriting)and (toefl_score.reading > school.toeflreading) and (toefl_score.listening > school.toefllistening)and (toefl_score.writing > school.toeflwriting)and (toefl_score.speaking > school.toeflspeaking):
+                    schools_results.append(school.id)
+        elif gre_required:
+            for school in schools:
+                if (student.current_gpa > school.gpa) and (gre_score.verb > school.greverbal) and (gre_score.quant > school.greapti)and (gre_score.write > school.grewriting):
+                    schools_results.append(school.id)
+        elif toefl_required:
+
+            for school in schools:
+                if (student.current_gpa > school.gpa) and (toefl_score.reading > school.toeflreading) and (toefl_score.listening > school.toefllistening)and (toefl_score.writing > school.toeflwriting)and (toefl_score.speaking > school.toeflspeaking):
+                    schools_results.append(school.id)
+        else:
+            for school in schools:
+                if (student.current_gpa > school.gpa):
+                    schools_results.append(school.id)
+
+
+
+        schools_results = SchoolProgram.objects.filter(id__in=schools_results)
+
+
+        params = {'school_programs':schools_results,
                   'gre_required':gre_required,
                   'toefl_required':toefl_required}
 

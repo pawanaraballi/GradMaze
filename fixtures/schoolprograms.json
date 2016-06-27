@@ -4,7 +4,15 @@
     "pk": 1,
     "fields": {
       "school": 1,
-      "program": 1
+      "program": 1,
+      "greverbal" : "150",
+      "greapti" : "150",
+      "grewriting" : "3",
+      "toeflreading" : "15",
+      "toefllistening" : "15",
+      "toeflspeaking" : "15",
+      "toeflwriting" : "15",
+      "gpa" : "3.0"
     }
   },
   {
@@ -12,7 +20,15 @@
     "pk": 2,
     "fields": {
       "school": 1,
-      "program": 2
+      "program": 2,
+      "greverbal" : "150",
+      "greapti" : "150",
+      "grewriting" : "3",
+      "toeflreading" : "15",
+      "toefllistening" : "15",
+      "toeflspeaking" : "15",
+      "toeflwriting" : "15",
+      "gpa" : "3.0"
     }
   },
   {
@@ -20,7 +36,15 @@
     "pk": 3,
     "fields": {
       "school": 2,
-      "program": 1
+      "program": 1,
+      "greverbal" : "150",
+      "greapti" : "150",
+      "grewriting" : "3",
+      "toeflreading" : "15",
+      "toefllistening" : "15",
+      "toeflspeaking" : "15",
+      "toeflwriting" : "15",
+      "gpa" : "3.0"
     }
   },
   {
@@ -28,23 +52,15 @@
     "pk": 4,
     "fields": {
       "school": 2,
-      "program": 2
-    }
-  },
-  {
-    "model": "main.schoolprogram",
-    "pk": 5,
-    "fields": {
-      "school": 2,
-      "program": 3
-    }
-  },
-  {
-    "model": "main.schoolprogram",
-    "pk": 6,
-    "fields": {
-      "school": 2,
-      "program": 4
+      "program": 2,
+      "greverbal" : "150",
+      "greapti" : "150",
+      "grewriting" : "3",
+      "toeflreading" : "15",
+      "toefllistening" : "15",
+      "toeflspeaking" : "15",
+      "toeflwriting" : "15",
+      "gpa" : "3.0"
     }
   }
 ]

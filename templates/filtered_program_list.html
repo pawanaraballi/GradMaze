@@ -31,7 +31,7 @@
         {% if gre_required and toefl_required %}
             {% for program in programs %}
                 <tr>
-                    <td><a href="{{program.id}}">{{ program.name }}</a></td>
+                    <td><a href="../{{program.id}}">{{ program.name }}</a></td>
                     <td>{{ program.level }}</td>
                     <td>{{program.gpa}}</td>
                     <td>{{program.greapti}}</td>
@@ -47,7 +47,7 @@
         {% elif gre_required %}
             {% for program in programs %}
                 <tr>
-                    <td><a href="{{program.id}}">{{ program.name }}</a></td>
+                    <td><a href="../{{program.id}}">{{ program.name }}</a></td>
                     <td>{{ program.level }}</td>
                     <td>{{program.gpa}}</td>
                     <td>{{program.greapti}}</td>
@@ -59,7 +59,7 @@
         {% elif toefl_required %}
             {% for program in programs %}
                 <tr>
-                    <td><a href="{{program.id}}">{{ program.name }}</a></td>
+                    <td><a href="../{{program.id}}">{{ program.name }}</a></td>
                     <td>{{ program.level }}</td>
                     <td>{{program.gpa}}</td>
                     <td>{{program.toeflreading}}</td>
@@ -72,7 +72,7 @@
         {% else  %}
             {% for program in programs %}
                 <tr>
-                    <td><a href="{{program.id}}">{{ program.name }}</a></td>
+                    <td><a href="../{{program.id}}">{{ program.name }}</a></td>
                     <td>{{ program.level }}</td>
                     <td>{{program.gpa}}</td>
                 </tr>

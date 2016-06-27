@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-<title>Filtered Schools</title>
+<title>Filtered School</title>
 {% endblock %}
 
 {% block content %}
@@ -31,7 +31,7 @@
         {% if gre_required and toefl_required %}
             {% for school in schools %}
                 <tr>
-                    <td><a href="{{school.id}}">{{ school.name }}</a></td>
+                    <td><a href="../{{school.id}}">{{ school.name }}</a></td>
                     <td>{{ school.abbr }}</td>
                     <td>{{school.gpa}}</td>
                     <td>{{school.greapti}}</td>
@@ -47,7 +47,7 @@
         {% elif gre_required %}
             {% for school in schools %}
                 <tr>
-                    <td><a href="{{school.id}}">{{ school.name }}</a></td>
+                    <td><a href="../{{school.id}}">{{ school.name }}</a></td>
                     <td>{{ school.abbr }}</td>
                     <td>{{school.gpa}}</td>
                     <td>{{school.greapti}}</td>
@@ -59,7 +59,7 @@
         {% elif toefl_required %}
             {% for school in schools %}
                 <tr>
-                    <td><a href="{{school.id}}">{{ school.name }}</a></td>
+                    <td><a href="../{{school.id}}">{{ school.name }}</a></td>
                     <td>{{ school.abbr }}</td>
                     <td>{{school.gpa}}</td>
                     <td>{{school.toeflreading}}</td>
@@ -72,7 +72,7 @@
         {% else  %}
             {% for school in schools %}
                 <tr>
-                    <td><a href="{{school.id}}">{{ school.name }}</a></td>
+                    <td><a href="../{{school.id}}">{{ school.name }}</a></td>
                     <td>{{ school.abbr }}</td>
                     <td>{{school.gpa}}</td>
                 </tr>

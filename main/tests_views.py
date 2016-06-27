@@ -268,7 +268,14 @@ class SimilarStudentViewTestCase(TestCase):
 
     def setUp(self):
         user = User.objects.create_user('foo', password='bar')
-        self.student = Student.objects.create(user=user)
+        user1 = User.objects.create_user('foo1', password='bar')
+        user2 = User.objects.create_user('foo2', password='bar')
+        user3 = User.objects.create_user('foo3', password='bar')
+        self.student = Student.objects.create(user=user,current_gpa=3.8)
+        self.student1 = Student.objects.create(user=user1,current_gpa=1.5)
+        self.student2 = Student.objects.create(user=user2,current_gpa=3.1)
+        self.student3 = Student.objects.create(user=user3,current_gpa=2.8)
+
 
     def test_load_view(self):
         """Test GET/POST of Similar Student Page"""
@@ -276,8 +283,51 @@ class SimilarStudentViewTestCase(TestCase):
         c.login(username='foo', password='bar')
         response = c.get('/GradMaze/users/similar', follow=True)
         self.assertEqual(response.status_code, 200)
-
+        self.assertTemplateUsed(response, 'similar_students.html')
 
         response = c.post('/GradMaze/users/similar', follow=True)
-        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'similar_students.html')
+
+    def test_gre_similar(self):
+        gre = GREScore.objects.create(student=self.student,verb=1,quant=1,write=1)
+        gre1 = GREScore.objects.create(student=self.student1,verb=-1,quant=1,write=-1)
+
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/users/similar', follow=True)
+        similar_students = response.context['similar_students']
+
+        self.assertEqual(similar_students,zip([self.student,self.student1],[gre,gre1]))
+
+    def test_toefl_similar(self):
+        toefl = TOEFLScore.objects.create(student=self.student,reading=1,listening=1,speaking=1,writing=1)
+        toefl1 = TOEFLScore.objects.create(student=self.student1,reading=-1,listening=1,speaking=-1,writing=1)
+
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/users/similar', follow=True)
+        similar_students = response.context['similar_students']
+
+        self.assertEqual(similar_students,zip([self.student,self.student1],[toefl,toefl1]))
+
+    def test_gre_toefl_similar(self):
+        gre = GREScore.objects.create(student=self.student,verb=1,quant=1,write=1)
+        gre1 = GREScore.objects.create(student=self.student1,verb=-1,quant=1,write=-1)
+        toefl = TOEFLScore.objects.create(student=self.student,reading=1,listening=1,speaking=1,writing=1)
+        toefl1 = TOEFLScore.objects.create(student=self.student1,reading=-1,listening=1,speaking=-1,writing=1)
+
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/users/similar', follow=True)
+        similar_students = response.context['similar_students']
+
+        self.assertEqual(similar_students,zip([self.student,self.student1],[gre,gre1],[toefl,toefl1]))
+
+    def test_gpa_similar(self):
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/users/similar', follow=True)
+        similar_students = response.context['similar_students']
+
+        self.assertEqual(similar_students,[self.student,self.student1,self.student2,self.student3])

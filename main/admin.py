@@ -3,11 +3,11 @@ from .models import School, Program, Student, SchoolProgram, Application
 
 
 class SchoolAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name','abbr','greverbal','greapti','grewriting','toefl','gpa']
+    list_display = ['id', 'name','abbr','greverbal','greapti','grewriting','gpa']
 admin.site.register(School, SchoolAdmin)
 
 class ProgramAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'level','greverbal','greapti','grewriting','toefl','gpa']
+    list_display = ['id', 'name', 'level','greverbal','greapti','grewriting','gpa']
 admin.site.register(Program, ProgramAdmin)
 
 class StudentAdmin(admin.ModelAdmin):
@@ -20,7 +20,7 @@ class ApplicationAdmin(admin.ModelAdmin):
 admin.site.register(Application, ApplicationAdmin)
 
 class SchoolProgramAdmin(admin.ModelAdmin):
-    list_display = ['id', 'school', 'program','greverbal','greapti','grewriting','toefl','gpa']
+    list_display = ['id', 'school', 'program','greverbal','greapti','grewriting','gpa']
 admin.site.register(SchoolProgram, SchoolProgramAdmin)
 
 

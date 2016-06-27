@@ -55,8 +55,8 @@
 		"pk": 5,
 		"fields":{
 			"student" : 5,
-			"verb" : 150,
-			"quant" : 130,
+			"verb" : 155,
+			"quant" : 155,
 			"write" : 1
 		}
 	}

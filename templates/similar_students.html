@@ -8,41 +8,101 @@
 
     <h2>Similar Students</h2>
 
+
+
     <div class="table-responsive">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Student</th>
-        <th>Current Program</th>
-        <th>Current GPA</th>
-        <th>Current Credit Hours</th>
-        <th>Current Start Date</th>
-        <th>Current End Date</th>
-        <th>Previous Program</th>
-        <th>Previous GPA</th>
-        <th>Previous Credit Hours</th>
-        <th>Previous Start Date</th>
-        <th>Previous End Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for student in similar_students %}
-      <tr>
-        <td><a href="../{{student.user.id}}">{{ student.user }}</a></td>
-        <td>{{ student.current_program }}</td>
-        <td>{{ student.current_gpa }}</td>
-        <td>{{ student.current_credit_hours }}</td>
-        <td>{{ student.current_start_date }}</td>
-        <td>{{ student.current_end_date }}</td>
-        <td>{{ student.prev_program }}</td>
-        <td>{{ student.prev_gpa }}</td>
-        <td>{{ student.prev_credit_hours }}</td>
-        <td>{{ student.prev_start_date }}</td>
-        <td>{{ student.prev_end_date }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Student</th>
+                <th>Current Program</th>
+                <th>Current GPA</th>
+
+                {% if gre_required %}
+                    <th>GRE Verbal</th>
+                    <th>GRE Quant</th>
+                    <th>GRE Writing</th>
+                {% endif %}
+
+                {% if toefl_required %}
+                    <th>TOEFL</th>
+                    <th>TOEFL</th>
+                    <th>TOEFL</th>
+                    <th>TOEFL</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+
+            {% if gre_required and toefl_required %}
+                {% for student, gre , toefl in similar_students %}
+                    <tr>
+                        <td><a href="../{{student.user.id}}">{{ student.user }}</a></td>
+                        <td>{{ student.current_program }}</td>
+                        <td>{{ student.current_gpa }}</td>
+                        {% if gre_required %}
+                            <td>{{ gre.verb }}</td>
+                            <td>{{ gre.quant }}</td>
+                            <td>{{ gre.write }}</td>
+                        {% endif %}
+                        {% if toefl_required %}
+                            <td>{{ toefl.reading }}</td>
+                            <td>{{ toefl.listening}}</td>
+                            <td>{{ toefl.speaking}}</td>
+                            <td>{{ toefl.writing}}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+
+            {% elif gre_required %}
+                {% for student, gre  in similar_students %}
+                    <tr>
+                        <td><a href="../{{student.user.id}}">{{ student.user }}</a></td>
+                        <td>{{ student.current_program }}</td>
+                        <td>{{ student.current_gpa }}</td>
+                        {% if gre_required %}
+                            <td>{{ gre.verb }}</td>
+                            <td>{{ gre.quant }}</td>
+                            <td>{{ gre.write }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+
+
+            {% elif toefl_required %}
+
+                {% for student, toefl in similar_students %}
+                    <tr>
+                        <td><a href="../{{student.user.id}}">{{ student.user }}</a></td>
+                        <td>{{ student.current_program }}</td>
+                        <td>{{ student.current_gpa }}</td>
+
+                        {% if toefl_required %}
+                            <td>{{ toefl.reading }}</td>
+                            <td>{{ toefl.listening}}</td>
+                            <td>{{ toefl.speaking}}</td>
+                            <td>{{ toefl.writing}}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+
+            {% else %}
+
+                {% for student in similar_students %}
+                    <tr>
+                        <td><a href="../{{student.user.id}}">{{ student.user }}</a></td>
+                        <td>{{ student.current_program }}</td>
+                        <td>{{ student.current_gpa }}</td>
+                    </tr>
+                {% endfor %}
+
+            {% endif %}
+
+
+
+
+            </tbody>
+        </table>
+    </div>
 
 {% endblock %}

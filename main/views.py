@@ -541,34 +541,108 @@ class SimilarStudentsView(View):
         metrics = SimilarityMetrics()
         similar_thres = .75
 
+
         target_student = Student.objects.get(user_id=request.user.id)
-        target_gre = GREScore.objects.get(student__user_id=request.user.id)
+
+        try:
+            target_gre = GREScore.objects.get(student__user_id=request.user.id)
+        except GREScore.DoesNotExist:
+            target_gre = []
+
+        try:
+            target_toefl = TOEFLScore.objects.get(student__user_id=request.user.id)
+        except TOEFLScore.DoesNotExist:
+            target_toefl = []
+
+
+        target_vect = [target_student.current_gpa]
+        fake_mean_gpa = [3.0]
+        gre_required = False
+        toefl_required = False
+
+        if target_gre:
+            fake_mean_gre = [150,150,3]
+            gre_required = True
+            target_vect = target_vect + [target_gre.verb,target_gre.quant,target_gre.write]
+        else:
+            fake_mean_gre = []
+
+
+        if target_toefl:
+            fake_mean_toefl = [20,20,20,20]
+            toefl_required = True
+            target_vect = target_vect + [target_toefl.reading,target_toefl.listening,target_toefl.speaking,target_toefl.writing]
+        else:
+            fake_mean_toefl = []
+
+
+
+        fake_mean = np.asarray(fake_mean_gpa+fake_mean_gre+fake_mean_toefl)
+
+
+        target_vect = np.asarray(target_vect)-fake_mean
+
+
         all_students = Student.objects.all()
-
-        fake_mean = np.asarray([3.0,150,150,3])
-
-        target_vect = np.asarray([target_student.current_gpa,target_gre.verb,target_gre.quant,target_gre.write])-fake_mean
-        print(target_vect)
-
-
-
         scores = []
         for student in all_students:
-            gre = GREScore.objects.get(student__user_id=student.user_id)
 
-            vect = np.asarray([student.current_gpa,gre.verb,gre.quant,gre.write])-fake_mean
-            print(vect)
+            vect = [student.current_gpa]
 
+            if gre_required:
+                try:
+                    gre = GREScore.objects.get(student__user_id=student.user_id)
+                    vect = vect + [gre.verb,gre.quant,gre.write]
+                except GREScore.DoesNotExist:
+                    scores.append(0)
+                    continue
+
+            if toefl_required:
+                try:
+                    toefl = TOEFLScore.objects.get(student__user_id=student.user_id)
+                    vect = vect + [toefl.reading,toefl.listening,toefl.speaking,toefl.writing]
+                except TOEFLScore.DoesNotExist:
+                    scores.append(0)
+                    continue
+
+
+            vect = np.asarray(vect)-fake_mean
+
+            # In this context this is actually pearson correlation and not cosine similarity
             scores.append(np.abs(metrics.cosine_similarity(vect,target_vect)))
 
 
-        print(scores)
-
         similar_students = []
+        similar_students_gre = []
+        similar_students_toefl = []
         for i, score in enumerate(scores):
             if score >= similar_thres:
-                similar_students.append(all_students[i])
 
-        params = {"similar_students":similar_students}
+                try:
+                    similar_students.append(all_students[i])
+                    if toefl_required:
+                        similar_students_toefl.append(TOEFLScore.objects.get(student=all_students[i].id))
+                    if gre_required:
+                        similar_students_gre.append(GREScore.objects.get(student=all_students[i].id))
+
+                except (GREScore.DoesNotExist,TOEFLScore.DoesNotExist):
+                    continue
+
+
+
+        if(gre_required and toefl_required):
+            similar_students = zip(similar_students,similar_students_gre,similar_students_toefl)
+        elif(gre_required):
+            similar_students = zip(similar_students,similar_students_gre)
+        elif(toefl_required):
+            similar_students = zip(similar_students,similar_students_toefl)
+
+
+
+
+
+        params = {"similar_students":similar_students,
+                  "toefl_required":toefl_required,
+                  "gre_required":gre_required}
 
         return render(request, self.template_name,params )

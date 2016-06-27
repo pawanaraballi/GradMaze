@@ -264,3 +264,20 @@ class SearchResultViewTestCase(TestCase):
         self.assertTemplateUsed(response, 'search_results.html')
 
 
+class SimilarStudentViewTestCase(TestCase):
+
+    def setUp(self):
+        user = User.objects.create_user('foo', password='bar')
+        self.student = Student.objects.create(user=user)
+
+    def test_load_view(self):
+        """Test GET/POST of Similar Student Page"""
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/users/similar', follow=True)
+        self.assertEqual(response.status_code, 200)
+
+
+        response = c.post('/GradMaze/users/similar', follow=True)
+        self.assertEqual(response.status_code, 405)
+        self.assertTemplateUsed(response, 'similar_students.html')

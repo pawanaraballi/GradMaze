@@ -495,3 +495,30 @@ class CancelSubView(View):
 
         return HttpResponse('result')
 
+class AdvancedSearchResultView(View):
+    template_name = 'advanced_search_results.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(AdvancedSearchResultView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+
+        school = []
+        program = []
+        from django.db.models import Q
+        # if(request.POST.get('query-advanced-search-school') != '' and request.POST.get('query-advanced-search-program') != ''):
+        #     school = School.objects.filter(Q(name__icontains=request.POST.get('query-advanced-search-school'))|Q(abbr__icontains=request.POST.get('query-advanced-search-school'))),
+        #     program = Program.objects.filter(Q(name__icontains=request.POST.get('query-advanced-search-program'))|Q(level__icontains=request.POST.get('query-advanced-search-program')))
+        if(request.POST.get('query-advanced-search-school') != ''):
+            school = School.objects.filter(Q(name__icontains=request.POST.get('query-advanced-search-school'))|Q(abbr__icontains=request.POST.get('query-advanced-search-school')))
+        if(request.POST.get('query-advanced-search-program') != ''):
+            program = Program.objects.filter(Q(name__icontains=request.POST.get('query-advanced-search-program'))|Q(level__icontains=request.POST.get('query-advanced-search-program')))
+
+
+
+        params = {'school':school,
+                  'program':program}
+
+        return render(request, self.template_name,params )
+

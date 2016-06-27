@@ -22,6 +22,18 @@ from .forms import *
 
 class IndexView(TemplateView):
     template_name = 'index.html'
+    def get(self, request, *args, **kwargs):
+        try:
+            application_details = Application.objects.all().order_by('-date_updated')
+        except Application.DoesNotExist:
+            application_details=[]
+
+
+        params = {
+            'application_details':application_details
+        }
+
+        return render(request,self.template_name,params)
 
 #
 class RegisterView(FormView):
@@ -447,7 +459,6 @@ class DetailStudentListView(ListView):
         }
 
         return render(request,self.template_name,params)
-
 
 
 class SearchResultView(View):

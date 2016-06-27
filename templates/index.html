@@ -6,4 +6,35 @@
 
 {% block content %}
     <h1 class="page-header">Welcome to GradMaze</h1>
+    <h3 class="page-header">Recent updates</h3>
+
+    <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Student #</th>
+                  <th>School</th>
+                <th>Program</th>
+                <th>GPA</th>
+                <th>Date Submitted</th>
+                <th>Date Updated</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for application in application_details %}
+              <tr>
+                <td>{{ application.student.user_id }}</td>
+                  <td>{{ application.school_program.school}}</td>
+                <td>{{ application.school_program.program}}</td>
+                <td>{{ application.school_program.gpa}}</td>
+                <td>{{ application.date_submitted}}</td>
+                <td>{{ application.date_updated}}</td>
+                <td>{{ application.status }}</td>
+              </tr>
+              {% empty %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
 {%  endblock %}

@@ -24,6 +24,8 @@ urlpatterns = [
     url(r'^schoolprogram/$', views.SchoolProgramListView.as_view(), name='school-program-list'),
 
     url(r'^programs/filtered/$', views.FilteredProgramListView.as_view(), name='filtered-program-list'),
+    url(r'^schools/filtered/$', views.FilteredSchoolListView.as_view(), name='filtered-school-list'),
+
 
     url(r'^programs/(?P<pk>\d+)$', views.DetailProgramFromSP.as_view(), name='program-ancher-list'),
     url(r'^schools/(?P<pk>\d+)$', views.DetailSchoolFromSP.as_view(), name='school-ancher-list'),

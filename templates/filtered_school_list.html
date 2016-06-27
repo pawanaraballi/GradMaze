@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Filtered Schools</title>
+{% endblock %}
+
+{% block content %}
+
+<h3>Schools With Requirments You Meet</h3>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Abbreviation</th>
+            <th>GPA</th>
+            {% if gre_required %}
+                <th>GRE Quant</th>
+                <th>GRE Verbal</th>
+                <th>GRE Writing</th>
+            {% endif %}
+            {% if toefl_required %}
+                <th>TOEFL Reading</th>
+                <th>TOEFL Listening</th>
+                <th>TOEFL Speaking</th>
+                <th>TOEFL Writing</th>
+            {% endif  %}
+        </tr>
+        </thead>
+        <tbody>
+        {% if gre_required and toefl_required %}
+            {% for school in schools %}
+                <tr>
+                    <td><a href="{{school.id}}">{{ school.name }}</a></td>
+                    <td>{{ school.abbr }}</td>
+                    <td>{{school.gpa}}</td>
+                    <td>{{school.greapti}}</td>
+                    <td>{{school.greverbal}}</td>
+                    <td>{{school.grewriting}}</td>
+                    <td>{{school.toeflreading}}</td>
+                    <td>{{school.toefllistening}}</td>
+                    <td>{{school.toeflspeaking}}</td>
+                    <td>{{school.toeflwriting}}</td>
+                </tr>
+                {% empty %}
+            {% endfor %}
+        {% elif gre_required %}
+            {% for school in schools %}
+                <tr>
+                    <td><a href="{{school.id}}">{{ school.name }}</a></td>
+                    <td>{{ school.abbr }}</td>
+                    <td>{{school.gpa}}</td>
+                    <td>{{school.greapti}}</td>
+                    <td>{{school.greverbal}}</td>
+                    <td>{{school.grewriting}}</td>
+                </tr>
+                {% empty %}
+            {% endfor %}
+        {% elif toefl_required %}
+            {% for school in schools %}
+                <tr>
+                    <td><a href="{{school.id}}">{{ school.name }}</a></td>
+                    <td>{{ school.abbr }}</td>
+                    <td>{{school.gpa}}</td>
+                    <td>{{school.toeflreading}}</td>
+                    <td>{{school.toefllistening}}</td>
+                    <td>{{school.toeflspeaking}}</td>
+                    <td>{{school.toeflwriting}}</td>
+                </tr>
+                {% empty %}
+            {% endfor %}
+        {% else  %}
+            {% for school in schools %}
+                <tr>
+                    <td><a href="{{school.id}}">{{ school.name }}</a></td>
+                    <td>{{ school.abbr }}</td>
+                    <td>{{school.gpa}}</td>
+                </tr>
+                {% empty %}
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -5,11 +5,14 @@
     "fields": {
       "name": "University of North Carolina at Charlotte",
       "abbr": "UNCC",
-      "greverbal" : "165",
-      "greapti" : "165",
+      "greverbal" : "150",
+      "greapti" : "150",
       "grewriting" : "3",
-      "toefl" : "112",
-      "gpa" : "3.5"
+      "toeflreading" : "20",
+      "toefllistening" : "20",
+      "toeflspeaking" : "20",
+      "toeflwriting" : "20",
+      "gpa" : "3.0"
     }
   },
   {
@@ -20,9 +23,12 @@
       "abbr": "UNC",
       "greverbal" : "155",
       "greapti" : "155",
-      "grewriting" : "3.5",
-      "toefl" : "102",
-      "gpa" : "4"
+      "grewriting" : "3",
+      "toeflreading" : "20",
+      "toefllistening" : "20",
+      "toeflspeaking" : "20",
+      "toeflwriting" : "20",
+      "gpa" : "3.2"
     }
   }
 ]

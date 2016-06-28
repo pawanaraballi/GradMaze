@@ -8,11 +8,14 @@ from django.contrib.auth.models import User
 class School(models.Model):
     name = models.CharField(max_length=50)
     abbr = models.CharField(max_length=5, null=True)
-    greverbal = models.CharField(max_length=5, null=True)
-    greapti = models.CharField(max_length=5, null=True)
-    grewriting = models.CharField(max_length=5, null=True)
-    toefl = models.CharField(max_length=5, null=True)
-    gpa = models.CharField(max_length=5, null=True)
+    greverbal = models.IntegerField( null=True)
+    greapti = models.IntegerField( null=True)
+    grewriting = models.IntegerField(null=True)
+    toeflreading = models.IntegerField(null=True)
+    toefllistening = models.IntegerField(null=True)
+    toeflspeaking = models.IntegerField(null=True)
+    toeflwriting = models.IntegerField(null=True)
+    gpa = models.FloatField( null=True)
 
     def __str__(self):
         return str(self.name)
@@ -25,11 +28,14 @@ class Program(models.Model):
     name = models.CharField(max_length=50)
     level = models.CharField(max_length=50)  # Masters/PhD/PSM
     school_level = models.CharField(max_length=50) # Graduate vs Undergraduate
-    greverbal = models.CharField(max_length=5, null=True)
-    greapti = models.CharField(max_length=5, null=True)
-    grewriting = models.CharField(max_length=5, null=True)
-    toefl = models.CharField(max_length=5, null=True)
-    gpa = models.CharField(max_length=5, null=True)
+    greverbal = models.IntegerField(null=True)
+    greapti = models.IntegerField(null=True)
+    grewriting = models.IntegerField(null=True)
+    toeflreading = models.IntegerField(null=True)
+    toefllistening = models.IntegerField(null=True)
+    toeflspeaking = models.IntegerField(null=True)
+    toeflwriting = models.IntegerField(null=True)
+    gpa = models.FloatField(null=True)
 
     def __str__(self):
         return str(self.level) + " " + str(self.name)
@@ -41,11 +47,14 @@ class Program(models.Model):
 class SchoolProgram(models.Model):
     school = models.ForeignKey(School)
     program = models.ForeignKey(Program)
-    greverbal = models.CharField(max_length=5, null=True)
-    greapti = models.CharField(max_length=5, null=True)
-    grewriting = models.CharField(max_length=5, null=True)
-    toefl = models.CharField(max_length=5, null=True)
-    gpa = models.CharField(max_length=5, null=True)
+    greverbal = models.IntegerField(null=True)
+    greapti = models.IntegerField(null=True)
+    grewriting = models.IntegerField(null=True)
+    toeflreading = models.IntegerField(null=True)
+    toefllistening = models.IntegerField(null=True)
+    toeflspeaking = models.IntegerField(null=True)
+    toeflwriting = models.IntegerField(null=True)
+    gpa = models.FloatField( null=True)
 
     def __str__(self):
         return str(self.school) + " - " + str(self.program)

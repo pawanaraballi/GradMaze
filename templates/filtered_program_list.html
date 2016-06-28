@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Filtered Programs</title>
+{% endblock %}
+
+{% block content %}
+
+<h3>Programs With Requirments You Meet</h3>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Level</th>
+            <th>GPA</th>
+            {% if gre_required %}
+                <th>GRE Quant</th>
+                <th>GRE Verbal</th>
+                <th>GRE Writing</th>
+            {% endif %}
+            {% if toefl_required %}
+                <th>TOEFL Reading</th>
+                <th>TOEFL Listening</th>
+                <th>TOEFL Speaking</th>
+                <th>TOEFL Writing</th>
+            {% endif  %}
+        </tr>
+        </thead>
+        <tbody>
+        {% if gre_required and toefl_required %}
+            {% for program in programs %}
+                <tr>
+                    <td><a href="../{{program.id}}">{{ program.name }}</a></td>
+                    <td>{{ program.level }}</td>
+                    <td>{{program.gpa}}</td>
+                    <td>{{program.greapti}}</td>
+                    <td>{{program.greverbal}}</td>
+                    <td>{{program.grewriting}}</td>
+                    <td>{{program.toeflreading}}</td>
+                    <td>{{program.toefllistening}}</td>
+                    <td>{{program.toeflspeaking}}</td>
+                    <td>{{program.toeflwriting}}</td>
+                </tr>
+                {% empty %}
+            {% endfor %}
+        {% elif gre_required %}
+            {% for program in programs %}
+                <tr>
+                    <td><a href="../{{program.id}}">{{ program.name }}</a></td>
+                    <td>{{ program.level }}</td>
+                    <td>{{program.gpa}}</td>
+                    <td>{{program.greapti}}</td>
+                    <td>{{program.greverbal}}</td>
+                    <td>{{program.grewriting}}</td>
+                </tr>
+                {% empty %}
+            {% endfor %}
+        {% elif toefl_required %}
+            {% for program in programs %}
+                <tr>
+                    <td><a href="../{{program.id}}">{{ program.name }}</a></td>
+                    <td>{{ program.level }}</td>
+                    <td>{{program.gpa}}</td>
+                    <td>{{program.toeflreading}}</td>
+                    <td>{{program.toefllistening}}</td>
+                    <td>{{program.toeflspeaking}}</td>
+                    <td>{{program.toeflwriting}}</td>
+                </tr>
+                {% empty %}
+            {% endfor %}
+        {% else  %}
+            {% for program in programs %}
+                <tr>
+                    <td><a href="../{{program.id}}">{{ program.name }}</a></td>
+                    <td>{{ program.level }}</td>
+                    <td>{{program.gpa}}</td>
+                </tr>
+                {% empty %}
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

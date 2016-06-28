@@ -8,9 +8,12 @@
       "school_level":"Graduate",
       "greverbal" : "155",
       "greapti" : "155",
-      "grewriting" : "3.5",
-      "toefl" : "102",
-      "gpa" : "4"
+      "grewriting" : "3",
+      "toeflreading" : "20",
+      "toefllistening" : "20",
+      "toeflspeaking" : "20",
+      "toeflwriting" : "20",
+      "gpa" : "3.0"
     }
   },
   {
@@ -22,9 +25,12 @@
       "school_level":"Graduate",
       "greverbal" : "155",
       "greapti" : "155",
-      "grewriting" : "3.5",
-      "toefl" : "102",
-      "gpa" : "4"
+      "grewriting" : "3",
+      "toeflreading" : "20",
+      "toefllistening" : "20",
+      "toeflspeaking" : "20",
+      "toeflwriting" : "20",
+      "gpa" : "3.0"
     }
   },
   {

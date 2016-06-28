@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Filtered School Programs</title>
+{% endblock %}
+
+{% block content %}
+
+<h3>School Programs With Requirments You Meet</h3>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Program</th>
+            <th>School</th>
+            <th>GPA</th>
+            {% if gre_required %}
+                <th>GRE Quant</th>
+                <th>GRE Verbal</th>
+                <th>GRE Writing</th>
+            {% endif %}
+            {% if toefl_required %}
+                <th>TOEFL Reading</th>
+                <th>TOEFL Listening</th>
+                <th>TOEFL Speaking</th>
+                <th>TOEFL Writing</th>
+            {% endif  %}
+        </tr>
+        </thead>
+        <tbody>
+        {% if gre_required and toefl_required %}
+            {% for school_program in school_programs %}
+                <tr>
+                    <td><a href="../{{school_program.id}}">{{ school_program.program }}</a></td>
+                    <td>{{ school_program.school }}</td>
+                    <td>{{school_program.gpa}}</td>
+                    <td>{{school_program.greapti}}</td>
+                    <td>{{school_program.greverbal}}</td>
+                    <td>{{school_program.grewriting}}</td>
+                    <td>{{school_program.toeflreading}}</td>
+                    <td>{{school_program.toefllistening}}</td>
+                    <td>{{school_program.toeflspeaking}}</td>
+                    <td>{{school_program.toeflwriting}}</td>
+                </tr>
+                {% empty %}
+            {% endfor %}
+        {% elif gre_required %}
+            {% for school_program in school_programs %}
+                <tr>
+                    <td><a href="../{{school_program.id}}">{{ school_program.program }}</a></td>
+                    <td>{{ school_program.school }}</td>
+                    <td>{{school_program.gpa}}</td>
+                    <td>{{school_program.greapti}}</td>
+                    <td>{{school_program.greverbal}}</td>
+                    <td>{{school_program.grewriting}}</td>
+                </tr>
+                {% empty %}
+            {% endfor %}
+        {% elif toefl_required %}
+            {% for school_program in school_programs %}
+                <tr>
+                    <td><a href="../{{school_program.id}}">{{ school_program.program }}</a></td>
+                    <td>{{ school_program.school }}</td>
+                    <td>{{school_program.gpa}}</td>
+                    <td>{{school_program.toeflreading}}</td>
+                    <td>{{school_program.toefllistening}}</td>
+                    <td>{{school_program.toeflspeaking}}</td>
+                    <td>{{school_program.toeflwriting}}</td>
+                </tr>
+                {% empty %}
+            {% endfor %}
+        {% else  %}
+            {% for school_program in school_programs %}
+                <tr>
+                    <td><a href="../{{school_program.id}}">{{ school_program.program }}</a></td>
+                    <td>{{ school_program.school }}</td>
+                    <td>{{school_program.gpa}}</td>
+                </tr>
+                {% empty %}
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

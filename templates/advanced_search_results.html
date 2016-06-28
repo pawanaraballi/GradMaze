@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Results</title>
+{% endblock %}
+
+{% block content %}
+
+    <h2 class="page-header">Results for... "{{query_string}}"</h2>
+
+    <h3>Results in Schools</h3>
+
+    {% if schools %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>School</th>
+                    <th>Abbr</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for school in schools %}
+                <tr>
+                    <td><a href="../schools/{{school.id}}">{{ school.name }}</a></td>
+                    <td>{{ school.abbr }}</td>
+                </tr>
+                {% empty %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        No Results
+    {% endif %}
+
+
+
+    <h3>Results in Programs</h3>
+    {% if programs %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Program</th>
+                    <th>Level</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for program in programs %}
+                <tr>
+                    <td><a href="../programs/{{program.id}}">{{ program.name }}</a></td>
+                    <td>{{ program.level }}</td>
+                </tr>
+                {% empty %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        No Results
+    {% endif %}
+
+    <h3>Results in School Programs</h3>
+    {% if school_programs %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>School</th>
+                    <th>Program</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for schoolprogram in school_programs %}
+                <tr>
+                    <td><a href="../schoolprogram/{{schoolprogram.id}}">{{ schoolprogram.school }}</a></td>
+                    <td>{{ schoolprogram.program }}</td>
+                </tr>
+                {% empty %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        No Results
+    {% endif %}
+
+{% endblock %}

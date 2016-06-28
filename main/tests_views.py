@@ -253,6 +253,14 @@ class DeleteIndustExprViewTestCase(TestCase):
 
 
 class SearchResultViewTestCase(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user('foo', password='bar')
+        self.program = Program.objects.create(name='Computer Science', level='MS')
+        self.school = School.objects.create(name="Test School 1", abbr="TS1")
+        self.school_program = SchoolProgram.objects.create(school=self.school,program=self.program)
+
+
     def test_load_view(self):
         """Test GET/POST of Search Result Page"""
         response = self.client.get('/GradMaze/search/', follow=True)
@@ -262,6 +270,72 @@ class SearchResultViewTestCase(TestCase):
         response = self.client.post('/GradMaze/search/', follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'search_results.html')
+
+    def test_school_search(self):
+        """Test Search in School Field"""
+        response = self.client.post('/GradMaze/search/',{'field': 'School', 'query_string': 'Test'} ,follow=True)
+        self.assertQuerysetEqual(response.context['results'], map(repr, School.objects.filter(id=self.school.id)))
+
+
+    def test_program_search(self):
+        """Test Search in Program Field"""
+        response = self.client.post('/GradMaze/search/',{'field': 'Program', 'query_string': 'MS'} ,follow=True)
+        self.assertQuerysetEqual(response.context['results'], map(repr, Program.objects.filter(id=self.program.id)))
+
+    def test_school_program_search(self):
+        """Test Search in School Program Field"""
+        response = self.client.post('/GradMaze/search/',{'field': 'School Program', 'query_string': 'MS'} ,follow=True)
+        self.assertQuerysetEqual(response.context['results'], map(repr, SchoolProgram.objects.filter(id=self.school_program.id)))
+
+    def test_null_search(self):
+        """Test Search With No Results"""
+        response = self.client.post('/GradMaze/search/',{'field': 'School Program', 'query_string': 'PhD'} ,follow=True)
+        self.assertQuerysetEqual(response.context['results'], map(repr, []))
+
+
+
+class AdnavcedSearchResultViewTestCase(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user('foo', password='bar')
+        self.program = Program.objects.create(name='Computer Science', level='MS')
+        self.school = School.objects.create(name="Test School 1", abbr="TS1")
+        self.school_program = SchoolProgram.objects.create(school=self.school,program=self.program)
+
+
+    def test_load_view(self):
+        """Test GET/POST of Search Result Page"""
+        response = self.client.get('/GradMaze/advancedsearch/', follow=True)
+        self.assertEqual(response.status_code, 405)
+
+
+        response = self.client.post('/GradMaze/advancedsearch/',{'query_string': ''} ,follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'advanced_search_results.html')
+
+    def test_school_search(self):
+        """Test Search in School Field"""
+        response = self.client.post('/GradMaze/advancedsearch/',{'query_string': 'Test'} ,follow=True)
+        self.assertQuerysetEqual(response.context['schools'], map(repr, School.objects.filter(id=self.school.id)))
+        self.assertQuerysetEqual(response.context['programs'], map(repr, []))
+        self.assertQuerysetEqual(response.context['school_programs'], map(repr, SchoolProgram.objects.filter(id=self.school_program.id)))
+
+
+    def test_program_search(self):
+        """Test Search in Program Field"""
+        response = self.client.post('/GradMaze/advancedsearch/',{'query_string': 'MS'} ,follow=True)
+        self.assertQuerysetEqual(response.context['schools'], map(repr, []))
+        self.assertQuerysetEqual(response.context['programs'], map(repr, Program.objects.filter(id=self.program.id)))
+        self.assertQuerysetEqual(response.context['school_programs'], map(repr, SchoolProgram.objects.filter(id=self.school_program.id)))
+
+
+
+    def test_null_search(self):
+        """Test Search With No Results"""
+        response = self.client.post('/GradMaze/advancedsearch/',{ 'query_string': 'PhD'} ,follow=True)
+        self.assertQuerysetEqual(response.context['schools'], map(repr, []))
+        self.assertQuerysetEqual(response.context['programs'], map(repr, []))
+        self.assertQuerysetEqual(response.context['school_programs'], map(repr, []))
 
 
 class SimilarStudentViewTestCase(TestCase):

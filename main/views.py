@@ -22,6 +22,9 @@ from .forms import *
 
 from utilities import SimilarityMetrics
 
+
+from django.db.models import Q
+
 # Create your views here.
 
 class IndexView(TemplateView):
@@ -510,16 +513,13 @@ class SearchResultView(View):
         results = []
 
         if(request.POST.get('field') == 'School'):
-            from django.db.models import Q
             results = School.objects.filter(Q(name__icontains=request.POST.get('query_string'))|Q(abbr__icontains=request.POST.get('query_string')))
 
 
         if(request.POST.get('field') == 'Program'):
-            from django.db.models import Q
             results = Program.objects.filter(Q(name__icontains=request.POST.get('query_string'))|Q(level__icontains=request.POST.get('query_string')))
 
         if(request.POST.get('field') == 'School Program'):
-            from django.db.models import Q
             results = SchoolProgram.objects.filter(Q(school__name__icontains=request.POST.get('query_string'))|Q(school__abbr__icontains=request.POST.get('query_string'))|
                                                    Q(program__name__icontains=request.POST.get('query_string'))|Q(program__level__icontains=request.POST.get('query_string')))
 
@@ -542,6 +542,30 @@ class CancelSubView(View):
         CreditCard.objects.get(user_id=request.user.id).delete()
 
         return HttpResponse('result')
+
+class AdvancedSearchResultView(View):
+    template_name = 'advanced_search_results.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(AdvancedSearchResultView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+
+        query_string = request.POST.get('query_string')
+
+        school_results = School.objects.filter(Q(name__icontains=query_string)|Q(abbr__icontains=query_string))
+        program_results = Program.objects.filter(Q(name__icontains=query_string)|Q(level__icontains=query_string))
+        school_program_results = SchoolProgram.objects.filter(Q(school__name__icontains=query_string)|Q(school__abbr__icontains=query_string)|
+                                                   Q(program__name__icontains=query_string)|Q(program__level__icontains=query_string))
+
+
+        params = {'schools':school_results,
+                  'programs':program_results,
+                  'school_programs':school_program_results,
+                  'query_string':query_string }
+
+        return render(request, self.template_name,params )
 
 
 

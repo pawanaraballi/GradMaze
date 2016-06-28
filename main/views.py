@@ -18,6 +18,9 @@ from .models import *
 
 from .forms import *
 
+
+from django.db.models import Q
+
 # Create your views here.
 
 class IndexView(TemplateView):
@@ -462,16 +465,13 @@ class SearchResultView(View):
         results = []
 
         if(request.POST.get('field') == 'School'):
-            from django.db.models import Q
             results = School.objects.filter(Q(name__icontains=request.POST.get('query_string'))|Q(abbr__icontains=request.POST.get('query_string')))
 
 
         if(request.POST.get('field') == 'Program'):
-            from django.db.models import Q
             results = Program.objects.filter(Q(name__icontains=request.POST.get('query_string'))|Q(level__icontains=request.POST.get('query_string')))
 
         if(request.POST.get('field') == 'School Program'):
-            from django.db.models import Q
             results = SchoolProgram.objects.filter(Q(school__name__icontains=request.POST.get('query_string'))|Q(school__abbr__icontains=request.POST.get('query_string'))|
                                                    Q(program__name__icontains=request.POST.get('query_string'))|Q(program__level__icontains=request.POST.get('query_string')))
 
@@ -504,21 +504,18 @@ class AdvancedSearchResultView(View):
 
     def post(self, request, *args, **kwargs):
 
-        school = []
-        program = []
-        from django.db.models import Q
-        # if(request.POST.get('query-advanced-search-school') != '' and request.POST.get('query-advanced-search-program') != ''):
-        #     school = School.objects.filter(Q(name__icontains=request.POST.get('query-advanced-search-school'))|Q(abbr__icontains=request.POST.get('query-advanced-search-school'))),
-        #     program = Program.objects.filter(Q(name__icontains=request.POST.get('query-advanced-search-program'))|Q(level__icontains=request.POST.get('query-advanced-search-program')))
-        if(request.POST.get('query-advanced-search-school') != ''):
-            school = School.objects.filter(Q(name__icontains=request.POST.get('query-advanced-search-school'))|Q(abbr__icontains=request.POST.get('query-advanced-search-school')))
-        if(request.POST.get('query-advanced-search-program') != ''):
-            program = Program.objects.filter(Q(name__icontains=request.POST.get('query-advanced-search-program'))|Q(level__icontains=request.POST.get('query-advanced-search-program')))
+        query_string = request.POST.get('query_string')
+
+        school_results = School.objects.filter(Q(name__icontains=query_string)|Q(abbr__icontains=query_string))
+        program_results = Program.objects.filter(Q(name__icontains=query_string)|Q(level__icontains=query_string))
+        school_program_results = SchoolProgram.objects.filter(Q(school__name__icontains=query_string)|Q(school__abbr__icontains=query_string)|
+                                                   Q(program__name__icontains=query_string)|Q(program__level__icontains=query_string))
 
 
-
-        params = {'school':school,
-                  'program':program}
+        params = {'schools':school_results,
+                  'programs':program_results,
+                  'school_programs':school_program_results,
+                  'query_string':query_string }
 
         return render(request, self.template_name,params )
 

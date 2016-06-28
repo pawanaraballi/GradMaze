@@ -6,24 +6,40 @@
 
 {% block content %}
 
-  <div class="table-responsive">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>School</th>
-        <th>Program</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for schoolprogram in object_list %}
-      <tr>
-        <td><a href="{{schoolprogram.id}}">{{ schoolprogram.school }}</a></td>
-        <td>{{ schoolprogram.program }}</td>
-      </tr>
-      {% empty %}
-      {% endfor %}
-    </tbody>
-  </table>
-  </div>
+    <div class="row">
+        <div class="col-md-3">
+
+            <form  role="search" action="{%url 'search-results' %}" method="post">
+                <div class="form-group">
+                    <select class="form-control" id="search_field" aria-expanded="false" name="field" style="display:none">
+                        <option>School Program</option>
+                    </select>
+
+                    <input type="text" id="search_bar" class="form-control" placeholder="Search School Programs" name="query_string">
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>School</th>
+                <th>Program</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for schoolprogram in object_list %}
+            <tr>
+                <td><a href="{{schoolprogram.id}}">{{ schoolprogram.school }}</a></td>
+                <td>{{ schoolprogram.program }}</td>
+            </tr>
+            {% empty %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 {% endblock %}

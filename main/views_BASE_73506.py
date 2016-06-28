@@ -14,30 +14,14 @@ from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
-import numpy as np
-
 from .models import *
 
 from .forms import *
-
-from utilities import SimilarityMetrics
 
 # Create your views here.
 
 class IndexView(TemplateView):
     template_name = 'index.html'
-    def get(self, request, *args, **kwargs):
-        try:
-            application_details = Application.objects.all().order_by('-date_updated')
-        except Application.DoesNotExist:
-            application_details=[]
-
-
-        params = {
-            'application_details':application_details
-        }
-
-        return render(request,self.template_name,params)
 
 #
 class RegisterView(FormView):
@@ -442,20 +426,6 @@ class DetailSchoolProgramFromSP(DetailView):
 class UserListView(ListView):
     model = Student
     template_name = 'students_list.html'
-    extra_context = {}
-
-    def get_context_data(self, **kwargs):
-        context = super(UserListView, self).get_context_data(**kwargs)
-        self.extra_context["student"]=Student.objects.get(user_id=self.request.user.id)
-
-        context.update(self.extra_context)
-        return context
-
-
-
-
-
-
 
 class DetailStudentListView(ListView):
     template_name = 'details_student_list.html'
@@ -465,37 +435,19 @@ class DetailStudentListView(ListView):
     def get(self, request, *args, **kwargs):
         try:
             application_details = Application.objects.filter(student__user_id=self.kwargs['pk'])
+            student=Student.objects.get(user_id=self.kwargs['pk'])
         except Application.DoesNotExist:
             application_details=[]
-
-        try:
-            student=Student.objects.get(user_id=self.kwargs['pk'])
-        except Student.DoesNotExist:
             student=[]
-
-        try:
-            gre_scores=GREScore.objects.get(student__user_id=self.kwargs['pk'])
-        except GREScore.DoesNotExist:
-            gre_scores=[]
-
-        try:
-            toelf_scores=TOEFLScore.objects.get(student__user_id=self.kwargs['pk'])
-        except TOEFLScore.DoesNotExist:
-            toelf_scores=[]
-
-
-
-
 
 
         params = {
             'application_details':application_details,
-            'student': student,
-            'toelf_scores': toelf_scores,
-            'gre_scores': gre_scores
+            'student': student
         }
 
         return render(request,self.template_name,params)
+
 
 
 class SearchResultView(View):
@@ -543,285 +495,3 @@ class CancelSubView(View):
 
         return HttpResponse('result')
 
-
-
-class SimilarStudentsView(View):
-    template_name = 'similar_students.html'
-
-    def get(self, request, *args, **kwargs):
-        metrics = SimilarityMetrics()
-        similar_thres = .75
-
-
-        target_student = Student.objects.get(user_id=request.user.id)
-
-        try:
-            target_gre = GREScore.objects.get(student__user_id=request.user.id)
-        except GREScore.DoesNotExist:
-            target_gre = []
-
-        try:
-            target_toefl = TOEFLScore.objects.get(student__user_id=request.user.id)
-        except TOEFLScore.DoesNotExist:
-            target_toefl = []
-
-
-        target_vect = [target_student.current_gpa]
-        fake_mean_gpa = [3.0]
-        gre_required = False
-        toefl_required = False
-
-        if target_gre:
-            fake_mean_gre = [150,150,3]
-            gre_required = True
-            target_vect = target_vect + [target_gre.verb,target_gre.quant,target_gre.write]
-        else:
-            fake_mean_gre = []
-
-
-        if target_toefl:
-            fake_mean_toefl = [20,20,20,20]
-            toefl_required = True
-            target_vect = target_vect + [target_toefl.reading,target_toefl.listening,target_toefl.speaking,target_toefl.writing]
-        else:
-            fake_mean_toefl = []
-
-
-
-        fake_mean = np.asarray(fake_mean_gpa+fake_mean_gre+fake_mean_toefl)
-
-
-        target_vect = np.asarray(target_vect)-fake_mean
-
-
-        all_students = Student.objects.all()
-        scores = []
-        for student in all_students:
-
-            vect = [student.current_gpa]
-
-            if gre_required:
-                try:
-                    gre = GREScore.objects.get(student__user_id=student.user_id)
-                    vect = vect + [gre.verb,gre.quant,gre.write]
-                except GREScore.DoesNotExist:
-                    scores.append(0)
-                    continue
-
-            if toefl_required:
-                try:
-                    toefl = TOEFLScore.objects.get(student__user_id=student.user_id)
-                    vect = vect + [toefl.reading,toefl.listening,toefl.speaking,toefl.writing]
-                except TOEFLScore.DoesNotExist:
-                    scores.append(0)
-                    continue
-
-
-            vect = np.asarray(vect)-fake_mean
-
-            # In this context this is actually pearson correlation and not cosine similarity
-            scores.append(np.abs(metrics.cosine_similarity(vect,target_vect)))
-
-
-        similar_students = []
-        similar_students_gre = []
-        similar_students_toefl = []
-        for i, score in enumerate(scores):
-            if score >= similar_thres:
-
-                try:
-                    similar_students.append(all_students[i])
-                    if toefl_required:
-                        similar_students_toefl.append(TOEFLScore.objects.get(student=all_students[i].id))
-                    if gre_required:
-                        similar_students_gre.append(GREScore.objects.get(student=all_students[i].id))
-
-                except (GREScore.DoesNotExist,TOEFLScore.DoesNotExist):
-                    continue
-
-
-
-        if(gre_required and toefl_required):
-            similar_students = zip(similar_students,similar_students_gre,similar_students_toefl)
-        elif(gre_required):
-            similar_students = zip(similar_students,similar_students_gre)
-        elif(toefl_required):
-            similar_students = zip(similar_students,similar_students_toefl)
-
-
-
-
-
-        params = {"similar_students":similar_students,
-                  "toefl_required":toefl_required,
-                  "gre_required":gre_required}
-
-        return render(request, self.template_name,params )
-
-
-class FilteredProgramListView(View):
-    template_name = 'filtered_program_list.html'
-
-    def get(self, request, *args, **kwargs):
-
-        student = Student.objects.get(user_id=request.user.id)
-
-        gre_required = False
-        toefl_required = False
-
-        try:
-            gre_score = GREScore.objects.get(student__user_id=request.user.id)
-            gre_required = True
-        except GREScore.DoesNotExist:
-            gre_score = []
-
-        try:
-            toefl_score = TOEFLScore.objects.get(student__user_id=request.user.id)
-            toefl_required = True
-        except TOEFLScore.DoesNotExist:
-            toefl_score = []
-
-
-        programs = Program.objects.all().filter(school_level="Graduate")
-        program_results = []
-
-        if gre_required and toefl_required:
-            for program in programs:
-                if (student.current_gpa > program.gpa) and (gre_score.verb > program.greverbal) and (gre_score.quant > program.greapti)and (gre_score.write > program.grewriting)and (toefl_score.reading > program.toeflreading) and (toefl_score.listening > program.toefllistening)and (toefl_score.writing > program.toeflwriting)and (toefl_score.speaking > program.toeflspeaking):
-                    program_results.append(program.id)
-        elif gre_required:
-            for program in programs:
-                if (student.current_gpa > program.gpa) and (gre_score.verb > program.greverbal) and (gre_score.quant > program.greapti)and (gre_score.write > program.grewriting):
-                    program_results.append(program.id)
-        elif toefl_required:
-
-            for program in programs:
-                if (student.current_gpa > program.gpa) and (toefl_score.reading > program.toeflreading) and (toefl_score.listening > program.toefllistening)and (toefl_score.writing > program.toeflwriting)and (toefl_score.speaking > program.toeflspeaking):
-                    program_results.append(program.id)
-        else:
-            for program in programs:
-                if (student.current_gpa > program.gpa):
-                    program_results.append(program.id)
-
-
-        program_results = Program.objects.filter(id__in=program_results)
-
-        params = {'programs':program_results,
-                  'gre_required':gre_required,
-                  'toefl_required':toefl_required}
-
-        return render(request, self.template_name, params)
-
-class FilteredSchoolListView(View):
-    template_name = 'filtered_school_list.html'
-
-    def get(self, request, *args, **kwargs):
-
-        student = Student.objects.get(user_id=request.user.id)
-
-        gre_required = False
-        toefl_required = False
-
-        try:
-            gre_score = GREScore.objects.get(student__user_id=request.user.id)
-            gre_required = True
-        except GREScore.DoesNotExist:
-            gre_score = []
-
-        try:
-            toefl_score = TOEFLScore.objects.get(student__user_id=request.user.id)
-            toefl_required = True
-        except TOEFLScore.DoesNotExist:
-            toefl_score = []
-
-
-        schools = School.objects.all()
-        schools_results = []
-
-        if gre_required and toefl_required:
-            for school in schools:
-                print(school)
-                if (student.current_gpa > school.gpa) and (gre_score.verb > school.greverbal) and (gre_score.quant > school.greapti)and (gre_score.write > school.grewriting)and (toefl_score.reading > school.toeflreading) and (toefl_score.listening > school.toefllistening)and (toefl_score.writing > school.toeflwriting)and (toefl_score.speaking > school.toeflspeaking):
-                    schools_results.append(school.id)
-        elif gre_required:
-            for school in schools:
-                if (student.current_gpa > school.gpa) and (gre_score.verb > school.greverbal) and (gre_score.quant > school.greapti)and (gre_score.write > school.grewriting):
-                    schools_results.append(school.id)
-        elif toefl_required:
-
-            for school in schools:
-                if (student.current_gpa > school.gpa) and (toefl_score.reading > school.toeflreading) and (toefl_score.listening > school.toefllistening)and (toefl_score.writing > school.toeflwriting)and (toefl_score.speaking > school.toeflspeaking):
-                    schools_results.append(school.id)
-        else:
-            for school in schools:
-                if (student.current_gpa > school.gpa):
-                    schools_results.append(school.id)
-
-
-
-        schools_results = School.objects.filter(id__in=schools_results)
-
-
-        params = {'schools':schools_results,
-                  'gre_required':gre_required,
-                  'toefl_required':toefl_required}
-
-        return render(request, self.template_name, params)
-
-
-
-class FilteredSchoolProgramListView(View):
-    template_name = 'filtered_school_program_list.html'
-
-    def get(self, request, *args, **kwargs):
-
-        student = Student.objects.get(user_id=request.user.id)
-
-        gre_required = False
-        toefl_required = False
-
-        try:
-            gre_score = GREScore.objects.get(student__user_id=request.user.id)
-            gre_required = True
-        except GREScore.DoesNotExist:
-            gre_score = []
-
-        try:
-            toefl_score = TOEFLScore.objects.get(student__user_id=request.user.id)
-            toefl_required = True
-        except TOEFLScore.DoesNotExist:
-            toefl_score = []
-
-
-        schools = SchoolProgram.objects.all()
-        schools_results = []
-
-        if gre_required and toefl_required:
-            for school in schools:
-                print(school)
-                if (student.current_gpa > school.gpa) and (gre_score.verb > school.greverbal) and (gre_score.quant > school.greapti)and (gre_score.write > school.grewriting)and (toefl_score.reading > school.toeflreading) and (toefl_score.listening > school.toefllistening)and (toefl_score.writing > school.toeflwriting)and (toefl_score.speaking > school.toeflspeaking):
-                    schools_results.append(school.id)
-        elif gre_required:
-            for school in schools:
-                if (student.current_gpa > school.gpa) and (gre_score.verb > school.greverbal) and (gre_score.quant > school.greapti)and (gre_score.write > school.grewriting):
-                    schools_results.append(school.id)
-        elif toefl_required:
-
-            for school in schools:
-                if (student.current_gpa > school.gpa) and (toefl_score.reading > school.toeflreading) and (toefl_score.listening > school.toefllistening)and (toefl_score.writing > school.toeflwriting)and (toefl_score.speaking > school.toeflspeaking):
-                    schools_results.append(school.id)
-        else:
-            for school in schools:
-                if (student.current_gpa > school.gpa):
-                    schools_results.append(school.id)
-
-
-
-        schools_results = SchoolProgram.objects.filter(id__in=schools_results)
-
-
-        params = {'school_programs':schools_results,
-                  'gre_required':gre_required,
-                  'toefl_required':toefl_required}
-
-        return render(request, self.template_name, params)

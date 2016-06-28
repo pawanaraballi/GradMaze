@@ -26,18 +26,6 @@ from utilities import SimilarityMetrics
 
 class IndexView(TemplateView):
     template_name = 'index.html'
-    def get(self, request, *args, **kwargs):
-        try:
-            application_details = Application.objects.all().order_by('-date_updated')
-        except Application.DoesNotExist:
-            application_details=[]
-
-
-        params = {
-            'application_details':application_details
-        }
-
-        return render(request,self.template_name,params)
 
 #
 class RegisterView(FormView):
@@ -498,6 +486,7 @@ class DetailStudentListView(ListView):
         return render(request,self.template_name,params)
 
 
+
 class SearchResultView(View):
     template_name = 'search_results.html'
 
@@ -545,6 +534,7 @@ class CancelSubView(View):
 
 
 
+<<<<<<< HEAD
 class SimilarStudentsView(View):
     template_name = 'similar_students.html'
 
@@ -657,8 +647,7 @@ class SimilarStudentsView(View):
                   "gre_required":gre_required}
 
         return render(request, self.template_name,params )
-
-
+=======
 class FilteredProgramListView(View):
     template_name = 'filtered_program_list.html'
 
@@ -825,3 +814,4 @@ class FilteredSchoolProgramListView(View):
                   'toefl_required':toefl_required}
 
         return render(request, self.template_name, params)
+>>>>>>> feat/requirement-filter

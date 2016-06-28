@@ -14,30 +14,14 @@ from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
-import numpy as np
-
 from .models import *
 
 from .forms import *
-
-from utilities import SimilarityMetrics
 
 # Create your views here.
 
 class IndexView(TemplateView):
     template_name = 'index.html'
-    def get(self, request, *args, **kwargs):
-        try:
-            application_details = Application.objects.all().order_by('-date_updated')
-        except Application.DoesNotExist:
-            application_details=[]
-
-
-        params = {
-            'application_details':application_details
-        }
-
-        return render(request,self.template_name,params)
 
 #
 class RegisterView(FormView):
@@ -442,20 +426,6 @@ class DetailSchoolProgramFromSP(DetailView):
 class UserListView(ListView):
     model = Student
     template_name = 'students_list.html'
-    extra_context = {}
-
-    def get_context_data(self, **kwargs):
-        context = super(UserListView, self).get_context_data(**kwargs)
-        self.extra_context["student"]=Student.objects.get(user_id=self.request.user.id)
-
-        context.update(self.extra_context)
-        return context
-
-
-
-
-
-
 
 class DetailStudentListView(ListView):
     template_name = 'details_student_list.html'
@@ -465,37 +435,19 @@ class DetailStudentListView(ListView):
     def get(self, request, *args, **kwargs):
         try:
             application_details = Application.objects.filter(student__user_id=self.kwargs['pk'])
+            student=Student.objects.get(user_id=self.kwargs['pk'])
         except Application.DoesNotExist:
             application_details=[]
-
-        try:
-            student=Student.objects.get(user_id=self.kwargs['pk'])
-        except Student.DoesNotExist:
             student=[]
-
-        try:
-            gre_scores=GREScore.objects.get(student__user_id=self.kwargs['pk'])
-        except GREScore.DoesNotExist:
-            gre_scores=[]
-
-        try:
-            toelf_scores=TOEFLScore.objects.get(student__user_id=self.kwargs['pk'])
-        except TOEFLScore.DoesNotExist:
-            toelf_scores=[]
-
-
-
-
 
 
         params = {
             'application_details':application_details,
-            'student': student,
-            'toelf_scores': toelf_scores,
-            'gre_scores': gre_scores
+            'student': student
         }
 
         return render(request,self.template_name,params)
+
 
 
 class SearchResultView(View):
@@ -543,120 +495,6 @@ class CancelSubView(View):
 
         return HttpResponse('result')
 
-
-
-class SimilarStudentsView(View):
-    template_name = 'similar_students.html'
-
-    def get(self, request, *args, **kwargs):
-        metrics = SimilarityMetrics()
-        similar_thres = .75
-
-
-        target_student = Student.objects.get(user_id=request.user.id)
-
-        try:
-            target_gre = GREScore.objects.get(student__user_id=request.user.id)
-        except GREScore.DoesNotExist:
-            target_gre = []
-
-        try:
-            target_toefl = TOEFLScore.objects.get(student__user_id=request.user.id)
-        except TOEFLScore.DoesNotExist:
-            target_toefl = []
-
-
-        target_vect = [target_student.current_gpa]
-        fake_mean_gpa = [3.0]
-        gre_required = False
-        toefl_required = False
-
-        if target_gre:
-            fake_mean_gre = [150,150,3]
-            gre_required = True
-            target_vect = target_vect + [target_gre.verb,target_gre.quant,target_gre.write]
-        else:
-            fake_mean_gre = []
-
-
-        if target_toefl:
-            fake_mean_toefl = [20,20,20,20]
-            toefl_required = True
-            target_vect = target_vect + [target_toefl.reading,target_toefl.listening,target_toefl.speaking,target_toefl.writing]
-        else:
-            fake_mean_toefl = []
-
-
-
-        fake_mean = np.asarray(fake_mean_gpa+fake_mean_gre+fake_mean_toefl)
-
-
-        target_vect = np.asarray(target_vect)-fake_mean
-
-
-        all_students = Student.objects.all()
-        scores = []
-        for student in all_students:
-
-            vect = [student.current_gpa]
-
-            if gre_required:
-                try:
-                    gre = GREScore.objects.get(student__user_id=student.user_id)
-                    vect = vect + [gre.verb,gre.quant,gre.write]
-                except GREScore.DoesNotExist:
-                    scores.append(0)
-                    continue
-
-            if toefl_required:
-                try:
-                    toefl = TOEFLScore.objects.get(student__user_id=student.user_id)
-                    vect = vect + [toefl.reading,toefl.listening,toefl.speaking,toefl.writing]
-                except TOEFLScore.DoesNotExist:
-                    scores.append(0)
-                    continue
-
-
-            vect = np.asarray(vect)-fake_mean
-
-            # In this context this is actually pearson correlation and not cosine similarity
-            scores.append(np.abs(metrics.cosine_similarity(vect,target_vect)))
-
-
-        similar_students = []
-        similar_students_gre = []
-        similar_students_toefl = []
-        for i, score in enumerate(scores):
-            if score >= similar_thres:
-
-                try:
-                    similar_students.append(all_students[i])
-                    if toefl_required:
-                        similar_students_toefl.append(TOEFLScore.objects.get(student=all_students[i].id))
-                    if gre_required:
-                        similar_students_gre.append(GREScore.objects.get(student=all_students[i].id))
-
-                except (GREScore.DoesNotExist,TOEFLScore.DoesNotExist):
-                    continue
-
-
-
-        if(gre_required and toefl_required):
-            similar_students = zip(similar_students,similar_students_gre,similar_students_toefl)
-        elif(gre_required):
-            similar_students = zip(similar_students,similar_students_gre)
-        elif(toefl_required):
-            similar_students = zip(similar_students,similar_students_toefl)
-
-
-
-
-
-        params = {"similar_students":similar_students,
-                  "toefl_required":toefl_required,
-                  "gre_required":gre_required}
-
-        return render(request, self.template_name,params )
 
 
 class FilteredProgramListView(View):

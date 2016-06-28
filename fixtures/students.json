@@ -27,6 +27,11 @@
       "current_credit_hours": 120,
       "current_start_date": "2016-05-05",
       "current_end_date":"2016-05-05",
+      "prev_program": 6,
+      "prev_gpa": 3.8,
+      "prev_credit_hours": 120,
+      "prev_start_date": "2016-05-05",
+      "prev_end_date":"2016-05-05",
       "subscribed": 1
     }
   },
@@ -58,6 +63,11 @@
       "current_credit_hours": 120,
       "current_start_date": "2016-05-05",
       "current_end_date":"2016-05-05",
+      "prev_program": 6,
+      "prev_gpa": 3.8,
+      "prev_credit_hours": 120,
+      "prev_start_date": "2016-05-05",
+      "prev_end_date":"2016-05-05",
       "subscribed": 1
     }
   },
@@ -71,6 +81,65 @@
       "current_credit_hours": 120,
       "current_start_date": "2016-05-05",
       "current_end_date":"2016-05-05",
+      "prev_program": 6,
+      "prev_gpa": 3.8,
+      "prev_credit_hours": 120,
+      "prev_start_date": "2016-05-05",
+      "prev_end_date":"2016-05-05",
+      "subscribed": 1
+    }
+  },
+  {
+    "model": "main.student",
+    "pk": 6,
+    "fields": {
+      "user": 6,
+      "current_program": 6,
+      "current_gpa": 1.8,
+      "current_credit_hours": 120,
+      "current_start_date": "2016-05-05",
+      "current_end_date":"2016-05-05",
+      "prev_program": 6,
+      "prev_gpa": 3.8,
+      "prev_credit_hours": 120,
+      "prev_start_date": "2016-05-05",
+      "prev_end_date":"2016-05-05",
+      "subscribed": 1
+    }
+  },
+  {
+    "model": "main.student",
+    "pk": 7,
+    "fields": {
+      "user": 7,
+      "current_program": 6,
+      "current_gpa": 2.8,
+      "current_credit_hours": 120,
+      "current_start_date": "2016-05-05",
+      "current_end_date":"2016-05-05",
+      "prev_program": 6,
+      "prev_gpa": 3.8,
+      "prev_credit_hours": 120,
+      "prev_start_date": "2016-05-05",
+      "prev_end_date":"2016-05-05",
+      "subscribed": 1
+    }
+  },
+  {
+    "model": "main.student",
+    "pk": 8,
+    "fields": {
+      "user": 8,
+      "current_program": 6,
+      "current_gpa": 3.8,
+      "current_credit_hours": 120,
+      "current_start_date": "2016-05-05",
+      "current_end_date":"2016-05-05",
+      "prev_program": 6,
+      "prev_gpa": 3.8,
+      "prev_credit_hours": 120,
+      "prev_start_date": "2016-05-05",
+      "prev_end_date":"2016-05-05",
       "subscribed": 1
     }
   }

@@ -574,7 +574,7 @@ class SimilarStudentsView(View):
 
     def get(self, request, *args, **kwargs):
         metrics = SimilarityMetrics()
-        similar_thres = .75
+        similar_thres = .999
 
 
         target_student = Student.objects.get(user_id=request.user.id)
@@ -591,12 +591,12 @@ class SimilarStudentsView(View):
 
 
         target_vect = [target_student.current_gpa]
-        fake_mean_gpa = [3.0]
+        fake_mean_gpa = [2.5]
         gre_required = False
         toefl_required = False
 
         if target_gre:
-            fake_mean_gre = [150,150,3]
+            fake_mean_gre = [140,140,2]
             gre_required = True
             target_vect = target_vect + [target_gre.verb,target_gre.quant,target_gre.write]
         else:
@@ -604,7 +604,7 @@ class SimilarStudentsView(View):
 
 
         if target_toefl:
-            fake_mean_toefl = [20,20,20,20]
+            fake_mean_toefl = [10,10,10,10]
             toefl_required = True
             target_vect = target_vect + [target_toefl.reading,target_toefl.listening,target_toefl.speaking,target_toefl.writing]
         else:
@@ -626,7 +626,7 @@ class SimilarStudentsView(View):
 
             if gre_required:
                 try:
-                    gre = GREScore.objects.get(student__user_id=student.user_id)
+                    gre = GREScore.objects.get(student_id=student.user_id)
                     vect = vect + [gre.verb,gre.quant,gre.write]
                 except GREScore.DoesNotExist:
                     scores.append(0)
@@ -634,7 +634,7 @@ class SimilarStudentsView(View):
 
             if toefl_required:
                 try:
-                    toefl = TOEFLScore.objects.get(student__user_id=student.user_id)
+                    toefl = TOEFLScore.objects.get(student_id=student.user_id)
                     vect = vect + [toefl.reading,toefl.listening,toefl.speaking,toefl.writing]
                 except TOEFLScore.DoesNotExist:
                     scores.append(0)
@@ -647,6 +647,7 @@ class SimilarStudentsView(View):
             scores.append(np.abs(metrics.cosine_similarity(vect,target_vect)))
 
 
+        print(scores)
         similar_students = []
         similar_students_gre = []
         similar_students_toefl = []

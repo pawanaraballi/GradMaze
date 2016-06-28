@@ -28,7 +28,39 @@
       "toefllistening" : "20",
       "toeflspeaking" : "20",
       "toeflwriting" : "20",
-      "gpa" : "3.2"
+      "gpa" : "3.4"
+    }
+  },
+  {
+    "model": "main.school",
+    "pk": 3,
+    "fields": {
+      "name": "University of North Carolina at Greensboro",
+      "abbr": "UNCG",
+      "greverbal" : "140",
+      "greapti" : "140",
+      "grewriting" : "3",
+      "toeflreading" : "10",
+      "toefllistening" : "10",
+      "toeflspeaking" : "10",
+      "toeflwriting" : "10",
+      "gpa" : "3.0"
+    }
+  },
+  {
+    "model": "main.school",
+    "pk": 4,
+    "fields": {
+      "name": "University of North Carolina at Ashville",
+      "abbr": "UNCA",
+      "greverbal" : "145",
+      "greapti" : "145",
+      "grewriting" : "3",
+      "toeflreading" : "10",
+      "toefllistening" : "10",
+      "toeflspeaking" : "10",
+      "toeflwriting" : "10",
+      "gpa" : "2.8"
     }
   }
 ]

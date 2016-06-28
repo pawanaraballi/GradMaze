@@ -43,5 +43,32 @@
       "email": "testuser5@test.com",
       "password": "pbkdf2_sha256$24000$IiU5uLP6nqWM$Z/WRSMMQ/Sw+risaD51sWRuKb7tMBE6KT4DUna6mgkQ="
     }
+  },
+  {
+    "model": "auth.User",
+    "pk": 6,
+    "fields": {
+      "username": "TestUser6",
+      "email": "testuser6@test.com",
+      "password": "pbkdf2_sha256$24000$IiU5uLP6nqWM$Z/WRSMMQ/Sw+risaD51sWRuKb7tMBE6KT4DUna6mgkQ="
+    }
+  },
+  {
+    "model": "auth.User",
+    "pk": 7,
+    "fields": {
+      "username": "TestUser7",
+      "email": "testuser7@test.com",
+      "password": "pbkdf2_sha256$24000$IiU5uLP6nqWM$Z/WRSMMQ/Sw+risaD51sWRuKb7tMBE6KT4DUna6mgkQ="
+    }
+  },
+  {
+    "model": "auth.User",
+    "pk": 8,
+    "fields": {
+      "username": "TestUser8",
+      "email": "testuse8@test.com",
+      "password": "pbkdf2_sha256$24000$IiU5uLP6nqWM$Z/WRSMMQ/Sw+risaD51sWRuKb7tMBE6KT4DUna6mgkQ="
+    }
   }
 ]

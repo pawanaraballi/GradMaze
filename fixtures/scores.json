@@ -1,64 +1,94 @@
 [
-	{
-		"model":"main.GREScore",
-		"pk": 1,
-		"fields":{
-			"student" : 1,
-			"verb" : 160, 
-			"quant" : 160, 
-			"write" : 1
-		}
-	},
-	{
-		"model":"main.TOEFLScore",
-		"pk": 1,
-		"fields":{
-			"student" : 1,
-			"reading" : 1,
-			"listening" : 1,
-			"writing" : 1,
-            "speaking": 1
-		}
-	},
-    {
-		"model":"main.GREScore",
-		"pk": 2,
-		"fields":{
-			"student" : 2,
-			"verb" : 150,
-			"quant" : 150,
-			"write" : 6
-		}
-	},
-    {
-		"model":"main.GREScore",
-		"pk": 3,
-		"fields":{
-			"student" : 3,
-			"verb" : 140,
-			"quant" : 145,
-			"write" : 3
-		}
-	},
-   {
-		"model":"main.GREScore",
-		"pk": 4,
-		"fields":{
-			"student" : 4,
-			"verb" : 130,
-			"quant" : 130,
-			"write" : 1
-		}
-	},
-   {
-		"model":"main.GREScore",
-		"pk": 5,
-		"fields":{
-			"student" : 5,
-			"verb" : 155,
-			"quant" : 155,
-			"write" : 1
-		}
-	}
-	
+  {
+    "model":"main.GREScore",
+    "pk": 1,
+    "fields":{
+      "student" : 1,
+      "verb" : 160,
+      "quant" : 160,
+      "write" : 7
+    }
+  },
+  {
+    "model":"main.TOEFLScore",
+    "pk": 1,
+    "fields":{
+      "student" : 1,
+      "reading" : 20,
+      "listening" : 20,
+      "writing" : 20,
+      "speaking": 20
+    }
+  },
+  {
+    "model":"main.GREScore",
+    "pk": 2,
+    "fields":{
+      "student" : 2,
+      "verb" : 150,
+      "quant" : 150,
+      "write" : 4
+    }
+  },
+  {
+    "model":"main.GREScore",
+    "pk": 3,
+    "fields":{
+      "student" : 3,
+      "verb" : 140,
+      "quant" : 145,
+      "write" : 3
+    }
+  },
+  {
+    "model":"main.GREScore",
+    "pk": 4,
+    "fields":{
+      "student" : 4,
+      "verb" : 130,
+      "quant" : 130,
+      "write" : 1
+    }
+  },
+  {
+    "model":"main.GREScore",
+    "pk": 5,
+    "fields":{
+      "student" : 5,
+      "verb" : 155,
+      "quant" : 155,
+      "write" : 4
+    }
+  },
+  {
+    "model":"main.GREScore",
+    "pk": 6,
+    "fields":{
+      "student" : 6,
+      "verb" : 120,
+      "quant" : 120,
+      "write" : 1
+    }
+  },
+  {
+    "model":"main.GREScore",
+    "pk": 7,
+    "fields":{
+      "student" : 7,
+      "verb" : 155,
+      "quant" : 155,
+      "write" : 3
+    }
+  },
+  {
+    "model":"main.GREScore",
+    "pk": 8,
+    "fields":{
+      "student" : 8,
+      "verb" : 170,
+      "quant" : 170,
+      "write" : 7
+    }
+  }
+
 ]

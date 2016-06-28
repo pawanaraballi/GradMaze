@@ -264,3 +264,246 @@ class SearchResultViewTestCase(TestCase):
         self.assertTemplateUsed(response, 'search_results.html')
 
 
+
+
+class FilteredProgramListViewTestCase(TestCase):
+
+    def setUp(self):
+        user = User.objects.create_user('foo', password='bar')
+        self.student = Student.objects.create(user=user,current_gpa=3.5)
+        self.program = Program.objects.create(name="Comp Sci",
+                                              level="Masters",
+                                              school_level = "Graduate",
+                                              gpa=3.0)
+        self.program1 = Program.objects.create(name="Comp Sci",
+                                              level="PhD",
+                                              school_level = "Graduate",
+                                              gpa=4.0)
+
+
+    def test_load_view(self):
+        """Test GET/POST of Filtered Programs Page"""
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/programs/filtered/', follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'filtered_program_list.html')
+
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.post('/GradMaze/programs/filtered/', follow=True)
+        self.assertEqual(response.status_code, 405)
+
+
+
+    def test_gpa_filter(self):
+        """Test GPA Program Filter """
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/programs/filtered/', follow=True)
+        self.assertQuerysetEqual(response.context['programs'],map(repr, Program.objects.filter(id=self.program.id)))
+
+
+    def test_gre_filter(self):
+        """Test GRE Program Filter """
+        gre = GREScore.objects.create(student=self.student,verb=160,quant=160,write=160)
+        self.program.gpa=3.0;self.program.greverbal=140;self.program.greapti=140;self.program.grewriting=2;
+        self.program1.gpa=3.0;self.program1.greverbal=170;self.program1.greapti=170;self.program1.grewriting=7;
+
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/programs/filtered/', follow=True)
+        self.assertQuerysetEqual(response.context['programs'],map(repr, Program.objects.filter(id=self.program.id)))
+
+
+    def test_gre_toefl_filter(self):
+        """Test GRE and TOEFL Program Filter """
+        toefl = TOEFLScore.objects.create(student=self.student,reading=25,listening=25,speaking=25,writing=25)
+        gre = GREScore.objects.create(student=self.student,verb=160,quant=160,write=160)
+        self.program.gpa=3.0;self.program.toeflreading=20;self.program.toeflspeaking=20;self.program.toeflwriting=20;self.program.toefllistening=20;self.program.greverbal=140;self.program.greapti=140;self.program.grewriting=2;
+        self.program1.gpa=3.0;self.program1.toeflreading=30;self.program1.toeflspeaking=30;self.program1.toeflwriting=30;self.program1.toefllistening=30;self.program1.greverbal=170;self.program1.greapti=170;self.program1.grewriting=7;
+
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/programs/filtered/', follow=True)
+        self.assertQuerysetEqual(response.context['programs'],map(repr, Program.objects.filter(id=self.program.id)))
+
+    def test_toefl_filter(self):
+        """Test TOEFL Program Filter """
+        toefl = TOEFLScore.objects.create(student=self.student,reading=25,listening=25,speaking=25,writing=25)
+        self.program.gpa=3.0;self.program.toeflreading=20;self.program.toeflspeaking=20;self.program.toeflwriting=20;self.program.toefllistening=20;
+        self.program1.gpa=3.0;self.program1.toeflreading=30;self.program1.toeflspeaking=30;self.program1.toeflwriting=30;self.program1.toefllistening=30;
+
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/programs/filtered/', follow=True)
+        self.assertQuerysetEqual(response.context['programs'],map(repr, Program.objects.filter(id=self.program.id)))
+
+
+
+
+
+class FilteredSchoolListViewTestCase(TestCase):
+
+    def setUp(self):
+        user = User.objects.create_user('foo', password='bar')
+        self.student = Student.objects.create(user=user)
+        self.school = School.objects.create(name="Test",
+                                            abbr="T",
+                                            gpa=3.0)
+        self.school1 = School.objects.create(name="Test2",
+                                            abbr="T2",
+                                            gpa=4.0)
+
+
+    def test_load_view(self):
+        """Test GET/POST of Filtered School Page"""
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/schools/filtered/', follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'filtered_school_list.html')
+
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.post('/GradMaze/schools/filtered/', follow=True)
+        self.assertEqual(response.status_code, 405)
+
+
+
+    def test_gpa_filter(self):
+        """Test GPA School Filter """
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/schools/filtered/', follow=True)
+        self.assertQuerysetEqual(response.context['schools'],map(repr, School.objects.filter(id=self.school.id)))
+
+
+    def test_gre_filter(self):
+        """Test GRE School Filter """
+        gre = GREScore.objects.create(student=self.student,verb=160,quant=160,write=160)
+        self.school.gpa=3.0;self.school.greverbal=140;self.school.greapti=140;self.school.grewriting=2;
+        self.school1.gpa=3.0;self.school1.greverbal=170;self.school1.greapti=170;self.school1.grewriting=7;
+
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/schools/filtered/', follow=True)
+        self.assertQuerysetEqual(response.context['schools'],map(repr, School.objects.filter(id=self.school.id)))
+
+
+    def test_toefl_filter(self):
+        """Test TOEFL School Filter """
+        toefl = TOEFLScore.objects.create(student=self.student,reading=25,listening=25,speaking=25,writing=25)
+        self.school.gpa=3.0;self.school.toeflreading=20;self.school.toeflspeaking=20;self.school.toeflwriting=20;self.school.toefllistening=20;
+        self.school1.gpa=3.0;self.school1.toeflreading=30;self.school1.toeflspeaking=30;self.school1.toeflwriting=30;self.school1.toefllistening=30;
+
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/schools/filtered/', follow=True)
+        self.assertQuerysetEqual(response.context['schools'],map(repr, School.objects.filter(id=self.school.id)))
+
+
+    def test_gre_toefl_filter(self):
+        """Test GRE and TOEFL School Filter """
+        toefl = TOEFLScore.objects.create(student=self.student,reading=25,listening=25,speaking=25,writing=25)
+        gre = GREScore.objects.create(student=self.student,verb=160,quant=160,write=160)
+        self.school.gpa=3.0;self.school.toeflreading=20;self.school.toeflspeaking=20;self.school.toeflwriting=20;self.school.toefllistening=20;self.school.greverbal=140;self.school.greapti=140;self.school.grewriting=2;
+        self.school1.gpa=3.0;self.school1.toeflreading=30;self.school1.toeflspeaking=30;self.school1.toeflwriting=30;self.school1.toefllistening=30;self.school1.greverbal=170;self.school1.greapti=170;self.school1.grewriting=7;
+
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/schools/filtered/', follow=True)
+        self.assertQuerysetEqual(response.context['schools'],map(repr, School.objects.filter(id=self.school.id)))
+
+
+
+
+
+
+class FilteredSchoolProgramListViewTestCase(TestCase):
+
+    def setUp(self):
+        user = User.objects.create_user('foo', password='bar')
+        self.student = Student.objects.create(user=user)
+        self.school = School.objects.create(name="Test",
+                                            abbr="T",
+                                            gpa=3.0)
+        self.school2 = School.objects.create(name="Test2",
+                                            abbr="T2",
+                                            gpa=4.0)
+        self.program = Program.objects.create(name="Comp Sci",
+                                              level="Masters",
+                                              school_level = "Graduate",
+                                              gpa=3.0)
+        self.program1 = Program.objects.create(name="Comp Sci",
+                                              level="PhD",
+                                              school_level = "Graduate",
+                                              gpa=4.0)
+        self.school_program = SchoolProgram.objects.create(school=self.school,
+                                                           program=self.program,
+                                                           gpa=3.0)
+        self.school_program1 = SchoolProgram.objects.create(school=self.school,
+                                                           program=self.program1,
+                                                           gpa=4.0)
+
+
+
+    def test_load_view(self):
+        """Test GET/POST of Filtered School Programs Page"""
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/schoolprogram/filtered/', follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'filtered_school_program_list.html')
+
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.post('/GradMaze/schoolprogram/filtered/', follow=True)
+        self.assertEqual(response.status_code, 405)
+
+
+    def test_gpa_filter(self):
+        """Test GPA School Program Filter """
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/schoolprogram/filtered/', follow=True)
+        self.assertQuerysetEqual(response.context['school_programs'],map(repr, SchoolProgram.objects.filter(id=self.school_program.id)))
+
+
+    def test_gre_filter(self):
+        """Test GRE School Program Filter """
+        gre = GREScore.objects.create(student=self.student,verb=160,quant=160,write=160)
+        self.school_program.gpa=3.0;self.school_program.greverbal=140;self.school_program.greapti=140;self.school_program.grewriting=2;
+        self.school_program1.gpa=3.0;self.school_program1.greverbal=170;self.school_program1.greapti=170;self.school_program1.grewriting=7;
+
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/schoolprogram/filtered/', follow=True)
+        self.assertQuerysetEqual(response.context['school_programs'],map(repr, SchoolProgram.objects.filter(id=self.school_program.id)))
+
+    def test_toefl_filter(self):
+        """Test TOEFL School Program Filter """
+        toefl = TOEFLScore.objects.create(student=self.student,reading=25,listening=25,speaking=25,writing=25)
+        self.school_program.gpa=3.0;self.school_program.toeflreading=20;self.school_program.toeflspeaking=20;self.school_program.toeflwriting=20;self.school_program.toefllistening=20;
+        self.school_program1.gpa=3.0;self.school_program1.toeflreading=30;self.school_program1.toeflspeaking=30;self.school_program1.toeflwriting=30;self.school_program1.toefllistening=30;
+
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/schoolprogram/filtered/', follow=True)
+        self.assertQuerysetEqual(response.context['school_programs'],map(repr, SchoolProgram.objects.filter(id=self.school_program.id)))
+
+
+    def test_gre_toefl_filter(self):
+        """Test GRE and TOEFL School Program Filter """
+        toefl = TOEFLScore.objects.create(student=self.student,reading=25,listening=25,speaking=25,writing=25)
+        gre = GREScore.objects.create(student=self.student,verb=160,quant=160,write=160)
+        self.school_program.gpa=3.0;self.school_program.toeflreading=20;self.school_program.toeflspeaking=20;self.school_program.toeflwriting=20;self.school_program.toefllistening=20;self.school_program.greverbal=140;self.school_program.greapti=140;self.school_program.grewriting=2;
+        self.school_program1.gpa=3.0;self.school_program1.toeflreading=30;self.school_program1.toeflspeaking=30;self.school_program1.toeflwriting=30;self.school_program1.toefllistening=30;self.school_program1.greverbal=170;self.school_program1.greapti=170;self.school_program1.grewriting=7;
+
+        c = Client()
+        c.login(username='foo', password='bar')
+        response = c.get('/GradMaze/schoolprogram/filtered/', follow=True)
+        self.assertQuerysetEqual(response.context['school_programs'],map(repr, SchoolProgram.objects.filter(id=self.school_program.id)))
+
+
+

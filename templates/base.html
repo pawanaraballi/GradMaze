@@ -33,7 +33,7 @@
                     <li><a href="{% url 'school-list' %}">Schools</a></li>
                     <li><a href="{% url 'program-list' %}">Programs</a></li>
                     <li><a href="{% url 'school-program-list' %}">School Programs</a></li>
-                    <li><a href="{% url 'user-list' %}">Students</a></li>
+                    {% if user.is_authenticated %}<li><a href="{% url 'user-list' %}">Students</a></li>{% endif%}
                 </ul>
 
 
